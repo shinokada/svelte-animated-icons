@@ -1,58 +1,116 @@
-# create-svelte
+# Svelte Animated Icons
 
-Everything you need to build a Svelte library, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+A collection of animated SVG icons for Svelte with customizable draw transitions, events, and accessibility features. Each icon supports hover/click animations, customizable colors, sizes, and stroke widths.
 
-Read more about creating a library [in the docs](https://svelte.dev/docs/kit/packaging).
+## Features
 
-## Creating a project
+- 🎨 Customizable colors, sizes, and stroke widths
+- ✨ Animated draw transitions on hover or click
+- ♿ Built-in accessibility features
+- 🎯 TypeScript support
+- 🔄 Configurable animation timing
+- 🎮 Multiple event trigger options
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Installation
 
 ```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+pnpm i -D svelte-animated-icons
 ```
 
-Everything inside `src/lib` is part of your library, everything inside `src/routes` can be used as a showcase or preview app.
+## Usage
 
-## Building
+```svelte
+<script>
+  import { ArrowDown } from 'svelte-animated-icons';
+</script>
 
-To build your library:
+<ArrowDown />
+```
+
+### With Custom Properties
+
+```svelte
+<script>
+  import { ArrowDown } from 'svelte-animated-icons';
+</script>
+
+<ArrowDown
+  size={32}
+  color="#ff0000"
+  strokeWidth={2}
+  event="onclick"
+  pauseDuration={300}
+  transitionParams={{
+    duration: 800,
+    delay: 0
+  }}
+/>
+```
+
+## Props
+
+| Prop             | Type                        | Default                     | Description                            |
+| ---------------- | --------------------------- | --------------------------- | -------------------------------------- |
+| size             | number                      | 24                          | Icon size in pixels                    |
+| color            | string                      | 'currentColor'              | Icon color (any valid CSS color)       |
+| strokeWidth      | number                      | 1.5                         | Width of the icon strokes              |
+| event            | 'onmouseenter' \| 'onclick' | 'onmouseenter'              | Event that triggers the animation      |
+| pauseDuration    | number                      | 300                         | Pause duration between animations (ms) |
+| transitionParams | object                      | { duration: 800, delay: 0 } | Svelte transition parameters           |
+| title            | object                      | -                           | SVG title for accessibility            |
+| desc             | object                      | -                           | SVG description for accessibility      |
+| ariaLabel        | string                      | -                           | Aria label for the icon                |
+
+### Title and Description Props
+
+```svelte
+<ArrowDown
+  title={{
+    id: "ArrowDown-title",
+    title: "ArrowDown Icon"
+  }}
+  desc={{
+    id: "ArrowDown-desc",
+    desc: "A ArrowDown icon that animates on hover"
+  }}
+/>
+```
+
+## Accessibility
+
+All icons include proper ARIA attributes and support custom titles and descriptions. They are keyboard accessible when used with click events.
+
+## Browser Support
+
+Works in all modern browsers that support SVG and CSS animations.
+
+## Development
+
+### Setup
 
 ```bash
-npm run package
+git clone git@github.com:shinokada/svelte-animated-icons.git
+cd svelte-animated-icons
+pnpm install
 ```
 
-To create a production version of your showcase app:
+### Running Tests
 
 ```bash
-npm run build
+pnpm test:e2e
+pnpm test
 ```
 
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
-
-## Publishing
-
-Go into the `package.json` and give your package the desired name through the `"name"` option. Also consider adding a `"license"` field and point it to a `LICENSE` file which you can create from a template (one popular option is the [MIT license](https://opensource.org/license/mit/)).
-
-To publish your library to [npm](https://www.npmjs.com):
+### Building
 
 ```bash
-npm publish
+pnpm build
 ```
+
+## Contributing
+
+Contributions are welcome! Please read our contributing guidelines before submitting a pull request.
+
+## License
+
+MIT License - see the [LICENSE](LICENSE) file for details.
