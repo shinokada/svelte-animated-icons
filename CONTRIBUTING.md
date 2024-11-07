@@ -98,6 +98,7 @@ This project and everyone participating in it is governed by our Code of Conduct
 
 1. Create a new SVG file in the appropriate directory
 2. Follow the existing icon structure:
+
    ```svelte
    <script lang="ts">
      // Add your props here
@@ -107,6 +108,7 @@ This project and everyone participating in it is governed by our Code of Conduct
      <!-- Icon content -->
    </svg>
    ```
+
 3. Ensure the icon is optimized and follows accessibility guidelines
 4. Add tests for the new icon
 5. Update the documentation to include the new icon

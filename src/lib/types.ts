@@ -10,7 +10,7 @@ type DescType = {
   desc?: string;
 };
 
-export interface Props extends SVGAttributes<SVGElement>{
+export interface Props extends SVGAttributes<SVGElement> {
   title?: TitleType;
   desc?: DescType;
   ariaLabel?: string;

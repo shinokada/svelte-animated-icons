@@ -12,7 +12,7 @@
     transitionDuration: 800,
     transitionDelay: 0
   };
-  
+
   let size = $state(DEFAULT_VALUES.size);
   let color = $state(DEFAULT_VALUES.color);
   let strokeWidth = $state(DEFAULT_VALUES.strokeWidth);
@@ -22,9 +22,9 @@
   let transitionDuration = $state(DEFAULT_VALUES.transitionDuration);
   let transitionDelay = $state(DEFAULT_VALUES.transitionDelay);
   let copiedIcon = $state('');
-  
+
   let filteredIcons = $derived(
-    Object.entries(icons).filter(([name]) => 
+    Object.entries(icons).filter(([name]) =>
       name.toLowerCase().includes(searchTerm.toLowerCase())
     ) as [string, Component][]
   );
@@ -36,12 +36,13 @@
 
   const eventOptions = [
     { value: 'onmouseenter', label: 'Mouse Enter' },
-    { value: 'onclick', label: 'Click' }
+    { value: 'onclick', label: 'Click' },
+    { value: '', label: 'None' }
   ];
 
   function getPropsString() {
     const props = [];
-    
+
     if (size !== DEFAULT_VALUES.size) {
       props.push(`size={${size}}`);
     }
@@ -58,7 +59,7 @@
       props.push(`pauseDuration={${pauseDuration}}`);
     }
 
-    const hasCustomTransition = 
+    const hasCustomTransition =
       transitionDuration !== DEFAULT_VALUES.transitionDuration ||
       transitionDelay !== DEFAULT_VALUES.transitionDelay;
 
@@ -68,7 +69,7 @@
     delay: ${transitionDelay}
   }}`);
     }
-    
+
     return props.join('\n  ');
   }
 
@@ -80,7 +81,7 @@
 <\/script>
 
 <${name}${props ? `\n  ${props}` : ''} />`;
-      
+
       await navigator.clipboard.writeText(componentText);
       copiedIcon = name;
       setTimeout(() => {
@@ -93,7 +94,7 @@
 </script>
 
 <div class="container mx-auto p-4">
-  <h1 class="text-4xl font-bold my-4">Svelte Icon Draw (Heroicons)</h1>
+  <h1 class="my-4 text-4xl font-bold">Svelte Icon Draw (Heroicons)</h1>
   <div class="controls space-y-4">
     <!-- Basic Controls -->
     <div class="flex flex-wrap gap-4">
@@ -105,20 +106,15 @@
           bind:value={size}
           min="12"
           max="64"
-          class="border p-2 rounded w-20"
+          class="w-20 rounded border p-2"
         />
       </div>
-      
+
       <div class="flex items-center gap-2">
         <label for="color-input">Color:</label>
-        <input
-          id="color-input"
-          type="color"
-          bind:value={color}
-          class="h-10"
-        />
+        <input id="color-input" type="color" bind:value={color} class="h-10" />
       </div>
-      
+
       <div class="flex items-center gap-2">
         <label for="stroke-input">Stroke Width:</label>
         <input
@@ -128,7 +124,7 @@
           min="0.5"
           max="4"
           step="0.5"
-          class="border p-2 rounded w-20"
+          class="w-20 rounded border p-2"
         />
       </div>
     </div>
@@ -137,7 +133,7 @@
     <div class="flex flex-wrap gap-4">
       <div class="flex items-center gap-2">
         <label for="event-select">Event:</label>
-        <select id="event-select" bind:value={event} class="border p-2 rounded">
+        <select id="event-select" bind:value={event} class="rounded border p-2">
           {#each eventOptions as option}
             <option value={option.value}>{option.label}</option>
           {/each}
@@ -153,7 +149,7 @@
           min="0"
           max="2000"
           step="100"
-          class="border p-2 rounded w-24"
+          class="w-24 rounded border p-2"
         />
       </div>
 
@@ -166,7 +162,7 @@
           min="0"
           max="2000"
           step="100"
-          class="border p-2 rounded w-24"
+          class="w-24 rounded border p-2"
         />
       </div>
 
@@ -179,7 +175,7 @@
           min="0"
           max="1000"
           step="100"
-          class="border p-2 rounded w-24"
+          class="w-24 rounded border p-2"
         />
       </div>
     </div>
@@ -192,26 +188,26 @@
         type="text"
         bind:value={searchTerm}
         placeholder="Search icons..."
-        class="border p-2 rounded flex-grow"
+        class="flex-grow rounded border p-2"
       />
     </div>
   </div>
 
-  <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-4">
+  <div class="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-5">
     {#each filteredIcons as [name, Icon]}
-      <div class="icon-card border rounded p-4 flex flex-col items-center gap-2 relative group">
+      <div class="icon-card group relative flex flex-col items-center gap-2 rounded border p-4">
         <Icon
           {size}
-          color={color}
+          {color}
           {strokeWidth}
           {event}
-          pauseDuration={pauseDuration}
-          transitionParams={transitionParams}
+          {pauseDuration}
+          {transitionParams}
           ariaLabel={name}
         />
-        <span class="text-sm text-center">{name}</span>
+        <span class="text-center text-sm">{name}</span>
         <button
-          class="copy-badge absolute top-2 right-2 bg-gray-800 text-white px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+          class="copy-badge absolute right-2 top-2 rounded bg-gray-800 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100"
           onclick={() => copyIcon(name)}
           aria-label={`Copy ${name} component`}
         >
