@@ -113,7 +113,7 @@
 
       <div class="flex items-center gap-2">
         <Label color="secondary" for="color-input">Color:</Label>
-        <Input id="color-input" type="color" bind:value={color} class=" w-20" />
+        <Input id="color-input" type="color" bind:value={color} class=" w-20 h-10 p-0" />
       </div>
 
       <div class="flex items-center gap-2">
@@ -194,7 +194,7 @@
     </div>
   </div>
 
-  <div class="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-5">
+  <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
     {#each filteredIcons as [name, Icon]}
       <div class="icon-card group relative flex flex-col items-center gap-2 rounded border border-gray-200 dark:border-gray-700 p-4">
         <Icon
@@ -207,7 +207,7 @@
           ariaLabel={name}
           class="text-blue-950 dark:text-red-400"
         />
-        <Span highlight="teal">{name}</Span>
+        <Span highlight="blue">{name}</Span>
         <button
           class="copy-badge absolute right-2 top-2 rounded bg-gray-800 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100"
           onclick={() => copyIcon(name)}
