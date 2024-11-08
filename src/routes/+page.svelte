@@ -1,6 +1,7 @@
 <script lang="ts">
   import * as icons from '$lib';
   import type { Component } from 'svelte';
+  import { Label, Input, Select, Span } from "svelte-5-ui-lib"
 
   // Default values
   const DEFAULT_VALUES = {
@@ -37,7 +38,7 @@
   const eventOptions = [
     { value: 'onmouseenter', label: 'Mouse Enter' },
     { value: 'onclick', label: 'Click' },
-    { value: '', label: 'None' }
+    { value: 'undefined', label: 'None' }
   ];
 
   function getPropsString() {
@@ -77,7 +78,7 @@
     try {
       const props = getPropsString();
       const componentText = `<script>
-  import { ${name} } from '$lib';
+  import { ${name} } from 'svelte-animated-icons';
 <\/script>
 
 <${name}${props ? `\n  ${props}` : ''} />`;
@@ -94,13 +95,13 @@
 </script>
 
 <div class="container mx-auto p-4">
-  <h1 class="my-4 text-4xl font-bold">Svelte Icon Draw (Heroicons)</h1>
-  <div class="controls space-y-4">
+  <h1 class="my-4 text-2xl font-bold">Svelte Animated Icons (Heroicons)</h1>
+  <div class="rounded-lg p-4 mb-4 space-y-4 bg-gray-50 dark:bg-gray-800">
     <!-- Basic Controls -->
     <div class="flex flex-wrap gap-4">
       <div class="flex items-center gap-2">
-        <label for="size-input">Size:</label>
-        <input
+        <Label color="secondary" for="size-input">Size:</Label>
+        <Input
           id="size-input"
           type="number"
           bind:value={size}
@@ -111,13 +112,13 @@
       </div>
 
       <div class="flex items-center gap-2">
-        <label for="color-input">Color:</label>
-        <input id="color-input" type="color" bind:value={color} class="h-10" />
+        <Label color="secondary" for="color-input">Color:</Label>
+        <Input id="color-input" type="color" bind:value={color} class=" w-20" />
       </div>
 
       <div class="flex items-center gap-2">
-        <label for="stroke-input">Stroke Width:</label>
-        <input
+        <Label color="secondary" class="w-40" for="stroke-input">Stroke Width:</Label>
+        <Input
           id="stroke-input"
           type="number"
           bind:value={strokeWidth}
@@ -132,17 +133,17 @@
     <!-- Animation Controls -->
     <div class="flex flex-wrap gap-4">
       <div class="flex items-center gap-2">
-        <label for="event-select">Event:</label>
-        <select id="event-select" bind:value={event} class="rounded border p-2">
+        <Label color="secondary" for="event-select">Event:</Label>
+        <Select id="event-select" bind:value={event} class="rounded border p-2">
           {#each eventOptions as option}
             <option value={option.value}>{option.label}</option>
           {/each}
-        </select>
+        </Select>
       </div>
 
       <div class="flex items-center gap-2">
-        <label for="pause-input">Pause Duration:</label>
-        <input
+        <Label color="secondary" class="w-48" for="pause-input">Pause Duration:</Label>
+        <Input
           id="pause-input"
           type="number"
           bind:value={pauseDuration}
@@ -154,8 +155,8 @@
       </div>
 
       <div class="flex items-center gap-2">
-        <label for="duration-input">Transition Duration:</label>
-        <input
+        <Label color="secondary" class="w-64" for="duration-input">Transition Duration:</Label>
+        <Input
           id="duration-input"
           type="number"
           bind:value={transitionDuration}
@@ -167,8 +168,8 @@
       </div>
 
       <div class="flex items-center gap-2">
-        <label for="delay-input">Transition Delay:</label>
-        <input
+        <Label color="secondary" class="w-64" for="delay-input">Transition Delay:</Label>
+        <Input
           id="delay-input"
           type="number"
           bind:value={transitionDelay}
@@ -182,8 +183,8 @@
 
     <!-- Search -->
     <div class="flex items-center gap-2">
-      <label for="search-input" class="sr-only">Search icons</label>
-      <input
+      <Label color="secondary" for="search-input" class="sr-only">Search icons</Label>
+      <Input
         id="search-input"
         type="text"
         bind:value={searchTerm}
@@ -195,7 +196,7 @@
 
   <div class="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-5">
     {#each filteredIcons as [name, Icon]}
-      <div class="icon-card group relative flex flex-col items-center gap-2 rounded border p-4">
+      <div class="icon-card group relative flex flex-col items-center gap-2 rounded border border-gray-200 dark:border-gray-700 p-4">
         <Icon
           {size}
           {color}
@@ -204,8 +205,9 @@
           {pauseDuration}
           {transitionParams}
           ariaLabel={name}
+          class="text-blue-950 dark:text-red-400"
         />
-        <span class="text-center text-sm">{name}</span>
+        <Span highlight="teal">{name}</Span>
         <button
           class="copy-badge absolute right-2 top-2 rounded bg-gray-800 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100"
           onclick={() => copyIcon(name)}
@@ -219,12 +221,7 @@
 </div>
 
 <style>
-  .controls {
-    background: #f8f9fa;
-    padding: 1rem;
-    border-radius: 0.5rem;
-    margin-bottom: 1rem;
-  }
+
 
   .copy-badge {
     cursor: pointer;
