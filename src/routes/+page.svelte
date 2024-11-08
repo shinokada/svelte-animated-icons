@@ -73,7 +73,7 @@
 
     return props.join('\n  ');
   }
-/* eslint-disable no-useless-escape */
+  /* eslint-disable no-useless-escape */
   async function copyIcon(name: string) {
     try {
       const props = getPropsString();
@@ -94,7 +94,7 @@
   }
 </script>
 
-<div class="max-w-6xl mx-auto p-4">
+<div class="mx-auto max-w-6xl p-4">
   <h1 class="my-4 text-2xl font-bold">Svelte Animated Icons (Heroicons)</h1>
   <div class="mb-4 space-y-4 rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
     <!-- Basic Controls -->
@@ -131,7 +131,7 @@
     </div>
 
     <!-- Animation Controls -->
-    <div class="flex flex-wrap gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
       <div class="flex items-center gap-2">
         <Label color="secondary" for="event-select">Event:</Label>
         <Select id="event-select" bind:value={event} class="rounded border p-2">
@@ -150,12 +150,12 @@
           min="0"
           max="2000"
           step="100"
-          class="w-24 rounded border p-2"
+          class="rounded border p-2"
         />
       </div>
 
       <div class="flex items-center gap-2">
-        <Label color="secondary" class="w-64" for="duration-input">Transition Duration:</Label>
+        <Label color="secondary" class="w-72" for="duration-input">Transition Duration:</Label>
         <Input
           id="duration-input"
           type="number"
@@ -163,12 +163,12 @@
           min="0"
           max="2000"
           step="100"
-          class="w-24 rounded border p-2"
+          class="rounded border p-2"
         />
       </div>
 
       <div class="flex items-center gap-2">
-        <Label color="secondary" class="w-64" for="delay-input">Transition Delay:</Label>
+        <Label color="secondary" class="w-60" for="delay-input">Transition Delay:</Label>
         <Input
           id="delay-input"
           type="number"
@@ -176,7 +176,7 @@
           min="0"
           max="1000"
           step="100"
-          class="w-24 rounded border p-2"
+          class="rounded border p-2"
         />
       </div>
     </div>

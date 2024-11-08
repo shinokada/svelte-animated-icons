@@ -80,7 +80,7 @@
 <HighlightCompo codeLang="ts" code={modules['./md/custom-properties.md'] as string} />
 
 <H2>Props</H2>
-<Table {tableItems}/>
+<Table {tableItems} />
 
 <H2>Types</H2>
 <HighlightCompo codeLang="ts" code={modules['./md/types.md'] as string} />
