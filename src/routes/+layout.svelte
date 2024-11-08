@@ -65,7 +65,7 @@
     name: 'codewithshin.com',
     href: 'https://codewithshin.com'
   };
-  const urlsToIncludeSwitcherAndSidebar = ['/quick-start'];
+  const urlsToIncludeSwitcherAndSidebar = ['/'];
   /*eslint no-undef: "off"*/
   const siteName = removeHyphensAndCapitalize(__NAME__);
   const githubUrl = `https://github.com/shinokada/${__NAME__}`;
@@ -86,7 +86,7 @@
   function isIncluded(url: string, allowedUrls: string[]): boolean {
     return allowedUrls.some((allowedUrl) => url.startsWith(allowedUrl));
   }
-  let urlsToIncludeSwitcher = ['/quick-start'];
+  let urlsToIncludeSwitcher = ['/'];
   let include = $derived(isIncluded(currentUrl, urlsToIncludeSwitcher));
   // dropdown
   let dropdown = uiHelpers();
