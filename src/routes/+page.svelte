@@ -1,243 +1,114 @@
 <script lang="ts">
-  import * as icons from '$lib';
-  import type { Component } from 'svelte';
-  import { Label, Input, Select, Span } from 'svelte-5-ui-lib';
+  import { HighlightCompo, H1, H2, DocPage } from 'runes-webkit';
+  import { P, Table, List, Li } from 'svelte-5-ui-lib';
 
-  // Default values
-  const DEFAULT_VALUES = {
-    size: 24,
-    color: '#12BF3D',
-    strokeWidth: 1.5,
-    event: 'onmouseenter',
-    pauseDuration: 300,
-    transitionDuration: 800,
-    transitionDelay: 0
-  };
-
-  let size = $state(DEFAULT_VALUES.size);
-  let color = $state(DEFAULT_VALUES.color);
-  let strokeWidth = $state(DEFAULT_VALUES.strokeWidth);
-  let searchTerm = $state('');
-  let event = $state(DEFAULT_VALUES.event);
-  let pauseDuration = $state(DEFAULT_VALUES.pauseDuration);
-  let transitionDuration = $state(DEFAULT_VALUES.transitionDuration);
-  let transitionDelay = $state(DEFAULT_VALUES.transitionDelay);
-  let copiedIcon = $state('');
-
-  let filteredIcons = $derived(
-    Object.entries(icons).filter(([name]) =>
-      name.toLowerCase().includes(searchTerm.toLowerCase())
-    ) as [string, Component][]
-  );
-
-  let transitionParams = $derived({
-    duration: transitionDuration,
-    delay: transitionDelay
-  });
-
-  const eventOptions = [
-    { value: 'onmouseenter', label: 'Mouse Enter' },
-    { value: 'onclick', label: 'Click' },
-    { value: 'undefined', label: 'None' }
+  const tableItems = [
+    { prop: 'size', type: 'number', default: '24', description: 'Icon size in pixels' },
+    {
+      prop: 'color',
+      type: 'string',
+      default: 'currentColor',
+      description: 'Icon color (any valid CSS color)'
+    },
+    {
+      prop: 'strokeWidth',
+      type: 'number',
+      default: '1,5',
+      description: 'Width of the icon strokes'
+    },
+    {
+      prop: 'event',
+      type: "'onmouseenter'|'onclick'",
+      default: "'onmouseenter'",
+      description: 'Event that triggers the animation'
+    },
+    {
+      prop: 'pauseDuration',
+      type: 'number',
+      default: '300',
+      description: ' Duration of the animation (ms)'
+    },
+    {
+      prop: 'transitionParams',
+      type: 'object',
+      default: 'duration: 800, delay: 0',
+      description: 'Svelte transition parameters'
+    },
+    { prop: 'title', type: 'object', default: '-', description: 'SVG title for accessibility' },
+    {
+      prop: 'desc',
+      type: 'object',
+      default: '-',
+      description: 'SVG description for accessibility'
+    },
+    { prop: 'ariaLabel', type: 'string', default: '-', description: 'Aria label for the icon' }
   ];
-
-  function getPropsString() {
-    const props = [];
-
-    if (size !== DEFAULT_VALUES.size) {
-      props.push(`size={${size}}`);
-    }
-    if (color !== DEFAULT_VALUES.color) {
-      props.push(`color="${color}"`);
-    }
-    if (strokeWidth !== DEFAULT_VALUES.strokeWidth) {
-      props.push(`strokeWidth={${strokeWidth}}`);
-    }
-    if (event !== DEFAULT_VALUES.event) {
-      props.push(`event="${event}"`);
-    }
-    if (pauseDuration !== DEFAULT_VALUES.pauseDuration) {
-      props.push(`pauseDuration={${pauseDuration}}`);
-    }
-
-    const hasCustomTransition =
-      transitionDuration !== DEFAULT_VALUES.transitionDuration ||
-      transitionDelay !== DEFAULT_VALUES.transitionDelay;
-
-    if (hasCustomTransition) {
-      props.push(`transitionParams={{
-    duration: ${transitionDuration},
-    delay: ${transitionDelay}
-  }}`);
-    }
-
-    return props.join('\n  ');
-  }
-  /* eslint-disable no-useless-escape */
-  async function copyIcon(name: string) {
-    try {
-      const props = getPropsString();
-      const componentText = `<script>
-  import { ${name} } from 'svelte-animated-icons';
-<\/script>
-
-<${name}${props ? `\n  ${props}` : ''} />`;
-
-      await navigator.clipboard.writeText(componentText);
-      copiedIcon = name;
-      setTimeout(() => {
-        copiedIcon = '';
-      }, 2000);
-    } catch (err) {
-      console.error('Failed to copy:', err);
-    }
-  }
+  const modules = import.meta.glob('./md/*.md', {
+    query: '?raw',
+    import: 'default',
+    eager: true
+  });
 </script>
 
-<div class="mx-auto max-w-6xl p-4">
-  <h1 class="my-4 text-2xl font-bold">Svelte Animated Icons (Heroicons)</h1>
-  <div class="mb-4 space-y-4 rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
-    <!-- Basic Controls -->
-    <div class="flex flex-wrap gap-4">
-      <div class="flex items-center gap-2">
-        <Label color="secondary" for="size-input">Size:</Label>
-        <Input
-          id="size-input"
-          type="number"
-          bind:value={size}
-          min="12"
-          max="64"
-          class="w-20 rounded border p-2"
-        />
-      </div>
+<DocPage>
+<H1>Svelte Animated Icons (Heroicons)</H1>
+<P>
+  A collection of animated SVG icons for Svelte with customizable draw transitions, events, and
+  accessibility features. Each icon supports hover/click animations, customizable colors, sizes, and
+  stroke widths.
+</P>
 
-      <div class="flex items-center gap-2">
-        <Label color="secondary" for="color-input">Color:</Label>
-        <Input id="color-input" type="color" bind:value={color} class=" h-10 w-20 p-0" />
-      </div>
+<H2>Features</H2>
 
-      <div class="flex items-center gap-2">
-        <Label color="secondary" class="w-40" for="stroke-input">Stroke Width:</Label>
-        <Input
-          id="stroke-input"
-          type="number"
-          bind:value={strokeWidth}
-          min="0.5"
-          max="4"
-          step="0.5"
-          class="w-20 rounded border p-2"
-        />
-      </div>
-    </div>
+<List tag="ul">
+  <Li>🎨 Customizable colors, sizes, and stroke widths</Li>
+  <Li>✨ Animated draw transitions on hover or click</Li>
+  <Li>♿ Built-in accessibility features</Li>
+  <Li>🎯 TypeScript support</Li>
+  <Li>🔄 Configurable animation timing</Li>
+  <Li>🎮 Multiple event trigger options</Li>
+</List>
 
-    <!-- Animation Controls -->
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-      <div class="flex items-center gap-2">
-        <Label color="secondary" for="event-select">Event:</Label>
-        <Select id="event-select" bind:value={event} class="rounded border p-2">
-          {#each eventOptions as option}
-            <option value={option.value}>{option.label}</option>
-          {/each}
-        </Select>
-      </div>
+<H2>Installation</H2>
 
-      <div class="flex items-center gap-2">
-        <Label color="secondary" class="w-48" for="pause-input">Pause Duration:</Label>
-        <Input
-          id="pause-input"
-          type="number"
-          bind:value={pauseDuration}
-          min="0"
-          max="2000"
-          step="100"
-          class="rounded border p-2"
-        />
-      </div>
+<HighlightCompo codeLang="ts" code={modules['./md/installation.md'] as string} />
 
-      <div class="flex items-center gap-2">
-        <Label color="secondary" class="w-72" for="duration-input">Transition Duration:</Label>
-        <Input
-          id="duration-input"
-          type="number"
-          bind:value={transitionDuration}
-          min="0"
-          max="2000"
-          step="100"
-          class="rounded border p-2"
-        />
-      </div>
+<H2>Usage</H2>
 
-      <div class="flex items-center gap-2">
-        <Label color="secondary" class="w-60" for="delay-input">Transition Delay:</Label>
-        <Input
-          id="delay-input"
-          type="number"
-          bind:value={transitionDelay}
-          min="0"
-          max="1000"
-          step="100"
-          class="rounded border p-2"
-        />
-      </div>
-    </div>
+<HighlightCompo codeLang="ts" code={modules['./md/usage.md'] as string} />
 
-    <!-- Search -->
-    <div class="flex items-center gap-2">
-      <Label color="secondary" for="search-input" class="sr-only">Search icons</Label>
-      <Input
-        id="search-input"
-        type="text"
-        bind:value={searchTerm}
-        placeholder="Search icons..."
-        class="flex-grow rounded border p-2"
-      />
-    </div>
-  </div>
+<h3>With Custom Properties</h3>
 
-  <div
-    class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-  >
-    {#each filteredIcons as [name, Icon]}
-      <div
-        class="icon-card group relative flex flex-col items-center gap-2 rounded border border-gray-200 p-4 dark:border-gray-700"
-      >
-        <Icon
-          {size}
-          {color}
-          {strokeWidth}
-          {event}
-          {pauseDuration}
-          {transitionParams}
-          ariaLabel={name}
-        />
-        <Span highlight="blue">{name}</Span>
-        <button
-          class="copy-badge absolute right-2 top-2 rounded bg-gray-800 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100"
-          onclick={() => copyIcon(name)}
-          aria-label={`Copy ${name} component`}
-        >
-          {copiedIcon === name ? 'Copied!' : 'Copy'}
-        </button>
-      </div>
-    {/each}
-  </div>
-</div>
+<HighlightCompo codeLang="ts" code={modules['./md/custom-properties.md'] as string} />
 
-<style>
-  .copy-badge {
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
+<H2>Props</H2>
+<Table {tableItems} />
 
-  .copy-badge:hover {
-    background-color: #4a5568;
-  }
+<H2>Types</H2>
+<HighlightCompo codeLang="ts" code={modules['./md/types.md'] as string} />
 
-  .icon-card {
-    transition: transform 0.2s;
-  }
+<h3>Title and Description Props</h3>
 
-  .icon-card:hover {
-    transform: scale(1.02);
-  }
-</style>
+<HighlightCompo codeLang="ts" code={modules['./md/title-and-description.md'] as string} />
+
+<H2>Accessibility</H2>
+
+<P>
+  All icons include proper ARIA attributes and support custom titles and descriptions. They are
+  keyboard accessible when used with click events.
+</P>
+
+<H2>Browser Support</H2>
+
+<P>Works in all modern browsers that support SVG and CSS animations.</P>
+
+<H2>Contributing</H2>
+<P>
+  Contributions are welcome! Please read our contributing guidelines before submitting a pull
+  request.
+</P>
+
+<H2>License</H2>
+
+<P>MIT License - see the <a href="LICENSE">LICENSE</a> file for details.</P>
+</DocPage>

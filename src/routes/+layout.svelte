@@ -57,7 +57,10 @@
   let currentUrl = $state($page.url.pathname);
   const hasPath = (key: string) => currentUrl.includes(key);
 
-  const lis: LiType[] = [{ name: 'Quick start', href: '/quick-start' }];
+  const lis: LiType[] = [
+  { name: 'Flowbite', href: '/flowbite' },
+  { name: 'Heroicons', href: '/hero' },
+  ];
   const brand = {
     name: 'codewithshin.com',
     href: 'https://codewithshin.com'
