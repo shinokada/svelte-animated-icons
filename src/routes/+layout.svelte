@@ -84,7 +84,14 @@
   let divClass = 'ml-auto w-full';
   let ulclass = 'dark:lg:bg-transparent lg:space-x-4';
   function isIncluded(url: string, allowedUrls: string[]): boolean {
-    return allowedUrls.some((allowedUrl) => url.startsWith(allowedUrl));
+    return allowedUrls.some((allowedUrl) => {
+      // For home page '/', do exact matching
+      if (allowedUrl === '/') {
+        return url === '/' || url === '';
+      }
+      // For other URLs, continue using startsWith
+      return url.startsWith(allowedUrl);
+    });
   }
   let urlsToIncludeSwitcher = ['/'];
   let include = $derived(isIncluded(currentUrl, urlsToIncludeSwitcher));
