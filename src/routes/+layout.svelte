@@ -58,8 +58,8 @@
   const hasPath = (key: string) => currentUrl.includes(key);
 
   const lis: LiType[] = [
-  { name: 'Flowbite', href: '/flowbite' },
-  { name: 'Heroicons', href: '/hero' },
+    { name: 'Flowbite', href: '/flowbite' },
+    { name: 'Heroicons', href: '/hero' }
   ];
   const brand = {
     name: 'codewithshin.com',

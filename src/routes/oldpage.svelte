@@ -131,7 +131,7 @@
     </div>
 
     <!-- Animation Controls -->
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
       <div class="flex items-center gap-2">
         <Label color="secondary" for="event-select">Event:</Label>
         <Select id="event-select" bind:value={event} class="rounded border p-2">

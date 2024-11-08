@@ -23,11 +23,9 @@
   let transitionDuration = $state(DEFAULT_VALUES.transitionDuration);
   let transitionDelay = $state(DEFAULT_VALUES.transitionDelay);
   let copiedIcon = $state('');
-  
+
   const flowbiteIcons = Object.fromEntries(
-    Object.entries(icons).filter(([name]) => 
-      name.endsWith('Flowbite')
-    )
+    Object.entries(icons).filter(([name]) => name.endsWith('Flowbite'))
   );
 
   let filteredIcons = $derived(
@@ -137,7 +135,7 @@
     </div>
 
     <!-- Animation Controls -->
-    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
       <div class="flex items-center gap-2">
         <Label color="secondary" for="event-select">Event:</Label>
         <Select id="event-select" bind:value={event} class="rounded border p-2">
