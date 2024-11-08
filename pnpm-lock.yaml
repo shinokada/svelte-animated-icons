@@ -86,6 +86,9 @@ importers:
       svelte-rune-highlight:
         specifier: ^0.5.13
         version: 0.5.13(svelte@5.1.11)
+      tailwind-merge:
+        specifier: ^2.5.4
+        version: 2.5.4
       tailwindcss:
         specifier: ^3.4.14
         version: 3.4.14

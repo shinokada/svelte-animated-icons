@@ -11,7 +11,9 @@
     DotsHorizontalOutline,
     GithubSolid,
     random_tailwind_color,
-    XSolid, Bluesky, DocPage
+    XSolid,
+    Bluesky,
+    DocPage
   } from 'runes-webkit';
   import {
     Navbar,
@@ -55,9 +57,7 @@
   let currentUrl = $state($page.url.pathname);
   const hasPath = (key: string) => currentUrl.includes(key);
 
-  const lis: LiType[] = [
-    { name: 'Quick start', href: '/quick-start' }
-  ];
+  const lis: LiType[] = [{ name: 'Quick start', href: '/quick-start' }];
   const brand = {
     name: 'codewithshin.com',
     href: 'https://codewithshin.com'
@@ -83,7 +83,7 @@
   function isIncluded(url: string, allowedUrls: string[]): boolean {
     return allowedUrls.some((allowedUrl) => url.startsWith(allowedUrl));
   }
-  let urlsToIncludeSwitcher = [ '/quick-start'];
+  let urlsToIncludeSwitcher = ['/quick-start'];
   let include = $derived(isIncluded(currentUrl, urlsToIncludeSwitcher));
   // dropdown
   let dropdown = uiHelpers();
@@ -121,31 +121,6 @@
 <header class={headerCls}>
   <Navbar {navClass} {toggleNav} {closeNav} {navStatus} breakPoint="lg" fluid div2Class={divClass}>
     {#snippet brand()}
-      {#if urlsToIncludeSwitcherAndSidebar.some((path) => currentUrl.startsWith(path))}
-        <button
-          onclick={sidebarUi.toggle}
-          type="button"
-          class="z-100 mr-4 mt-1 lg:hidden"
-          aria-controls="navbar-default"
-        >
-          <span class="sr-only">Toggle sidebar menu</span>
-          <svg
-            class="h-5 w-5"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 17 14"
-          >
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M1 1h15M1 7h15M1 13h15"
-            />
-          </svg>
-        </button>
-      {/if}
       {#if siteName}
         <NavBrand
           {siteName}
@@ -200,8 +175,13 @@
   </Navbar>
 </header>
 
-<main class="px-8 mx-auto max-w-6xl">
+
+  {#if urlsToIncludeSwitcherAndSidebar.some((path) => currentUrl.startsWith(path))}
+    <div class="relative">
+      <OnThisPage {extract} headingSelector="#mainContent > :where(h2, h3)" />
+    </div>
+  {/if}
   {@render children()}
-</main>
+
 
 <Footer {brand} {lis} />

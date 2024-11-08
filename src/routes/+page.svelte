@@ -1,12 +1,12 @@
 <script lang="ts">
   import * as icons from '$lib';
   import type { Component } from 'svelte';
-  import { Label, Input, Select, Span } from "svelte-5-ui-lib"
+  import { Label, Input, Select, Span } from 'svelte-5-ui-lib';
 
   // Default values
   const DEFAULT_VALUES = {
     size: 24,
-    color: 'currentColor',
+    color: '#be123c',
     strokeWidth: 1.5,
     event: 'onmouseenter',
     pauseDuration: 300,
@@ -73,7 +73,7 @@
 
     return props.join('\n  ');
   }
-
+/* eslint-disable no-useless-escape */
   async function copyIcon(name: string) {
     try {
       const props = getPropsString();
@@ -94,9 +94,9 @@
   }
 </script>
 
-<div class="container mx-auto p-4">
+<div class="max-w-6xl mx-auto p-4">
   <h1 class="my-4 text-2xl font-bold">Svelte Animated Icons (Heroicons)</h1>
-  <div class="rounded-lg p-4 mb-4 space-y-4 bg-gray-50 dark:bg-gray-800">
+  <div class="mb-4 space-y-4 rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
     <!-- Basic Controls -->
     <div class="flex flex-wrap gap-4">
       <div class="flex items-center gap-2">
@@ -113,7 +113,7 @@
 
       <div class="flex items-center gap-2">
         <Label color="secondary" for="color-input">Color:</Label>
-        <Input id="color-input" type="color" bind:value={color} class=" w-20 h-10 p-0" />
+        <Input id="color-input" type="color" bind:value={color} class=" h-10 w-20 p-0" />
       </div>
 
       <div class="flex items-center gap-2">
@@ -194,9 +194,13 @@
     </div>
   </div>
 
-  <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+  <div
+    class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+  >
     {#each filteredIcons as [name, Icon]}
-      <div class="icon-card group relative flex flex-col items-center gap-2 rounded border border-gray-200 dark:border-gray-700 p-4">
+      <div
+        class="icon-card group relative flex flex-col items-center gap-2 rounded border border-gray-200 p-4 dark:border-gray-700"
+      >
         <Icon
           {size}
           {color}
@@ -205,7 +209,6 @@
           {pauseDuration}
           {transitionParams}
           ariaLabel={name}
-          class="text-blue-950 dark:text-red-400"
         />
         <Span highlight="blue">{name}</Span>
         <button
@@ -221,8 +224,6 @@
 </div>
 
 <style>
-
-
   .copy-badge {
     cursor: pointer;
     transition: background-color 0.2s;

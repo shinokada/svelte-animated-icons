@@ -1,16 +1,46 @@
 <script lang="ts">
   import { HighlightCompo, H1, H2 } from 'runes-webkit';
-  import { P, Table, List, Li } from "svelte-5-ui-lib";
+  import { P, Table, List, Li } from 'svelte-5-ui-lib';
   const tableItems = [
-    { prop: "size", type: "number", default: "24", description: "Icon size in pixels" },
-    { prop: "color", type: "string", default: "currentColor", description: "Icon color (any valid CSS color)" },
-    { prop: "strokeWidth", type: "number", default: "1,5", description: "Width of the icon strokes" },
-    { prop: "event", type: "'onmouseenter'|'onclick'", default: "'onmouseenter'", description: "Event that triggers the animation" },
-    { prop: "pauseDuration", type: "number", default: "300", description: " Duration of the animation (ms)" },
-    { prop: "transitionParams", type: "object", default: "duration: 800, delay: 0", description: "Svelte transition parameters" },
-    { prop: "title", type: "object", default: "-", description: "SVG title for accessibility" },
-    { prop: "desc", type: "object", default: "-", description: "SVG description for accessibility" },
-    { prop: "ariaLabel", type: "string", default: "-", description: "Aria label for the icon" },
+    { prop: 'size', type: 'number', default: '24', description: 'Icon size in pixels' },
+    {
+      prop: 'color',
+      type: 'string',
+      default: 'currentColor',
+      description: 'Icon color (any valid CSS color)'
+    },
+    {
+      prop: 'strokeWidth',
+      type: 'number',
+      default: '1,5',
+      description: 'Width of the icon strokes'
+    },
+    {
+      prop: 'event',
+      type: "'onmouseenter'|'onclick'",
+      default: "'onmouseenter'",
+      description: 'Event that triggers the animation'
+    },
+    {
+      prop: 'pauseDuration',
+      type: 'number',
+      default: '300',
+      description: ' Duration of the animation (ms)'
+    },
+    {
+      prop: 'transitionParams',
+      type: 'object',
+      default: 'duration: 800, delay: 0',
+      description: 'Svelte transition parameters'
+    },
+    { prop: 'title', type: 'object', default: '-', description: 'SVG title for accessibility' },
+    {
+      prop: 'desc',
+      type: 'object',
+      default: '-',
+      description: 'SVG description for accessibility'
+    },
+    { prop: 'ariaLabel', type: 'string', default: '-', description: 'Aria label for the icon' }
   ];
   const modules = import.meta.glob('./md/*.md', {
     query: '?raw',
@@ -50,7 +80,7 @@
 <HighlightCompo codeLang="ts" code={modules['./md/custom-properties.md'] as string} />
 
 <H2>Props</H2>
-<Table {tableItems} />
+<Table {tableItems}/>
 
 <H2>Types</H2>
 <HighlightCompo codeLang="ts" code={modules['./md/types.md'] as string} />

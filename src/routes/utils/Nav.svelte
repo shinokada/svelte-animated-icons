@@ -18,12 +18,10 @@
     GithubSolid,
     random_tailwind_color,
     DotsHorizontalOutline,
-    XSolid,
-    Sidebar
+    XSolid
   } from 'runes-webkit';
   import DynamicCodeBlockStyle from './DynamicCodeBlockStyle.svelte';
   import { sineIn } from 'svelte/easing';
-  import { newSidebarList } from './helper';
 
   function isIncluded(url: string, allowedUrls: string[]): boolean {
     return allowedUrls.some((allowedUrl) => url.startsWith(allowedUrl));
@@ -215,12 +213,6 @@
       <span class="sr-only">Close drawer</span>
     </button>
   </div>
-  <Sidebar
-    sidebarList={newSidebarList}
-    asideClass="w-60 border-none mx-2 mt-20 !important"
-    divClass="w-60 fixed h-full dark_bg_theme"
-    sidebarClose={closeNavDrawer}
-  />
 </Drawer>
 
 <!--
