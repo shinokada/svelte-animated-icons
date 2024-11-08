@@ -21,15 +21,11 @@
     "svg",
     "animated-icons",
     "draw-animation",
-    "transition",
     "accessible-icons",
     "icon-library",
     "svg-icons",
     "ui-components",
-    "customizable-icons",
-    "vector-icons",
-    "line-icons",
-    "stroke-icons"
+    "customizable-icons"
   ],
   "scripts": {
     "dev": "vite dev",
