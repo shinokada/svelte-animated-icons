@@ -6,7 +6,7 @@
   // Default values
   const DEFAULT_VALUES = {
     size: 24,
-    color: '#be123c',
+    color: '#12BF3D',
     strokeWidth: 1.5,
     event: 'onmouseenter',
     pauseDuration: 300,
