@@ -1,8 +1,8 @@
 <script>
-  import { ArrowDown } from 'svelte-animated-icons';
+  import { ArrowDownHero } from 'svelte-animated-icons';
 </script>
 
-<ArrowDown
+<ArrowDownHero
 size={32}
 color="#ff0000"
 strokeWidth={2}

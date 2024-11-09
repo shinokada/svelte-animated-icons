@@ -1,5 +1,5 @@
 <script lang="ts">
-  import * as icons from '$lib';
+  import * as icons from '$lib/flowbite';
   import type { Component } from 'svelte';
   import { Label, Input, Select, Span } from 'svelte-5-ui-lib';
 
@@ -24,12 +24,12 @@
   let transitionDelay = $state(DEFAULT_VALUES.transitionDelay);
   let copiedIcon = $state('');
 
-  const flowbiteIcons = Object.fromEntries(
-    Object.entries(icons).filter(([name]) => name.endsWith('Flowbite'))
-  );
+  // const flowbiteIcons = Object.fromEntries(
+  //   Object.entries(icons).filter(([name]) => name.endsWith('Flowbite'))
+  // );
 
   let filteredIcons = $derived(
-    Object.entries(flowbiteIcons).filter(([name]) =>
+    Object.entries(icons).filter(([name]) =>
       name.toLowerCase().includes(searchTerm.toLowerCase())
     ) as [string, Component][]
   );

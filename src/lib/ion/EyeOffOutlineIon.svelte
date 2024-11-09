@@ -1,0 +1,203 @@
+<script lang="ts">
+  import { draw } from 'svelte/transition';
+  import type { DrawParams } from 'svelte/transition';
+  import type { SVGAttributes } from 'svelte/elements';
+
+  type TitleType = {
+    id?: string;
+    title?: string;
+  };
+  type DescType = {
+    id?: string;
+    desc?: string;
+  };
+
+  interface Props extends SVGAttributes<SVGElement> {
+    pauseDuration?: number;
+    event?: 'onmouseenter' | 'onclick' | 'none';
+    title?: TitleType;
+    desc?: DescType;
+    ariaLabel?: string;
+    size?: number;
+    role?: string;
+    color?: string;
+    transitionParams?: DrawParams;
+  }
+
+  let {
+    pauseDuration = 300,
+    event = 'onmouseenter',
+    size = 24,
+    role = 'img',
+    color = 'currentColor',
+    title,
+    desc,
+    ariaLabel = 'archive box',
+    transitionParams = { duration: 800, delay: 0 },
+    ...restProps
+  }: Props = $props();
+
+  const getDuration = (params?: DrawParams): number => {
+    if (!params?.duration) return 0;
+    if (typeof params.duration === 'function') {
+      return params.duration(0);
+    }
+    return params.duration;
+  };
+
+  let visible = $state(true);
+  let totalDuration = $derived(getDuration(transitionParams) + pauseDuration);
+
+  let ariaDescribedby = `${title?.id || ''} ${desc?.id || ''}`;
+  const hasDescription = $derived(!!(title?.id || desc?.id));
+
+  const handleEvent = () => {
+    if (!visible) return;
+    visible = false;
+    setTimeout(() => {
+      visible = true;
+    }, totalDuration);
+  };
+
+  // Set CSS variable for the placeholder size
+  $effect(() => {
+    document.documentElement.style.setProperty('--size', `${size}px`);
+  });
+</script>
+
+{#if event === 'onmouseenter'}
+  <button onmouseenter={handleEvent}>
+    <div class="placeholder">
+      {#if visible}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          {...restProps}
+          {role}
+          width={size}
+          height={size}
+          fill={color}
+          aria-label={ariaLabel}
+          aria-describedby={hasDescription ? ariaDescribedby : undefined}
+          viewBox="0 0 512 512"
+        >
+          {#if title?.id && title.title}
+            <title id={title.id}>{title.title}</title>
+          {/if}
+          {#if desc?.id && desc.desc}
+            <desc id={desc.id}>{desc.desc}</desc>
+          {/if}
+          <path
+            transition:draw={transitionParams}
+            d="M432,448a15.92,15.92,0,0,1-11.31-4.69l-352-352A16,16,0,0,1,91.31,68.69l352,352A16,16,0,0,1,432,448Z"
+          /><path
+            transition:draw={transitionParams}
+            d="M255.66,384c-41.49,0-81.5-12.28-118.92-36.5-34.07-22-64.74-53.51-88.7-91l0-.08c19.94-28.57,41.78-52.73,65.24-72.21a2,2,0,0,0,.14-2.94L93.5,161.38a2,2,0,0,0-2.71-.12c-24.92,21-48.05,46.76-69.08,76.92a31.92,31.92,0,0,0-.64,35.54c26.41,41.33,60.4,76.14,98.28,100.65C162,402,207.9,416,255.66,416a239.13,239.13,0,0,0,75.8-12.58,2,2,0,0,0,.77-3.31l-21.58-21.58a4,4,0,0,0-3.83-1A204.8,204.8,0,0,1,255.66,384Z"
+          /><path
+            transition:draw={transitionParams}
+            d="M490.84,238.6c-26.46-40.92-60.79-75.68-99.27-100.53C349,110.55,302,96,255.66,96a227.34,227.34,0,0,0-74.89,12.83,2,2,0,0,0-.75,3.31l21.55,21.55a4,4,0,0,0,3.88,1A192.82,192.82,0,0,1,255.66,128c40.69,0,80.58,12.43,118.55,37,34.71,22.4,65.74,53.88,89.76,91a.13.13,0,0,1,0,.16,310.72,310.72,0,0,1-64.12,72.73,2,2,0,0,0-.15,2.95l19.9,19.89a2,2,0,0,0,2.7.13,343.49,343.49,0,0,0,68.64-78.48A32.2,32.2,0,0,0,490.84,238.6Z"
+          /><path
+            transition:draw={transitionParams}
+            d="M256,160a95.88,95.88,0,0,0-21.37,2.4,2,2,0,0,0-1,3.38L346.22,278.34a2,2,0,0,0,3.38-1A96,96,0,0,0,256,160Z"
+          /><path
+            transition:draw={transitionParams}
+            d="M165.78,233.66a2,2,0,0,0-3.38,1,96,96,0,0,0,115,115,2,2,0,0,0,1-3.38Z"
+          />
+        </svg>
+      {/if}
+    </div>
+  </button>
+{:else if event === 'onclick'}
+  <button onclick={handleEvent}>
+    <div class="placeholder">
+      {#if visible}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          {...restProps}
+          {role}
+          width={size}
+          height={size}
+          fill={color}
+          aria-label={ariaLabel}
+          aria-describedby={hasDescription ? ariaDescribedby : undefined}
+          viewBox="0 0 512 512"
+        >
+          {#if title?.id && title.title}
+            <title id={title.id}>{title.title}</title>
+          {/if}
+          {#if desc?.id && desc.desc}
+            <desc id={desc.id}>{desc.desc}</desc>
+          {/if}
+          <path
+            transition:draw={transitionParams}
+            d="M432,448a15.92,15.92,0,0,1-11.31-4.69l-352-352A16,16,0,0,1,91.31,68.69l352,352A16,16,0,0,1,432,448Z"
+          /><path
+            transition:draw={transitionParams}
+            d="M255.66,384c-41.49,0-81.5-12.28-118.92-36.5-34.07-22-64.74-53.51-88.7-91l0-.08c19.94-28.57,41.78-52.73,65.24-72.21a2,2,0,0,0,.14-2.94L93.5,161.38a2,2,0,0,0-2.71-.12c-24.92,21-48.05,46.76-69.08,76.92a31.92,31.92,0,0,0-.64,35.54c26.41,41.33,60.4,76.14,98.28,100.65C162,402,207.9,416,255.66,416a239.13,239.13,0,0,0,75.8-12.58,2,2,0,0,0,.77-3.31l-21.58-21.58a4,4,0,0,0-3.83-1A204.8,204.8,0,0,1,255.66,384Z"
+          /><path
+            transition:draw={transitionParams}
+            d="M490.84,238.6c-26.46-40.92-60.79-75.68-99.27-100.53C349,110.55,302,96,255.66,96a227.34,227.34,0,0,0-74.89,12.83,2,2,0,0,0-.75,3.31l21.55,21.55a4,4,0,0,0,3.88,1A192.82,192.82,0,0,1,255.66,128c40.69,0,80.58,12.43,118.55,37,34.71,22.4,65.74,53.88,89.76,91a.13.13,0,0,1,0,.16,310.72,310.72,0,0,1-64.12,72.73,2,2,0,0,0-.15,2.95l19.9,19.89a2,2,0,0,0,2.7.13,343.49,343.49,0,0,0,68.64-78.48A32.2,32.2,0,0,0,490.84,238.6Z"
+          /><path
+            transition:draw={transitionParams}
+            d="M256,160a95.88,95.88,0,0,0-21.37,2.4,2,2,0,0,0-1,3.38L346.22,278.34a2,2,0,0,0,3.38-1A96,96,0,0,0,256,160Z"
+          /><path
+            transition:draw={transitionParams}
+            d="M165.78,233.66a2,2,0,0,0-3.38,1,96,96,0,0,0,115,115,2,2,0,0,0,1-3.38Z"
+          />
+        </svg>
+      {/if}
+    </div>
+  </button>
+{:else}
+  <div class="placeholder">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      {...restProps}
+      {role}
+      width={size}
+      height={size}
+      fill={color}
+      aria-label={ariaLabel}
+      aria-describedby={hasDescription ? ariaDescribedby : undefined}
+      viewBox="0 0 512 512"
+    >
+      {#if title?.id && title.title}
+        <title id={title.id}>{title.title}</title>
+      {/if}
+      {#if desc?.id && desc.desc}
+        <desc id={desc.id}>{desc.desc}</desc>
+      {/if}
+      <path
+        transition:draw={transitionParams}
+        d="M432,448a15.92,15.92,0,0,1-11.31-4.69l-352-352A16,16,0,0,1,91.31,68.69l352,352A16,16,0,0,1,432,448Z"
+      /><path
+        transition:draw={transitionParams}
+        d="M255.66,384c-41.49,0-81.5-12.28-118.92-36.5-34.07-22-64.74-53.51-88.7-91l0-.08c19.94-28.57,41.78-52.73,65.24-72.21a2,2,0,0,0,.14-2.94L93.5,161.38a2,2,0,0,0-2.71-.12c-24.92,21-48.05,46.76-69.08,76.92a31.92,31.92,0,0,0-.64,35.54c26.41,41.33,60.4,76.14,98.28,100.65C162,402,207.9,416,255.66,416a239.13,239.13,0,0,0,75.8-12.58,2,2,0,0,0,.77-3.31l-21.58-21.58a4,4,0,0,0-3.83-1A204.8,204.8,0,0,1,255.66,384Z"
+      /><path
+        transition:draw={transitionParams}
+        d="M490.84,238.6c-26.46-40.92-60.79-75.68-99.27-100.53C349,110.55,302,96,255.66,96a227.34,227.34,0,0,0-74.89,12.83,2,2,0,0,0-.75,3.31l21.55,21.55a4,4,0,0,0,3.88,1A192.82,192.82,0,0,1,255.66,128c40.69,0,80.58,12.43,118.55,37,34.71,22.4,65.74,53.88,89.76,91a.13.13,0,0,1,0,.16,310.72,310.72,0,0,1-64.12,72.73,2,2,0,0,0-.15,2.95l19.9,19.89a2,2,0,0,0,2.7.13,343.49,343.49,0,0,0,68.64-78.48A32.2,32.2,0,0,0,490.84,238.6Z"
+      /><path
+        transition:draw={transitionParams}
+        d="M256,160a95.88,95.88,0,0,0-21.37,2.4,2,2,0,0,0-1,3.38L346.22,278.34a2,2,0,0,0,3.38-1A96,96,0,0,0,256,160Z"
+      /><path
+        transition:draw={transitionParams}
+        d="M165.78,233.66a2,2,0,0,0-3.38,1,96,96,0,0,0,115,115,2,2,0,0,0,1-3.38Z"
+      />
+    </svg>
+  </div>
+{/if}
+
+<style>
+  button {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+  }
+  .placeholder {
+    display: inline-block;
+    min-width: var(--size, 24px);
+    min-height: var(--size, 24px);
+  }
+</style>

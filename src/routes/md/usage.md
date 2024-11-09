@@ -1,5 +1,5 @@
 <script>
-  import { ArrowDown } from 'svelte-animated-icons';
+  import { ArrowDownHero } from 'svelte-animated-icons';
 </script>
 
-<ArrowDown />
+<ArrowDownHero />

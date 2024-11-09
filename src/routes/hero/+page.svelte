@@ -1,5 +1,5 @@
 <script lang="ts">
-  import * as icons from '$lib';
+  import * as icons from '$lib/hero';
   import type { Component } from 'svelte';
   import { Label, Input, Select, Span } from 'svelte-5-ui-lib';
 
@@ -24,12 +24,12 @@
   let transitionDelay = $state(DEFAULT_VALUES.transitionDelay);
   let copiedIcon = $state('');
 
-  const heroIcons = Object.fromEntries(
-    Object.entries(icons).filter(([name]) => name.endsWith('Hero'))
-  );
+  // const heroIcons = Object.fromEntries(
+  //   Object.entries(icons).filter(([name]) => name.endsWith('Hero'))
+  // );
 
   let filteredIcons = $derived(
-    Object.entries(heroIcons).filter(([name]) =>
+    Object.entries(icons).filter(([name]) =>
       name.toLowerCase().includes(searchTerm.toLowerCase())
     ) as [string, Component][]
   );
