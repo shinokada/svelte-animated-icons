@@ -60,7 +60,7 @@
   const lis: LiType[] = [
     { name: 'Flowbite', href: '/flowbite' },
     { name: 'Heroicons', href: '/hero' },
-    { name: 'Iconicons', href: '/ion' }
+    { name: 'Ionicons', href: '/ion' }
   ];
   const brand = {
     name: 'codewithshin.com',
