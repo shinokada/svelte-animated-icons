@@ -48,8 +48,7 @@
   };
 
   let visible = $state(true);
-  let shouldAnimate = $state(true);
-  let totalDuration = $state(getDuration(transitionParams) + pauseDuration);
+  let totalDuration = $derived(getDuration(transitionParams) + pauseDuration);
 
   let ariaDescribedby = `${title?.id || ''} ${desc?.id || ''}`;
   const hasDescription = $derived(!!(title?.id || desc?.id));
@@ -58,15 +57,9 @@
     if (!visible) return;
     visible = false;
     setTimeout(() => {
-      shouldAnimate = true;
       visible = true;
     }, totalDuration);
   };
-
-  $effect(() => {
-    visible = true;
-    shouldAnimate = true;
-  });
 
   // Set CSS variable for the placeholder size
   $effect(() => {
@@ -99,7 +92,7 @@
             d="M4.49854 8.24805H19.4982M4.49854 15.749H19.4982"
             stroke={color}
             stroke-width={strokeWidth}
-            transition:draw={shouldAnimate ? transitionParams : undefined}
+            transition:draw={transitionParams}
             stroke-linecap="round"
             stroke-linejoin="round"
           />
@@ -132,7 +125,7 @@
             d="M4.49854 8.24805H19.4982M4.49854 15.749H19.4982"
             stroke={color}
             stroke-width={strokeWidth}
-            transition:draw={shouldAnimate ? transitionParams : undefined}
+            transition:draw={transitionParams}
             stroke-linecap="round"
             stroke-linejoin="round"
           />
@@ -163,7 +156,7 @@
         d="M4.49854 8.24805H19.4982M4.49854 15.749H19.4982"
         stroke={color}
         stroke-width={strokeWidth}
-        transition:draw={shouldAnimate ? transitionParams : undefined}
+        transition:draw={transitionParams}
         stroke-linecap="round"
         stroke-linejoin="round"
       />

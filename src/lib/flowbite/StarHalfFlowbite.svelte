@@ -48,8 +48,7 @@
   };
 
   let visible = $state(true);
-  let shouldAnimate = $state(true);
-  let totalDuration = $state(getDuration(transitionParams) + pauseDuration);
+  let totalDuration = $derived(getDuration(transitionParams) + pauseDuration);
 
   let ariaDescribedby = `${title?.id || ''} ${desc?.id || ''}`;
   const hasDescription = $derived(!!(title?.id || desc?.id));
@@ -58,17 +57,10 @@
     if (!visible) return;
     visible = false;
     setTimeout(() => {
-      shouldAnimate = true;
       visible = true;
     }, totalDuration);
   };
 
-  $effect(() => {
-    visible = true;
-    shouldAnimate = true;
-  });
-
-  // Set CSS variable for the placeholder size
   $effect(() => {
     document.documentElement.style.setProperty('--size', `${size}px`);
   });
@@ -96,7 +88,7 @@
             <desc id={desc.id}>{desc.desc}</desc>
           {/if}
           <path
-            transition:draw={shouldAnimate ? transitionParams : undefined}
+            transition:draw={transitionParams}
             stroke={color}
             stroke-width={strokeWidth}
             d="m12.25 20.825 4.247-2.436a1 1 0 0 0 .503-.867V4.03c0-.405-2.062 3.38-2.8 4.747a1 1 0 0 1-.807.523l-4.87.367c-.903.068-1.258 1.208-.55 1.776l3.576 2.878a1 1 0 0 1 .343 1.025l-1.11 4.366c-.217.856.701 1.553 1.468 1.113Z"
@@ -127,7 +119,7 @@
             <desc id={desc.id}>{desc.desc}</desc>
           {/if}
           <path
-            transition:draw={shouldAnimate ? transitionParams : undefined}
+            transition:draw={transitionParams}
             stroke={color}
             stroke-width={strokeWidth}
             d="m12.25 20.825 4.247-2.436a1 1 0 0 0 .503-.867V4.03c0-.405-2.062 3.38-2.8 4.747a1 1 0 0 1-.807.523l-4.87.367c-.903.068-1.258 1.208-.55 1.776l3.576 2.878a1 1 0 0 1 .343 1.025l-1.11 4.366c-.217.856.701 1.553 1.468 1.113Z"
@@ -156,7 +148,7 @@
         <desc id={desc.id}>{desc.desc}</desc>
       {/if}
       <path
-        transition:draw={shouldAnimate ? transitionParams : undefined}
+        transition:draw={transitionParams}
         stroke={color}
         stroke-width={strokeWidth}
         d="m12.25 20.825 4.247-2.436a1 1 0 0 0 .503-.867V4.03c0-.405-2.062 3.38-2.8 4.747a1 1 0 0 1-.807.523l-4.87.367c-.903.068-1.258 1.208-.55 1.776l3.576 2.878a1 1 0 0 1 .343 1.025l-1.11 4.366c-.217.856.701 1.553 1.468 1.113Z"

@@ -48,8 +48,7 @@
   };
 
   let visible = $state(true);
-  let shouldAnimate = $state(true);
-  let totalDuration = $state(getDuration(transitionParams) + pauseDuration);
+  let totalDuration = $derived(getDuration(transitionParams) + pauseDuration);
 
   let ariaDescribedby = `${title?.id || ''} ${desc?.id || ''}`;
   const hasDescription = $derived(!!(title?.id || desc?.id));
@@ -58,15 +57,9 @@
     if (!visible) return;
     visible = false;
     setTimeout(() => {
-      shouldAnimate = true;
       visible = true;
     }, totalDuration);
   };
-
-  $effect(() => {
-    visible = true;
-    shouldAnimate = true;
-  });
 
   // Set CSS variable for the placeholder size
   $effect(() => {
@@ -99,7 +92,7 @@
             d="M9 4.5V19.5M15 4.5V19.5M4.125 19.5H19.875C20.4963 19.5 21 18.9963 21 18.375V5.625C21 5.00368 20.4963 4.5 19.875 4.5H4.125C3.50368 4.5 3 5.00368 3 5.625V18.375C3 18.9963 3.50368 19.5 4.125 19.5Z"
             stroke={color}
             stroke-width={strokeWidth}
-            transition:draw={shouldAnimate ? transitionParams : undefined}
+            transition:draw={transitionParams}
             stroke-linecap="round"
             stroke-linejoin="round"
           />
@@ -132,7 +125,7 @@
             d="M9 4.5V19.5M15 4.5V19.5M4.125 19.5H19.875C20.4963 19.5 21 18.9963 21 18.375V5.625C21 5.00368 20.4963 4.5 19.875 4.5H4.125C3.50368 4.5 3 5.00368 3 5.625V18.375C3 18.9963 3.50368 19.5 4.125 19.5Z"
             stroke={color}
             stroke-width={strokeWidth}
-            transition:draw={shouldAnimate ? transitionParams : undefined}
+            transition:draw={transitionParams}
             stroke-linecap="round"
             stroke-linejoin="round"
           />
@@ -163,7 +156,7 @@
         d="M9 4.5V19.5M15 4.5V19.5M4.125 19.5H19.875C20.4963 19.5 21 18.9963 21 18.375V5.625C21 5.00368 20.4963 4.5 19.875 4.5H4.125C3.50368 4.5 3 5.00368 3 5.625V18.375C3 18.9963 3.50368 19.5 4.125 19.5Z"
         stroke={color}
         stroke-width={strokeWidth}
-        transition:draw={shouldAnimate ? transitionParams : undefined}
+        transition:draw={transitionParams}
         stroke-linecap="round"
         stroke-linejoin="round"
       />

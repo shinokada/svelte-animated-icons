@@ -48,8 +48,7 @@
   };
 
   let visible = $state(true);
-  let shouldAnimate = $state(true);
-  let totalDuration = $state(getDuration(transitionParams) + pauseDuration);
+  let totalDuration = $derived(getDuration(transitionParams) + pauseDuration);
 
   let ariaDescribedby = `${title?.id || ''} ${desc?.id || ''}`;
   const hasDescription = $derived(!!(title?.id || desc?.id));
@@ -58,15 +57,9 @@
     if (!visible) return;
     visible = false;
     setTimeout(() => {
-      shouldAnimate = true;
       visible = true;
     }, totalDuration);
   };
-
-  $effect(() => {
-    visible = true;
-    shouldAnimate = true;
-  });
 
   // Set CSS variable for the placeholder size
   $effect(() => {
@@ -99,7 +92,7 @@
             d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
             stroke={color}
             stroke-width={strokeWidth}
-            transition:draw={shouldAnimate ? transitionParams : undefined}
+            transition:draw={transitionParams}
             stroke-linecap="round"
             stroke-linejoin="round"
           />
@@ -107,7 +100,7 @@
             d="M15.9099 11.6722C16.1671 11.8151 16.1671 12.1849 15.9099 12.3278L10.3071 15.4405C10.0572 15.5794 9.75 15.3986 9.75 15.1127V8.88732C9.75 8.60139 10.0572 8.42065 10.3071 8.55951L15.9099 11.6722Z"
             stroke={color}
             stroke-width={strokeWidth}
-            transition:draw={shouldAnimate ? transitionParams : undefined}
+            transition:draw={transitionParams}
             stroke-linecap="round"
             stroke-linejoin="round"
           />
@@ -140,7 +133,7 @@
             d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
             stroke={color}
             stroke-width={strokeWidth}
-            transition:draw={shouldAnimate ? transitionParams : undefined}
+            transition:draw={transitionParams}
             stroke-linecap="round"
             stroke-linejoin="round"
           />
@@ -148,7 +141,7 @@
             d="M15.9099 11.6722C16.1671 11.8151 16.1671 12.1849 15.9099 12.3278L10.3071 15.4405C10.0572 15.5794 9.75 15.3986 9.75 15.1127V8.88732C9.75 8.60139 10.0572 8.42065 10.3071 8.55951L15.9099 11.6722Z"
             stroke={color}
             stroke-width={strokeWidth}
-            transition:draw={shouldAnimate ? transitionParams : undefined}
+            transition:draw={transitionParams}
             stroke-linecap="round"
             stroke-linejoin="round"
           />
@@ -179,7 +172,7 @@
         d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z"
         stroke={color}
         stroke-width={strokeWidth}
-        transition:draw={shouldAnimate ? transitionParams : undefined}
+        transition:draw={transitionParams}
         stroke-linecap="round"
         stroke-linejoin="round"
       />
@@ -187,7 +180,7 @@
         d="M15.9099 11.6722C16.1671 11.8151 16.1671 12.1849 15.9099 12.3278L10.3071 15.4405C10.0572 15.5794 9.75 15.3986 9.75 15.1127V8.88732C9.75 8.60139 10.0572 8.42065 10.3071 8.55951L15.9099 11.6722Z"
         stroke={color}
         stroke-width={strokeWidth}
-        transition:draw={shouldAnimate ? transitionParams : undefined}
+        transition:draw={transitionParams}
         stroke-linecap="round"
         stroke-linejoin="round"
       />

@@ -48,8 +48,7 @@
   };
 
   let visible = $state(true);
-  let shouldAnimate = $state(true);
-  let totalDuration = $state(getDuration(transitionParams) + pauseDuration);
+  let totalDuration = $derived(getDuration(transitionParams) + pauseDuration);
 
   let ariaDescribedby = `${title?.id || ''} ${desc?.id || ''}`;
   const hasDescription = $derived(!!(title?.id || desc?.id));
@@ -58,15 +57,9 @@
     if (!visible) return;
     visible = false;
     setTimeout(() => {
-      shouldAnimate = true;
       visible = true;
     }, totalDuration);
   };
-
-  $effect(() => {
-    visible = true;
-    shouldAnimate = true;
-  });
 
   // Set CSS variable for the placeholder size
   $effect(() => {
@@ -99,7 +92,7 @@
             d="M5.25 7.5C5.25 6.25736 6.25736 5.25 7.5 5.25H16.5C17.7426 5.25 18.75 6.25736 18.75 7.5V16.5C18.75 17.7426 17.7426 18.75 16.5 18.75H7.5C6.25736 18.75 5.25 17.7426 5.25 16.5V7.5Z"
             stroke={color}
             stroke-width={strokeWidth}
-            transition:draw={shouldAnimate ? transitionParams : undefined}
+            transition:draw={transitionParams}
             stroke-linecap="round"
             stroke-linejoin="round"
           />
@@ -132,7 +125,7 @@
             d="M5.25 7.5C5.25 6.25736 6.25736 5.25 7.5 5.25H16.5C17.7426 5.25 18.75 6.25736 18.75 7.5V16.5C18.75 17.7426 17.7426 18.75 16.5 18.75H7.5C6.25736 18.75 5.25 17.7426 5.25 16.5V7.5Z"
             stroke={color}
             stroke-width={strokeWidth}
-            transition:draw={shouldAnimate ? transitionParams : undefined}
+            transition:draw={transitionParams}
             stroke-linecap="round"
             stroke-linejoin="round"
           />
@@ -163,7 +156,7 @@
         d="M5.25 7.5C5.25 6.25736 6.25736 5.25 7.5 5.25H16.5C17.7426 5.25 18.75 6.25736 18.75 7.5V16.5C18.75 17.7426 17.7426 18.75 16.5 18.75H7.5C6.25736 18.75 5.25 17.7426 5.25 16.5V7.5Z"
         stroke={color}
         stroke-width={strokeWidth}
-        transition:draw={shouldAnimate ? transitionParams : undefined}
+        transition:draw={transitionParams}
         stroke-linecap="round"
         stroke-linejoin="round"
       />

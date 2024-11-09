@@ -48,8 +48,7 @@
   };
 
   let visible = $state(true);
-  let shouldAnimate = $state(true);
-  let totalDuration = $state(getDuration(transitionParams) + pauseDuration);
+  let totalDuration = $derived(getDuration(transitionParams) + pauseDuration);
 
   let ariaDescribedby = `${title?.id || ''} ${desc?.id || ''}`;
   const hasDescription = $derived(!!(title?.id || desc?.id));
@@ -58,17 +57,10 @@
     if (!visible) return;
     visible = false;
     setTimeout(() => {
-      shouldAnimate = true;
       visible = true;
     }, totalDuration);
   };
 
-  $effect(() => {
-    visible = true;
-    shouldAnimate = true;
-  });
-
-  // Set CSS variable for the placeholder size
   $effect(() => {
     document.documentElement.style.setProperty('--size', `${size}px`);
   });
@@ -96,7 +88,7 @@
             <desc id={desc.id}>{desc.desc}</desc>
           {/if}
           <path
-            transition:draw={shouldAnimate ? transitionParams : undefined}
+            transition:draw={transitionParams}
             stroke={color}
             stroke-width={strokeWidth}
             d="M3 11h18M3 15h18m-9-4v8m-8 0h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"
@@ -127,7 +119,7 @@
             <desc id={desc.id}>{desc.desc}</desc>
           {/if}
           <path
-            transition:draw={shouldAnimate ? transitionParams : undefined}
+            transition:draw={transitionParams}
             stroke={color}
             stroke-width={strokeWidth}
             d="M3 11h18M3 15h18m-9-4v8m-8 0h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"
@@ -156,7 +148,7 @@
         <desc id={desc.id}>{desc.desc}</desc>
       {/if}
       <path
-        transition:draw={shouldAnimate ? transitionParams : undefined}
+        transition:draw={transitionParams}
         stroke={color}
         stroke-width={strokeWidth}
         d="M3 11h18M3 15h18m-9-4v8m-8 0h16a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1Z"

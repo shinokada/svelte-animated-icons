@@ -110,7 +110,7 @@
           type="number"
           bind:value={size}
           min="12"
-          max="64"
+          max="100"
           class="w-20 rounded border p-2"
         />
       </div>
@@ -127,7 +127,7 @@
           type="number"
           bind:value={strokeWidth}
           min="0.5"
-          max="4"
+          max="3"
           step="0.5"
           class="w-20 rounded border p-2"
         />
@@ -198,9 +198,7 @@
     </div>
   </div>
 
-  <div
-    class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
-  >
+  <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
     {#each filteredIcons as [name, Icon]}
       <div
         class="icon-card group relative flex flex-col items-center gap-2 rounded border border-gray-200 p-4 dark:border-gray-700"

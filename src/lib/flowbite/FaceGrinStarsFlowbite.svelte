@@ -48,8 +48,7 @@
   };
 
   let visible = $state(true);
-  let shouldAnimate = $state(true);
-  let totalDuration = $state(getDuration(transitionParams) + pauseDuration);
+  let totalDuration = $derived(getDuration(transitionParams) + pauseDuration);
 
   let ariaDescribedby = `${title?.id || ''} ${desc?.id || ''}`;
   const hasDescription = $derived(!!(title?.id || desc?.id));
@@ -58,17 +57,10 @@
     if (!visible) return;
     visible = false;
     setTimeout(() => {
-      shouldAnimate = true;
       visible = true;
     }, totalDuration);
   };
 
-  $effect(() => {
-    visible = true;
-    shouldAnimate = true;
-  });
-
-  // Set CSS variable for the placeholder size
   $effect(() => {
     document.documentElement.style.setProperty('--size', `${size}px`);
   });
@@ -96,7 +88,7 @@
             <desc id={desc.id}>{desc.desc}</desc>
           {/if}
           <path
-            transition:draw={shouldAnimate ? transitionParams : undefined}
+            transition:draw={transitionParams}
             stroke={color}
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -111,7 +103,8 @@
             d="M17 13c0 2.038-2.239 4.5-5 4.5S7 15.038 7 13c0 1.444 10 1.444 10 0Z"
           />
           <path
-            fill="currentColor"
+            fill={color}
+            stroke-width={strokeWidth}
             d="m9 6.811.618 1.253 1.382.2-1 .975.236 1.377L9 9.966l-1.236.65L8 9.239l-1-.975 1.382-.2L9 6.811Zm6 0 .618 1.253 1.382.2-1 .975.236 1.377L15 9.966l-1.236.65L14 9.239l-1-.975 1.382-.2L15 6.811Z"
           />
           <path
@@ -146,7 +139,7 @@
             <desc id={desc.id}>{desc.desc}</desc>
           {/if}
           <path
-            transition:draw={shouldAnimate ? transitionParams : undefined}
+            transition:draw={transitionParams}
             stroke={color}
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -161,7 +154,8 @@
             d="M17 13c0 2.038-2.239 4.5-5 4.5S7 15.038 7 13c0 1.444 10 1.444 10 0Z"
           />
           <path
-            fill="currentColor"
+            fill={color}
+            stroke-width={strokeWidth}
             d="m9 6.811.618 1.253 1.382.2-1 .975.236 1.377L9 9.966l-1.236.65L8 9.239l-1-.975 1.382-.2L9 6.811Zm6 0 .618 1.253 1.382.2-1 .975.236 1.377L15 9.966l-1.236.65L14 9.239l-1-.975 1.382-.2L15 6.811Z"
           />
           <path
@@ -194,7 +188,7 @@
         <desc id={desc.id}>{desc.desc}</desc>
       {/if}
       <path
-        transition:draw={shouldAnimate ? transitionParams : undefined}
+        transition:draw={transitionParams}
         stroke={color}
         stroke-linecap="round"
         stroke-linejoin="round"
@@ -209,7 +203,8 @@
         d="M17 13c0 2.038-2.239 4.5-5 4.5S7 15.038 7 13c0 1.444 10 1.444 10 0Z"
       />
       <path
-        fill="currentColor"
+        fill={color}
+        stroke-width={strokeWidth}
         d="m9 6.811.618 1.253 1.382.2-1 .975.236 1.377L9 9.966l-1.236.65L8 9.239l-1-.975 1.382-.2L9 6.811Zm6 0 .618 1.253 1.382.2-1 .975.236 1.377L15 9.966l-1.236.65L14 9.239l-1-.975 1.382-.2L15 6.811Z"
       />
       <path

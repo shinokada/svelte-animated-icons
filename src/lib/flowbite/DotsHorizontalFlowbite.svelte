@@ -48,8 +48,7 @@
   };
 
   let visible = $state(true);
-  let shouldAnimate = $state(true);
-  let totalDuration = $state(getDuration(transitionParams) + pauseDuration);
+  let totalDuration = $derived(getDuration(transitionParams) + pauseDuration);
 
   let ariaDescribedby = `${title?.id || ''} ${desc?.id || ''}`;
   const hasDescription = $derived(!!(title?.id || desc?.id));
@@ -58,17 +57,10 @@
     if (!visible) return;
     visible = false;
     setTimeout(() => {
-      shouldAnimate = true;
       visible = true;
     }, totalDuration);
   };
 
-  $effect(() => {
-    visible = true;
-    shouldAnimate = true;
-  });
-
-  // Set CSS variable for the placeholder size
   $effect(() => {
     document.documentElement.style.setProperty('--size', `${size}px`);
   });
@@ -96,10 +88,10 @@
             <desc id={desc.id}>{desc.desc}</desc>
           {/if}
           <path
-            transition:draw={shouldAnimate ? transitionParams : undefined}
+            transition:draw={transitionParams}
             stroke={color}
             stroke-linecap="round"
-            stroke-width="3"
+            stroke-width={strokeWidth}
             d="M6 12h.01m6 0h.01m5.99 0h.01"
           />
         </svg>
@@ -128,10 +120,10 @@
             <desc id={desc.id}>{desc.desc}</desc>
           {/if}
           <path
-            transition:draw={shouldAnimate ? transitionParams : undefined}
+            transition:draw={transitionParams}
             stroke={color}
             stroke-linecap="round"
-            stroke-width="3"
+            stroke-width={strokeWidth}
             d="M6 12h.01m6 0h.01m5.99 0h.01"
           />
         </svg>
@@ -158,10 +150,10 @@
         <desc id={desc.id}>{desc.desc}</desc>
       {/if}
       <path
-        transition:draw={shouldAnimate ? transitionParams : undefined}
+        transition:draw={transitionParams}
         stroke={color}
         stroke-linecap="round"
-        stroke-width="3"
+        stroke-width={strokeWidth}
         d="M6 12h.01m6 0h.01m5.99 0h.01"
       />
     </svg>
