@@ -14,7 +14,7 @@
 
   interface Props extends SVGAttributes<SVGElement> {
     pauseDuration?: number;
-    event?: 'onmouseenter' | 'onclick' | 'none';
+    event?: 'hover' | 'click' | 'none';
     title?: TitleType;
     desc?: DescType;
     ariaLabel?: string;
@@ -26,7 +26,7 @@
 
   let {
     pauseDuration = 300,
-    event = 'onmouseenter',
+    event = 'hover',
     size = 24,
     role = 'img',
     color = 'currentColor',
@@ -65,151 +65,72 @@
   });
 </script>
 
-{#if event === 'onmouseenter'}
+{#snippet iconsvg()}
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    {...restProps}
+    {role}
+    width={size}
+    height={size}
+    fill={color}
+    aria-label={ariaLabel}
+    aria-describedby={hasDescription ? ariaDescribedby : undefined}
+    viewBox="0 0 512 512"
+  >
+    {#if title?.id && title.title}
+      <title id={title.id}>{title.title}</title>
+    {/if}
+    {#if desc?.id && desc.desc}
+      <desc id={desc.id}>{desc.desc}</desc>
+    {/if}
+
+    <path
+      transition:draw={transitionParams}
+      d="M259.92,262.91,216.4,149.77a9,9,0,0,0-16.8,0L156.08,262.91a9,9,0,0,1-5.17,5.17L37.77,311.6a9,9,0,0,0,0,16.8l113.14,43.52a9,9,0,0,1,5.17,5.17L199.6,490.23a9,9,0,0,0,16.8,0l43.52-113.14a9,9,0,0,1,5.17-5.17L378.23,328.4a9,9,0,0,0,0-16.8L265.09,268.08A9,9,0,0,1,259.92,262.91Z"
+      fill="none"
+      stroke={color}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="32"
+    /><polygon
+      transition:draw={transitionParams}
+      points="108 68 88 16 68 68 16 88 68 108 88 160 108 108 160 88 108 68"
+      fill="none"
+      stroke={color}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="32"
+    /><polygon
+      transition:draw={transitionParams}
+      points="426.67 117.33 400 48 373.33 117.33 304 144 373.33 170.67 400 240 426.67 170.67 496 144 426.67 117.33"
+      fill="none"
+      stroke={color}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="32"
+    />
+  </svg>
+{/snippet}
+
+{#if event === 'hover'}
   <button onmouseenter={handleEvent}>
     <div class="placeholder">
       {#if visible}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          {...restProps}
-          {role}
-          width={size}
-          height={size}
-          fill={color}
-          aria-label={ariaLabel}
-          aria-describedby={hasDescription ? ariaDescribedby : undefined}
-          viewBox="0 0 512 512"
-        >
-          {#if title?.id && title.title}
-            <title id={title.id}>{title.title}</title>
-          {/if}
-          {#if desc?.id && desc.desc}
-            <desc id={desc.id}>{desc.desc}</desc>
-          {/if}
-          <path
-            transition:draw={transitionParams}
-            d="M259.92,262.91,216.4,149.77a9,9,0,0,0-16.8,0L156.08,262.91a9,9,0,0,1-5.17,5.17L37.77,311.6a9,9,0,0,0,0,16.8l113.14,43.52a9,9,0,0,1,5.17,5.17L199.6,490.23a9,9,0,0,0,16.8,0l43.52-113.14a9,9,0,0,1,5.17-5.17L378.23,328.4a9,9,0,0,0,0-16.8L265.09,268.08A9,9,0,0,1,259.92,262.91Z"
-            fill="none"
-            stroke={color}
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="32"
-          /><polygon
-            transition:draw={transitionParams}
-            points="108 68 88 16 68 68 16 88 68 108 88 160 108 108 160 88 108 68"
-            fill="none"
-            stroke={color}
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="32"
-          /><polygon
-            transition:draw={transitionParams}
-            points="426.67 117.33 400 48 373.33 117.33 304 144 373.33 170.67 400 240 426.67 170.67 496 144 426.67 117.33"
-            fill="none"
-            stroke={color}
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="32"
-          />
-        </svg>
+        {@render iconsvg()}
       {/if}
     </div>
   </button>
-{:else if event === 'onclick'}
+{:else if event === 'click'}
   <button onclick={handleEvent}>
     <div class="placeholder">
       {#if visible}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          {...restProps}
-          {role}
-          width={size}
-          height={size}
-          fill={color}
-          aria-label={ariaLabel}
-          aria-describedby={hasDescription ? ariaDescribedby : undefined}
-          viewBox="0 0 512 512"
-        >
-          {#if title?.id && title.title}
-            <title id={title.id}>{title.title}</title>
-          {/if}
-          {#if desc?.id && desc.desc}
-            <desc id={desc.id}>{desc.desc}</desc>
-          {/if}
-          <path
-            transition:draw={transitionParams}
-            d="M259.92,262.91,216.4,149.77a9,9,0,0,0-16.8,0L156.08,262.91a9,9,0,0,1-5.17,5.17L37.77,311.6a9,9,0,0,0,0,16.8l113.14,43.52a9,9,0,0,1,5.17,5.17L199.6,490.23a9,9,0,0,0,16.8,0l43.52-113.14a9,9,0,0,1,5.17-5.17L378.23,328.4a9,9,0,0,0,0-16.8L265.09,268.08A9,9,0,0,1,259.92,262.91Z"
-            fill="none"
-            stroke={color}
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="32"
-          /><polygon
-            transition:draw={transitionParams}
-            points="108 68 88 16 68 68 16 88 68 108 88 160 108 108 160 88 108 68"
-            fill="none"
-            stroke={color}
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="32"
-          /><polygon
-            transition:draw={transitionParams}
-            points="426.67 117.33 400 48 373.33 117.33 304 144 373.33 170.67 400 240 426.67 170.67 496 144 426.67 117.33"
-            fill="none"
-            stroke={color}
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="32"
-          />
-        </svg>
+        {@render iconsvg()}
       {/if}
     </div>
   </button>
 {:else}
   <div class="placeholder">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      {...restProps}
-      {role}
-      width={size}
-      height={size}
-      fill={color}
-      aria-label={ariaLabel}
-      aria-describedby={hasDescription ? ariaDescribedby : undefined}
-      viewBox="0 0 512 512"
-    >
-      {#if title?.id && title.title}
-        <title id={title.id}>{title.title}</title>
-      {/if}
-      {#if desc?.id && desc.desc}
-        <desc id={desc.id}>{desc.desc}</desc>
-      {/if}
-      <path
-        transition:draw={transitionParams}
-        d="M259.92,262.91,216.4,149.77a9,9,0,0,0-16.8,0L156.08,262.91a9,9,0,0,1-5.17,5.17L37.77,311.6a9,9,0,0,0,0,16.8l113.14,43.52a9,9,0,0,1,5.17,5.17L199.6,490.23a9,9,0,0,0,16.8,0l43.52-113.14a9,9,0,0,1,5.17-5.17L378.23,328.4a9,9,0,0,0,0-16.8L265.09,268.08A9,9,0,0,1,259.92,262.91Z"
-        fill="none"
-        stroke={color}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="32"
-      /><polygon
-        transition:draw={transitionParams}
-        points="108 68 88 16 68 68 16 88 68 108 88 160 108 108 160 88 108 68"
-        fill="none"
-        stroke={color}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="32"
-      /><polygon
-        transition:draw={transitionParams}
-        points="426.67 117.33 400 48 373.33 117.33 304 144 373.33 170.67 400 240 426.67 170.67 496 144 426.67 117.33"
-        fill="none"
-        stroke={color}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="32"
-      />
-    </svg>
+    {@render iconsvg()}
   </div>
 {/if}
 

@@ -14,7 +14,7 @@
 
   interface Props extends SVGAttributes<SVGElement> {
     pauseDuration?: number;
-    event?: 'onmouseenter' | 'onclick' | 'none';
+    event?: 'hover' | 'click' | 'none';
     title?: TitleType;
     desc?: DescType;
     ariaLabel?: string;
@@ -26,7 +26,7 @@
 
   let {
     pauseDuration = 300,
-    event = 'onmouseenter',
+    event = 'hover',
     size = 24,
     role = 'img',
     color = 'currentColor',
@@ -65,199 +65,88 @@
   });
 </script>
 
-{#if event === 'onmouseenter'}
+{#snippet iconsvg()}
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    {...restProps}
+    {role}
+    width={size}
+    height={size}
+    fill={color}
+    aria-label={ariaLabel}
+    aria-describedby={hasDescription ? ariaDescribedby : undefined}
+    viewBox="0 0 512 512"
+  >
+    {#if title?.id && title.title}
+      <title id={title.id}>{title.title}</title>
+    {/if}
+    {#if desc?.id && desc.desc}
+      <desc id={desc.id}>{desc.desc}</desc>
+    {/if}
+
+    <line
+      transition:draw={transitionParams}
+      x1="256"
+      y1="256"
+      x2="256"
+      y2="384"
+      fill="none"
+      stroke={color}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="32"
+    /><line
+      transition:draw={transitionParams}
+      x1="320"
+      y1="320"
+      x2="192"
+      y2="320"
+      fill="none"
+      stroke={color}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="32"
+    /><path
+      transition:draw={transitionParams}
+      d="M80,176a16,16,0,0,0-16,16V408c0,30.24,25.76,56,56,56H392c30.24,0,56-24.51,56-54.75V192a16,16,0,0,0-16-16Z"
+      fill="none"
+      stroke={color}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="32"
+      fill-rule="evenodd"
+    /><path
+      transition:draw={transitionParams}
+      d="M160,176V144a96,96,0,0,1,96-96h0a96,96,0,0,1,96,96v32"
+      fill="none"
+      stroke={color}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="32"
+      fill-rule="evenodd"
+    />
+  </svg>
+{/snippet}
+
+{#if event === 'hover'}
   <button onmouseenter={handleEvent}>
     <div class="placeholder">
       {#if visible}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          {...restProps}
-          {role}
-          width={size}
-          height={size}
-          fill={color}
-          aria-label={ariaLabel}
-          aria-describedby={hasDescription ? ariaDescribedby : undefined}
-          viewBox="0 0 512 512"
-        >
-          {#if title?.id && title.title}
-            <title id={title.id}>{title.title}</title>
-          {/if}
-          {#if desc?.id && desc.desc}
-            <desc id={desc.id}>{desc.desc}</desc>
-          {/if}
-          <line
-            transition:draw={transitionParams}
-            x1="256"
-            y1="256"
-            x2="256"
-            y2="384"
-            fill="none"
-            stroke={color}
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="32"
-          /><line
-            transition:draw={transitionParams}
-            x1="320"
-            y1="320"
-            x2="192"
-            y2="320"
-            fill="none"
-            stroke={color}
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="32"
-          /><path
-            transition:draw={transitionParams}
-            d="M80,176a16,16,0,0,0-16,16V408c0,30.24,25.76,56,56,56H392c30.24,0,56-24.51,56-54.75V192a16,16,0,0,0-16-16Z"
-            fill="none"
-            stroke={color}
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="32"
-            fill-rule="evenodd"
-          /><path
-            transition:draw={transitionParams}
-            d="M160,176V144a96,96,0,0,1,96-96h0a96,96,0,0,1,96,96v32"
-            fill="none"
-            stroke={color}
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="32"
-            fill-rule="evenodd"
-          />
-        </svg>
+        {@render iconsvg()}
       {/if}
     </div>
   </button>
-{:else if event === 'onclick'}
+{:else if event === 'click'}
   <button onclick={handleEvent}>
     <div class="placeholder">
       {#if visible}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          {...restProps}
-          {role}
-          width={size}
-          height={size}
-          fill={color}
-          aria-label={ariaLabel}
-          aria-describedby={hasDescription ? ariaDescribedby : undefined}
-          viewBox="0 0 512 512"
-        >
-          {#if title?.id && title.title}
-            <title id={title.id}>{title.title}</title>
-          {/if}
-          {#if desc?.id && desc.desc}
-            <desc id={desc.id}>{desc.desc}</desc>
-          {/if}
-          <line
-            transition:draw={transitionParams}
-            x1="256"
-            y1="256"
-            x2="256"
-            y2="384"
-            fill="none"
-            stroke={color}
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="32"
-          /><line
-            transition:draw={transitionParams}
-            x1="320"
-            y1="320"
-            x2="192"
-            y2="320"
-            fill="none"
-            stroke={color}
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="32"
-          /><path
-            transition:draw={transitionParams}
-            d="M80,176a16,16,0,0,0-16,16V408c0,30.24,25.76,56,56,56H392c30.24,0,56-24.51,56-54.75V192a16,16,0,0,0-16-16Z"
-            fill="none"
-            stroke={color}
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="32"
-            fill-rule="evenodd"
-          /><path
-            transition:draw={transitionParams}
-            d="M160,176V144a96,96,0,0,1,96-96h0a96,96,0,0,1,96,96v32"
-            fill="none"
-            stroke={color}
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="32"
-            fill-rule="evenodd"
-          />
-        </svg>
+        {@render iconsvg()}
       {/if}
     </div>
   </button>
 {:else}
   <div class="placeholder">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      {...restProps}
-      {role}
-      width={size}
-      height={size}
-      fill={color}
-      aria-label={ariaLabel}
-      aria-describedby={hasDescription ? ariaDescribedby : undefined}
-      viewBox="0 0 512 512"
-    >
-      {#if title?.id && title.title}
-        <title id={title.id}>{title.title}</title>
-      {/if}
-      {#if desc?.id && desc.desc}
-        <desc id={desc.id}>{desc.desc}</desc>
-      {/if}
-      <line
-        transition:draw={transitionParams}
-        x1="256"
-        y1="256"
-        x2="256"
-        y2="384"
-        fill="none"
-        stroke={color}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="32"
-      /><line
-        transition:draw={transitionParams}
-        x1="320"
-        y1="320"
-        x2="192"
-        y2="320"
-        fill="none"
-        stroke={color}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="32"
-      /><path
-        transition:draw={transitionParams}
-        d="M80,176a16,16,0,0,0-16,16V408c0,30.24,25.76,56,56,56H392c30.24,0,56-24.51,56-54.75V192a16,16,0,0,0-16-16Z"
-        fill="none"
-        stroke={color}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="32"
-        fill-rule="evenodd"
-      /><path
-        transition:draw={transitionParams}
-        d="M160,176V144a96,96,0,0,1,96-96h0a96,96,0,0,1,96,96v32"
-        fill="none"
-        stroke={color}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="32"
-        fill-rule="evenodd"
-      />
-    </svg>
+    {@render iconsvg()}
   </div>
 {/if}
 

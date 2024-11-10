@@ -14,7 +14,7 @@
 
   interface Props extends SVGAttributes<SVGElement> {
     pauseDuration?: number;
-    event?: 'onmouseenter' | 'onclick' | 'none';
+    event?: 'hover' | 'click' | 'none';
     title?: TitleType;
     desc?: DescType;
     ariaLabel?: string;
@@ -27,7 +27,7 @@
 
   let {
     pauseDuration = 300,
-    event = 'onmouseenter',
+    event = 'hover',
     size = 24,
     role = 'img',
     color = 'currentColor',
@@ -66,97 +66,54 @@
   });
 </script>
 
-{#if event === 'onmouseenter'}
+{#snippet iconsvg()}
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    {...restProps}
+    {role}
+    width={size}
+    height={size}
+    fill="none"
+    aria-label={ariaLabel}
+    aria-describedby={hasDescription ? ariaDescribedby : undefined}
+    viewBox="0 0 24 24"
+  >
+    {#if title?.id && title.title}
+      <title id={title.id}>{title.title}</title>
+    {/if}
+    {#if desc?.id && desc.desc}
+      <desc id={desc.id}>{desc.desc}</desc>
+    {/if}
+
+    <path
+      transition:draw={transitionParams}
+      stroke={color}
+      stroke-linecap="round"
+      stroke-width={strokeWidth}
+      d="M5 19h4m6 0h4m-6.9627-4.3843V8.63418L17 5.93918m-4.9298 2.66213L7.04175 5.93919M12 2.99719l5.033 2.90583v5.81168L12 14.6205l-5.03303-2.9058V5.90302L12 2.99719ZM14 19c0 1.1045-.8954 2-2 2s-2-.8955-2-2c0-1.1046.8954-2 2-2s2 .8954 2 2Z"
+    />
+  </svg>
+{/snippet}
+
+{#if event === 'hover'}
   <button onmouseenter={handleEvent}>
     <div class="placeholder">
       {#if visible}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          {...restProps}
-          {role}
-          width={size}
-          height={size}
-          fill="none"
-          aria-label={ariaLabel}
-          aria-describedby={hasDescription ? ariaDescribedby : undefined}
-          viewBox="0 0 24 24"
-        >
-          {#if title?.id && title.title}
-            <title id={title.id}>{title.title}</title>
-          {/if}
-          {#if desc?.id && desc.desc}
-            <desc id={desc.id}>{desc.desc}</desc>
-          {/if}
-          <path
-            transition:draw={transitionParams}
-            stroke={color}
-            stroke-linecap="round"
-            stroke-width={strokeWidth}
-            d="M5 19h4m6 0h4m-6.9627-4.3843V8.63418L17 5.93918m-4.9298 2.66213L7.04175 5.93919M12 2.99719l5.033 2.90583v5.81168L12 14.6205l-5.03303-2.9058V5.90302L12 2.99719ZM14 19c0 1.1045-.8954 2-2 2s-2-.8955-2-2c0-1.1046.8954-2 2-2s2 .8954 2 2Z"
-          />
-        </svg>
+        {@render iconsvg()}
       {/if}
     </div>
   </button>
-{:else if event === 'onclick'}
+{:else if event === 'click'}
   <button onclick={handleEvent}>
     <div class="placeholder">
       {#if visible}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          {...restProps}
-          {role}
-          width={size}
-          height={size}
-          fill="none"
-          aria-label={ariaLabel}
-          aria-describedby={hasDescription ? ariaDescribedby : undefined}
-          viewBox="0 0 24 24"
-        >
-          {#if title?.id && title.title}
-            <title id={title.id}>{title.title}</title>
-          {/if}
-          {#if desc?.id && desc.desc}
-            <desc id={desc.id}>{desc.desc}</desc>
-          {/if}
-          <path
-            transition:draw={transitionParams}
-            stroke={color}
-            stroke-linecap="round"
-            stroke-width={strokeWidth}
-            d="M5 19h4m6 0h4m-6.9627-4.3843V8.63418L17 5.93918m-4.9298 2.66213L7.04175 5.93919M12 2.99719l5.033 2.90583v5.81168L12 14.6205l-5.03303-2.9058V5.90302L12 2.99719ZM14 19c0 1.1045-.8954 2-2 2s-2-.8955-2-2c0-1.1046.8954-2 2-2s2 .8954 2 2Z"
-          />
-        </svg>
+        {@render iconsvg()}
       {/if}
     </div>
   </button>
 {:else}
   <div class="placeholder">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      {...restProps}
-      {role}
-      width={size}
-      height={size}
-      fill="none"
-      aria-label={ariaLabel}
-      aria-describedby={hasDescription ? ariaDescribedby : undefined}
-      viewBox="0 0 24 24"
-    >
-      {#if title?.id && title.title}
-        <title id={title.id}>{title.title}</title>
-      {/if}
-      {#if desc?.id && desc.desc}
-        <desc id={desc.id}>{desc.desc}</desc>
-      {/if}
-      <path
-        transition:draw={transitionParams}
-        stroke={color}
-        stroke-linecap="round"
-        stroke-width={strokeWidth}
-        d="M5 19h4m6 0h4m-6.9627-4.3843V8.63418L17 5.93918m-4.9298 2.66213L7.04175 5.93919M12 2.99719l5.033 2.90583v5.81168L12 14.6205l-5.03303-2.9058V5.90302L12 2.99719ZM14 19c0 1.1045-.8954 2-2 2s-2-.8955-2-2c0-1.1046.8954-2 2-2s2 .8954 2 2Z"
-      />
-    </svg>
+    {@render iconsvg()}
   </div>
 {/if}
 

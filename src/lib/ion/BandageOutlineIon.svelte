@@ -14,7 +14,7 @@
 
   interface Props extends SVGAttributes<SVGElement> {
     pauseDuration?: number;
-    event?: 'onmouseenter' | 'onclick' | 'none';
+    event?: 'hover' | 'click' | 'none';
     title?: TitleType;
     desc?: DescType;
     ariaLabel?: string;
@@ -26,7 +26,7 @@
 
   let {
     pauseDuration = 300,
-    event = 'onmouseenter',
+    event = 'hover',
     size = 24,
     role = 'img',
     color = 'currentColor',
@@ -65,169 +65,78 @@
   });
 </script>
 
-{#if event === 'onmouseenter'}
+{#snippet iconsvg()}
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    {...restProps}
+    {role}
+    width={size}
+    height={size}
+    fill={color}
+    aria-label={ariaLabel}
+    aria-describedby={hasDescription ? ariaDescribedby : undefined}
+    viewBox="0 0 512 512"
+  >
+    {#if title?.id && title.title}
+      <title id={title.id}>{title.title}</title>
+    {/if}
+    {#if desc?.id && desc.desc}
+      <desc id={desc.id}>{desc.desc}</desc>
+    {/if}
+
+    <rect
+      transition:draw={transitionParams}
+      x="-24.43"
+      y="167.88"
+      width="560.87"
+      height="176.25"
+      rx="88.12"
+      ry="88.12"
+      transform="translate(-106.04 256) rotate(-45)"
+      style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+    /><rect
+      transition:draw={transitionParams}
+      x="169.41"
+      y="156.59"
+      width="176"
+      height="196"
+      rx="32"
+      ry="32"
+      transform="translate(255.41 -107.45) rotate(45)"
+      style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+    /><circle transition:draw={transitionParams} cx="256" cy="208" r="16" /><circle
+      transition:draw={transitionParams}
+      cx="304"
+      cy="256"
+      r="16"
+    /><circle transition:draw={transitionParams} cx="208" cy="256" r="16" /><circle
+      transition:draw={transitionParams}
+      cx="256"
+      cy="304"
+      r="16"
+    />
+  </svg>
+{/snippet}
+
+{#if event === 'hover'}
   <button onmouseenter={handleEvent}>
     <div class="placeholder">
       {#if visible}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          {...restProps}
-          {role}
-          width={size}
-          height={size}
-          fill={color}
-          aria-label={ariaLabel}
-          aria-describedby={hasDescription ? ariaDescribedby : undefined}
-          viewBox="0 0 512 512"
-        >
-          {#if title?.id && title.title}
-            <title id={title.id}>{title.title}</title>
-          {/if}
-          {#if desc?.id && desc.desc}
-            <desc id={desc.id}>{desc.desc}</desc>
-          {/if}
-          <rect
-            transition:draw={transitionParams}
-            x="-24.43"
-            y="167.88"
-            width="560.87"
-            height="176.25"
-            rx="88.12"
-            ry="88.12"
-            transform="translate(-106.04 256) rotate(-45)"
-            style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-          /><rect
-            transition:draw={transitionParams}
-            x="169.41"
-            y="156.59"
-            width="176"
-            height="196"
-            rx="32"
-            ry="32"
-            transform="translate(255.41 -107.45) rotate(45)"
-            style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-          /><circle transition:draw={transitionParams} cx="256" cy="208" r="16" /><circle
-            transition:draw={transitionParams}
-            cx="304"
-            cy="256"
-            r="16"
-          /><circle transition:draw={transitionParams} cx="208" cy="256" r="16" /><circle
-            transition:draw={transitionParams}
-            cx="256"
-            cy="304"
-            r="16"
-          />
-        </svg>
+        {@render iconsvg()}
       {/if}
     </div>
   </button>
-{:else if event === 'onclick'}
+{:else if event === 'click'}
   <button onclick={handleEvent}>
     <div class="placeholder">
       {#if visible}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          {...restProps}
-          {role}
-          width={size}
-          height={size}
-          fill={color}
-          aria-label={ariaLabel}
-          aria-describedby={hasDescription ? ariaDescribedby : undefined}
-          viewBox="0 0 512 512"
-        >
-          {#if title?.id && title.title}
-            <title id={title.id}>{title.title}</title>
-          {/if}
-          {#if desc?.id && desc.desc}
-            <desc id={desc.id}>{desc.desc}</desc>
-          {/if}
-          <rect
-            transition:draw={transitionParams}
-            x="-24.43"
-            y="167.88"
-            width="560.87"
-            height="176.25"
-            rx="88.12"
-            ry="88.12"
-            transform="translate(-106.04 256) rotate(-45)"
-            style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-          /><rect
-            transition:draw={transitionParams}
-            x="169.41"
-            y="156.59"
-            width="176"
-            height="196"
-            rx="32"
-            ry="32"
-            transform="translate(255.41 -107.45) rotate(45)"
-            style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-          /><circle transition:draw={transitionParams} cx="256" cy="208" r="16" /><circle
-            transition:draw={transitionParams}
-            cx="304"
-            cy="256"
-            r="16"
-          /><circle transition:draw={transitionParams} cx="208" cy="256" r="16" /><circle
-            transition:draw={transitionParams}
-            cx="256"
-            cy="304"
-            r="16"
-          />
-        </svg>
+        {@render iconsvg()}
       {/if}
     </div>
   </button>
 {:else}
   <div class="placeholder">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      {...restProps}
-      {role}
-      width={size}
-      height={size}
-      fill={color}
-      aria-label={ariaLabel}
-      aria-describedby={hasDescription ? ariaDescribedby : undefined}
-      viewBox="0 0 512 512"
-    >
-      {#if title?.id && title.title}
-        <title id={title.id}>{title.title}</title>
-      {/if}
-      {#if desc?.id && desc.desc}
-        <desc id={desc.id}>{desc.desc}</desc>
-      {/if}
-      <rect
-        transition:draw={transitionParams}
-        x="-24.43"
-        y="167.88"
-        width="560.87"
-        height="176.25"
-        rx="88.12"
-        ry="88.12"
-        transform="translate(-106.04 256) rotate(-45)"
-        style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-      /><rect
-        transition:draw={transitionParams}
-        x="169.41"
-        y="156.59"
-        width="176"
-        height="196"
-        rx="32"
-        ry="32"
-        transform="translate(255.41 -107.45) rotate(45)"
-        style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-      /><circle transition:draw={transitionParams} cx="256" cy="208" r="16" /><circle
-        transition:draw={transitionParams}
-        cx="304"
-        cy="256"
-        r="16"
-      /><circle transition:draw={transitionParams} cx="208" cy="256" r="16" /><circle
-        transition:draw={transitionParams}
-        cx="256"
-        cy="304"
-        r="16"
-      />
-    </svg>
+    {@render iconsvg()}
   </div>
 {/if}
 

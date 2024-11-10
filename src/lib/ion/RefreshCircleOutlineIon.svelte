@@ -14,7 +14,7 @@
 
   interface Props extends SVGAttributes<SVGElement> {
     pauseDuration?: number;
-    event?: 'onmouseenter' | 'onclick' | 'none';
+    event?: 'hover' | 'click' | 'none';
     title?: TitleType;
     desc?: DescType;
     ariaLabel?: string;
@@ -26,7 +26,7 @@
 
   let {
     pauseDuration = 300,
-    event = 'onmouseenter',
+    event = 'hover',
     size = 24,
     role = 'img',
     color = 'currentColor',
@@ -65,115 +65,60 @@
   });
 </script>
 
-{#if event === 'onmouseenter'}
+{#snippet iconsvg()}
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    {...restProps}
+    {role}
+    width={size}
+    height={size}
+    fill={color}
+    aria-label={ariaLabel}
+    aria-describedby={hasDescription ? ariaDescribedby : undefined}
+    viewBox="0 0 512 512"
+  >
+    {#if title?.id && title.title}
+      <title id={title.id}>{title.title}</title>
+    {/if}
+    {#if desc?.id && desc.desc}
+      <desc id={desc.id}>{desc.desc}</desc>
+    {/if}
+
+    <path
+      transition:draw={transitionParams}
+      d="M288,193s12.18-6-32-6a80,80,0,1,0,80,80"
+      style="fill:none;stroke:{color};stroke-linecap:round;stroke-miterlimit:10;stroke-width:28px"
+    /><polyline
+      transition:draw={transitionParams}
+      points="256 149 296 189 256 229"
+      style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:28px"
+    /><path
+      transition:draw={transitionParams}
+      d="M256,64C150,64,64,150,64,256s86,192,192,192,192-86,192-192S362,64,256,64Z"
+      style="fill:none;stroke:{color};stroke-miterlimit:10;stroke-width:32px"
+    />
+  </svg>
+{/snippet}
+
+{#if event === 'hover'}
   <button onmouseenter={handleEvent}>
     <div class="placeholder">
       {#if visible}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          {...restProps}
-          {role}
-          width={size}
-          height={size}
-          fill={color}
-          aria-label={ariaLabel}
-          aria-describedby={hasDescription ? ariaDescribedby : undefined}
-          viewBox="0 0 512 512"
-        >
-          {#if title?.id && title.title}
-            <title id={title.id}>{title.title}</title>
-          {/if}
-          {#if desc?.id && desc.desc}
-            <desc id={desc.id}>{desc.desc}</desc>
-          {/if}
-          <path
-            transition:draw={transitionParams}
-            d="M288,193s12.18-6-32-6a80,80,0,1,0,80,80"
-            style="fill:none;stroke:{color};stroke-linecap:round;stroke-miterlimit:10;stroke-width:28px"
-          /><polyline
-            transition:draw={transitionParams}
-            points="256 149 296 189 256 229"
-            style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:28px"
-          /><path
-            transition:draw={transitionParams}
-            d="M256,64C150,64,64,150,64,256s86,192,192,192,192-86,192-192S362,64,256,64Z"
-            style="fill:none;stroke:{color};stroke-miterlimit:10;stroke-width:32px"
-          />
-        </svg>
+        {@render iconsvg()}
       {/if}
     </div>
   </button>
-{:else if event === 'onclick'}
+{:else if event === 'click'}
   <button onclick={handleEvent}>
     <div class="placeholder">
       {#if visible}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          {...restProps}
-          {role}
-          width={size}
-          height={size}
-          fill={color}
-          aria-label={ariaLabel}
-          aria-describedby={hasDescription ? ariaDescribedby : undefined}
-          viewBox="0 0 512 512"
-        >
-          {#if title?.id && title.title}
-            <title id={title.id}>{title.title}</title>
-          {/if}
-          {#if desc?.id && desc.desc}
-            <desc id={desc.id}>{desc.desc}</desc>
-          {/if}
-          <path
-            transition:draw={transitionParams}
-            d="M288,193s12.18-6-32-6a80,80,0,1,0,80,80"
-            style="fill:none;stroke:{color};stroke-linecap:round;stroke-miterlimit:10;stroke-width:28px"
-          /><polyline
-            transition:draw={transitionParams}
-            points="256 149 296 189 256 229"
-            style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:28px"
-          /><path
-            transition:draw={transitionParams}
-            d="M256,64C150,64,64,150,64,256s86,192,192,192,192-86,192-192S362,64,256,64Z"
-            style="fill:none;stroke:{color};stroke-miterlimit:10;stroke-width:32px"
-          />
-        </svg>
+        {@render iconsvg()}
       {/if}
     </div>
   </button>
 {:else}
   <div class="placeholder">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      {...restProps}
-      {role}
-      width={size}
-      height={size}
-      fill={color}
-      aria-label={ariaLabel}
-      aria-describedby={hasDescription ? ariaDescribedby : undefined}
-      viewBox="0 0 512 512"
-    >
-      {#if title?.id && title.title}
-        <title id={title.id}>{title.title}</title>
-      {/if}
-      {#if desc?.id && desc.desc}
-        <desc id={desc.id}>{desc.desc}</desc>
-      {/if}
-      <path
-        transition:draw={transitionParams}
-        d="M288,193s12.18-6-32-6a80,80,0,1,0,80,80"
-        style="fill:none;stroke:{color};stroke-linecap:round;stroke-miterlimit:10;stroke-width:28px"
-      /><polyline
-        transition:draw={transitionParams}
-        points="256 149 296 189 256 229"
-        style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:28px"
-      /><path
-        transition:draw={transitionParams}
-        d="M256,64C150,64,64,150,64,256s86,192,192,192,192-86,192-192S362,64,256,64Z"
-        style="fill:none;stroke:{color};stroke-miterlimit:10;stroke-width:32px"
-      />
-    </svg>
+    {@render iconsvg()}
   </div>
 {/if}
 

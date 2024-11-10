@@ -7,7 +7,7 @@
   const DEFAULT_VALUES = {
     size: 24,
     color: '#6928E2',
-    event: 'onmouseenter',
+    event: 'hover',
     pauseDuration: 300,
     transitionDuration: 800,
     transitionDelay: 0
@@ -38,8 +38,8 @@
   });
 
   const eventOptions = [
-    { value: 'onmouseenter', label: 'Mouse Enter' },
-    { value: 'onclick', label: 'Click' },
+    { value: 'hover', label: 'Hover' },
+    { value: 'click', label: 'Click' },
     { value: 'undefined', label: 'None' }
   ];
 

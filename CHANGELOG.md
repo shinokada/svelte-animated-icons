@@ -1,5 +1,11 @@
 # svelte-animated-icons
 
+## 0.5.0
+
+### Minor Changes
+
+- feat: use svelte snippet
+
 ## 0.4.0
 
 ### Minor Changes

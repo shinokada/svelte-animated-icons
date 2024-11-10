@@ -8,7 +8,7 @@
     size: 24,
     color: '#12BF3D',
     strokeWidth: 1.5,
-    event: 'onmouseenter',
+    event: 'hover',
     pauseDuration: 300,
     transitionDuration: 800,
     transitionDelay: 0
@@ -40,8 +40,8 @@
   });
 
   const eventOptions = [
-    { value: 'onmouseenter', label: 'Mouse Enter' },
-    { value: 'onclick', label: 'Click' },
+    { value: 'hover', label: 'Hover' },
+    { value: 'click', label: 'Click' },
     { value: 'undefined', label: 'None' }
   ];
 

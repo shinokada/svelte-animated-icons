@@ -14,7 +14,7 @@
 
   interface Props extends SVGAttributes<SVGElement> {
     pauseDuration?: number;
-    event?: 'onmouseenter' | 'onclick' | 'none';
+    event?: 'hover' | 'click' | 'none';
     title?: TitleType;
     desc?: DescType;
     ariaLabel?: string;
@@ -26,7 +26,7 @@
 
   let {
     pauseDuration = 300,
-    event = 'onmouseenter',
+    event = 'hover',
     size = 24,
     role = 'img',
     color = 'currentColor',
@@ -65,316 +65,124 @@
   });
 </script>
 
-{#if event === 'onmouseenter'}
+{#snippet iconsvg()}
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    {...restProps}
+    {role}
+    width={size}
+    height={size}
+    fill={color}
+    aria-label={ariaLabel}
+    aria-describedby={hasDescription ? ariaDescribedby : undefined}
+    viewBox="0 0 512 512"
+  >
+    {#if title?.id && title.title}
+      <title id={title.id}>{title.title}</title>
+    {/if}
+    {#if desc?.id && desc.desc}
+      <desc id={desc.id}>{desc.desc}</desc>
+    {/if}
+
+    <line
+      transition:draw={transitionParams}
+      x1="176"
+      y1="416"
+      x2="176"
+      y2="480"
+      style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+    /><path
+      transition:draw={transitionParams}
+      d="M80,32H272a32,32,0,0,1,32,32V476a4,4,0,0,1-4,4H48a0,0,0,0,1,0,0V64A32,32,0,0,1,80,32Z"
+      style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+    /><path
+      transition:draw={transitionParams}
+      d="M320,192H432a32,32,0,0,1,32,32V480a0,0,0,0,1,0,0H304a0,0,0,0,1,0,0V208A16,16,0,0,1,320,192Z"
+      style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+    /><path
+      transition:draw={transitionParams}
+      d="M98.08,431.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,98.08,431.87Z"
+    /><path
+      transition:draw={transitionParams}
+      d="M98.08,351.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,98.08,351.87Z"
+    /><path
+      transition:draw={transitionParams}
+      d="M98.08,271.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,98.08,271.87Z"
+    /><path
+      transition:draw={transitionParams}
+      d="M98.08,191.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,98.08,191.87Z"
+    /><path
+      transition:draw={transitionParams}
+      d="M98.08,111.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,98.08,111.87Z"
+    /><path
+      transition:draw={transitionParams}
+      d="M178.08,351.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,178.08,351.87Z"
+    /><path
+      transition:draw={transitionParams}
+      d="M178.08,271.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,178.08,271.87Z"
+    /><path
+      transition:draw={transitionParams}
+      d="M178.08,191.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,178.08,191.87Z"
+    /><path
+      transition:draw={transitionParams}
+      d="M178.08,111.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,178.08,111.87Z"
+    /><path
+      transition:draw={transitionParams}
+      d="M258.08,431.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,258.08,431.87Z"
+    /><path
+      transition:draw={transitionParams}
+      d="M258.08,351.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,258.08,351.87Z"
+    /><path
+      transition:draw={transitionParams}
+      d="M258.08,271.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,258.08,271.87Z"
+    /><ellipse
+      transition:draw={transitionParams}
+      cx="256"
+      cy="176"
+      rx="15.95"
+      ry="16.03"
+      transform="translate(-49.47 232.56) rotate(-45)"
+    /><path
+      transition:draw={transitionParams}
+      d="M258.08,111.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,258.08,111.87Z"
+    /><path
+      transition:draw={transitionParams}
+      d="M400,400a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
+    /><path
+      transition:draw={transitionParams}
+      d="M400,320a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
+    /><path
+      transition:draw={transitionParams}
+      d="M400,240a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
+    /><path
+      transition:draw={transitionParams}
+      d="M336,400a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
+    /><path
+      transition:draw={transitionParams}
+      d="M336,320a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
+    /><path transition:draw={transitionParams} d="M336,240a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z" />
+  </svg>
+{/snippet}
+
+{#if event === 'hover'}
   <button onmouseenter={handleEvent}>
     <div class="placeholder">
       {#if visible}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          {...restProps}
-          {role}
-          width={size}
-          height={size}
-          fill={color}
-          aria-label={ariaLabel}
-          aria-describedby={hasDescription ? ariaDescribedby : undefined}
-          viewBox="0 0 512 512"
-        >
-          {#if title?.id && title.title}
-            <title id={title.id}>{title.title}</title>
-          {/if}
-          {#if desc?.id && desc.desc}
-            <desc id={desc.id}>{desc.desc}</desc>
-          {/if}
-          <line
-            transition:draw={transitionParams}
-            x1="176"
-            y1="416"
-            x2="176"
-            y2="480"
-            style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-          /><path
-            transition:draw={transitionParams}
-            d="M80,32H272a32,32,0,0,1,32,32V476a4,4,0,0,1-4,4H48a0,0,0,0,1,0,0V64A32,32,0,0,1,80,32Z"
-            style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-          /><path
-            transition:draw={transitionParams}
-            d="M320,192H432a32,32,0,0,1,32,32V480a0,0,0,0,1,0,0H304a0,0,0,0,1,0,0V208A16,16,0,0,1,320,192Z"
-            style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-          /><path
-            transition:draw={transitionParams}
-            d="M98.08,431.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,98.08,431.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M98.08,351.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,98.08,351.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M98.08,271.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,98.08,271.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M98.08,191.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,98.08,191.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M98.08,111.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,98.08,111.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M178.08,351.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,178.08,351.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M178.08,271.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,178.08,271.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M178.08,191.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,178.08,191.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M178.08,111.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,178.08,111.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M258.08,431.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,258.08,431.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M258.08,351.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,258.08,351.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M258.08,271.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,258.08,271.87Z"
-          /><ellipse
-            transition:draw={transitionParams}
-            cx="256"
-            cy="176"
-            rx="15.95"
-            ry="16.03"
-            transform="translate(-49.47 232.56) rotate(-45)"
-          /><path
-            transition:draw={transitionParams}
-            d="M258.08,111.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,258.08,111.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M400,400a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M400,320a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M400,240a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M336,400a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M336,320a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M336,240a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
-          />
-        </svg>
+        {@render iconsvg()}
       {/if}
     </div>
   </button>
-{:else if event === 'onclick'}
+{:else if event === 'click'}
   <button onclick={handleEvent}>
     <div class="placeholder">
       {#if visible}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          {...restProps}
-          {role}
-          width={size}
-          height={size}
-          fill={color}
-          aria-label={ariaLabel}
-          aria-describedby={hasDescription ? ariaDescribedby : undefined}
-          viewBox="0 0 512 512"
-        >
-          {#if title?.id && title.title}
-            <title id={title.id}>{title.title}</title>
-          {/if}
-          {#if desc?.id && desc.desc}
-            <desc id={desc.id}>{desc.desc}</desc>
-          {/if}
-          <line
-            transition:draw={transitionParams}
-            x1="176"
-            y1="416"
-            x2="176"
-            y2="480"
-            style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-          /><path
-            transition:draw={transitionParams}
-            d="M80,32H272a32,32,0,0,1,32,32V476a4,4,0,0,1-4,4H48a0,0,0,0,1,0,0V64A32,32,0,0,1,80,32Z"
-            style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-          /><path
-            transition:draw={transitionParams}
-            d="M320,192H432a32,32,0,0,1,32,32V480a0,0,0,0,1,0,0H304a0,0,0,0,1,0,0V208A16,16,0,0,1,320,192Z"
-            style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-          /><path
-            transition:draw={transitionParams}
-            d="M98.08,431.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,98.08,431.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M98.08,351.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,98.08,351.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M98.08,271.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,98.08,271.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M98.08,191.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,98.08,191.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M98.08,111.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,98.08,111.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M178.08,351.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,178.08,351.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M178.08,271.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,178.08,271.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M178.08,191.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,178.08,191.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M178.08,111.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,178.08,111.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M258.08,431.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,258.08,431.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M258.08,351.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,258.08,351.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M258.08,271.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,258.08,271.87Z"
-          /><ellipse
-            transition:draw={transitionParams}
-            cx="256"
-            cy="176"
-            rx="15.95"
-            ry="16.03"
-            transform="translate(-49.47 232.56) rotate(-45)"
-          /><path
-            transition:draw={transitionParams}
-            d="M258.08,111.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,258.08,111.87Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M400,400a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M400,320a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M400,240a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M336,400a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M336,320a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
-          /><path
-            transition:draw={transitionParams}
-            d="M336,240a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
-          />
-        </svg>
+        {@render iconsvg()}
       {/if}
     </div>
   </button>
 {:else}
   <div class="placeholder">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      {...restProps}
-      {role}
-      width={size}
-      height={size}
-      fill={color}
-      aria-label={ariaLabel}
-      aria-describedby={hasDescription ? ariaDescribedby : undefined}
-      viewBox="0 0 512 512"
-    >
-      {#if title?.id && title.title}
-        <title id={title.id}>{title.title}</title>
-      {/if}
-      {#if desc?.id && desc.desc}
-        <desc id={desc.id}>{desc.desc}</desc>
-      {/if}
-      <line
-        transition:draw={transitionParams}
-        x1="176"
-        y1="416"
-        x2="176"
-        y2="480"
-        style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-      /><path
-        transition:draw={transitionParams}
-        d="M80,32H272a32,32,0,0,1,32,32V476a4,4,0,0,1-4,4H48a0,0,0,0,1,0,0V64A32,32,0,0,1,80,32Z"
-        style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-      /><path
-        transition:draw={transitionParams}
-        d="M320,192H432a32,32,0,0,1,32,32V480a0,0,0,0,1,0,0H304a0,0,0,0,1,0,0V208A16,16,0,0,1,320,192Z"
-        style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-      /><path
-        transition:draw={transitionParams}
-        d="M98.08,431.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,98.08,431.87Z"
-      /><path
-        transition:draw={transitionParams}
-        d="M98.08,351.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,98.08,351.87Z"
-      /><path
-        transition:draw={transitionParams}
-        d="M98.08,271.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,98.08,271.87Z"
-      /><path
-        transition:draw={transitionParams}
-        d="M98.08,191.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,98.08,191.87Z"
-      /><path
-        transition:draw={transitionParams}
-        d="M98.08,111.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,98.08,111.87Z"
-      /><path
-        transition:draw={transitionParams}
-        d="M178.08,351.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,178.08,351.87Z"
-      /><path
-        transition:draw={transitionParams}
-        d="M178.08,271.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,178.08,271.87Z"
-      /><path
-        transition:draw={transitionParams}
-        d="M178.08,191.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,178.08,191.87Z"
-      /><path
-        transition:draw={transitionParams}
-        d="M178.08,111.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,178.08,111.87Z"
-      /><path
-        transition:draw={transitionParams}
-        d="M258.08,431.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,258.08,431.87Z"
-      /><path
-        transition:draw={transitionParams}
-        d="M258.08,351.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,258.08,351.87Z"
-      /><path
-        transition:draw={transitionParams}
-        d="M258.08,271.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,258.08,271.87Z"
-      /><ellipse
-        transition:draw={transitionParams}
-        cx="256"
-        cy="176"
-        rx="15.95"
-        ry="16.03"
-        transform="translate(-49.47 232.56) rotate(-45)"
-      /><path
-        transition:draw={transitionParams}
-        d="M258.08,111.87a16,16,0,1,1,13.79-13.79A16,16,0,0,1,258.08,111.87Z"
-      /><path
-        transition:draw={transitionParams}
-        d="M400,400a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
-      /><path
-        transition:draw={transitionParams}
-        d="M400,320a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
-      /><path
-        transition:draw={transitionParams}
-        d="M400,240a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
-      /><path
-        transition:draw={transitionParams}
-        d="M336,400a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
-      /><path
-        transition:draw={transitionParams}
-        d="M336,320a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
-      /><path
-        transition:draw={transitionParams}
-        d="M336,240a16,16,0,1,0,16,16,16,16,0,0,0-16-16Z"
-      />
-    </svg>
+    {@render iconsvg()}
   </div>
 {/if}
 
