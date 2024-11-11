@@ -5,15 +5,12 @@
   import { page } from '$app/stores';
   import {
     Footer,
-    OnThisPage,
-    extract,
     removeHyphensAndCapitalize,
     DotsHorizontalOutline,
     GithubSolid,
     random_tailwind_color,
     XSolid,
-    Bluesky,
-    DocPage
+    Bluesky
   } from 'runes-webkit';
   import {
     Navbar,
@@ -24,13 +21,7 @@
     Darkmode,
     Dropdown,
     DropdownUl,
-    DropdownLi,
-    Sidebar,
-    SidebarGroup,
-    SidebarDropdownWrapper,
-    SidebarItem,
-    CloseButton,
-    SidebarBrand
+    DropdownLi
   } from 'svelte-5-ui-lib';
   import { RunesMetaTags, deepMerge } from 'runes-meta-tags';
   import { Runatics } from 'runatics';
@@ -52,10 +43,10 @@
   // sidebar
   const sidebarUi = uiHelpers();
   let isOpen = $state(false);
-  const closeSidebar = sidebarUi.close;
+  // const closeSidebar = sidebarUi.close;
 
   let currentUrl = $state($page.url.pathname);
-  const hasPath = (key: string) => currentUrl.includes(key);
+  // const hasPath = (key: string) => currentUrl.includes(key);
 
   const lis: LiType[] = [
     { name: 'Flowbite', href: '/flowbite' },
@@ -66,7 +57,7 @@
     name: 'codewithshin.com',
     href: 'https://codewithshin.com'
   };
-  const urlsToIncludeSwitcherAndSidebar = ['/'];
+  // const urlsToIncludeSwitcherAndSidebar = ['/'];
   /*eslint no-undef: "off"*/
   const siteName = removeHyphensAndCapitalize(__NAME__);
   const githubUrl = `https://github.com/shinokada/${__NAME__}`;
@@ -186,11 +177,6 @@
   </Navbar>
 </header>
 
-{#if include}
-  <div class="relative">
-    <OnThisPage {extract} headingSelector="#mainContent > :where(h2, h3)" />
-  </div>
-{/if}
 {@render children()}
 
 <Footer {brand} {lis} />

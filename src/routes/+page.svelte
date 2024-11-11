@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { HighlightCompo, H1, H2, DocPage, OnThisPage, extract } from 'runes-webkit';
+  import { HighlightCompo, H1, H2, DocPage } from 'runes-webkit';
   import { P, Table, List, Li } from 'svelte-5-ui-lib';
 
   const tableItems = [
@@ -50,9 +50,6 @@
   });
 </script>
 
-<div class="relative">
-  <OnThisPage {extract} headingSelector="#mainContent > :where(h2, h3)" />
-</div>
 <DocPage>
   <H1>Svelte Animated Icons</H1>
   <P>
