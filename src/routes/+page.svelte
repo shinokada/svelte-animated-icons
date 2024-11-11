@@ -108,7 +108,7 @@
   <H2>Contributing</H2>
   <P>
     Contributions are welcome! Please read our contributing guidelines before submitting a pull
-    request.
+    request. Create a new icons in `src/lib/custom` directory.
   </P>
 
   <H2>License</H2>

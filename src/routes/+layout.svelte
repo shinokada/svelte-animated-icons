@@ -186,7 +186,7 @@
   </Navbar>
 </header>
 
-{#if urlsToIncludeSwitcherAndSidebar.some((path) => currentUrl.startsWith(path))}
+{#if include}
   <div class="relative">
     <OnThisPage {extract} headingSelector="#mainContent > :where(h2, h3)" />
   </div>

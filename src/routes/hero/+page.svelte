@@ -1,7 +1,7 @@
 <script lang="ts">
   import * as icons from '$lib/hero';
   import type { Component } from 'svelte';
-  import { Label, Input, Select, Span } from 'svelte-5-ui-lib';
+  import { Label, Input, Select, Span, Range } from 'svelte-5-ui-lib';
 
   // Default values
   const DEFAULT_VALUES = {
@@ -104,14 +104,12 @@
     <!-- Basic Controls -->
     <div class="flex flex-wrap gap-4">
       <div class="flex items-center gap-2">
-        <Label color="secondary" for="size-input">Size:</Label>
-        <Input
+        <Label color="secondary" for="size-input" class="w-20">Size: {size}</Label>
+        <Range
           id="size-input"
-          type="number"
           bind:value={size}
-          min="12"
+          min="16"
           max="100"
-          class="w-20 rounded border p-2"
         />
       </div>
 
