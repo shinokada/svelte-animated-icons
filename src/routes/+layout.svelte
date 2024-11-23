@@ -26,7 +26,7 @@
   import { RunesMetaTags, deepMerge } from 'runes-meta-tags';
   import { Runatics } from 'runatics';
   import DynamicCodeBlockStyle from './utils/DynamicCodeBlockStyle.svelte';
-  
+
   let activeUrl = $state($page.url.pathname);
   $effect(() => {
     activeUrl = $page.url.pathname;
@@ -47,17 +47,14 @@
   );
   // sidebar
   const sidebarUi = uiHelpers();
-  let isOpen = $state(false);
-  // const closeSidebar = sidebarUi.close;
 
   let currentUrl = $state($page.url.pathname);
-  // const hasPath = (key: string) => currentUrl.includes(key);
 
   const lis: LiType[] = [
     { name: 'Flowbite', href: '/flowbite' },
     { name: 'Heroicons', href: '/hero' },
     { name: 'Ionicons', href: '/ion' },
-    { name: 'Svelte Animate', href:'https://svelte-animate.codewithshin.com/'}
+    { name: 'Svelte Animate', href: 'https://svelte-animate.codewithshin.com/' }
   ];
   const brand = {
     name: 'codewithshin.com',

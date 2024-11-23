@@ -100,12 +100,7 @@
     <div class="flex flex-wrap gap-4">
       <div class="flex items-center gap-2">
         <Label color="secondary" for="size-input" class="w-20">Size: {size}</Label>
-        <Range
-          id="size-input"
-          bind:value={size}
-          min="16"
-          max="100"
-        />
+        <Range id="size-input" bind:value={size} min="16" max="100" />
       </div>
 
       <div class="flex items-center gap-2">

@@ -43,6 +43,7 @@ This project and everyone participating in it is governed by our Code of Conduct
    ```
 
 ## Development Process
+
 Create a new icons in `src/lib/custom` directory.
 
 1. Make your changes in your feature branch
