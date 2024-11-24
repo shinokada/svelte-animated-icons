@@ -46,8 +46,8 @@
       : data.layoutMetaTags
   );
   // sidebar
-  const sidebarUi = uiHelpers();
-
+  // const sidebarUi = uiHelpers();
+  // let isOpen = $state(false);
   let currentUrl = $state($page.url.pathname);
 
   const lis: LiType[] = [
@@ -107,7 +107,7 @@
     metaTags = $page.data.pageMetaTags
       ? deepMerge($page.data.layoutMetaTags, $page.data.pageMetaTags)
       : data.layoutMetaTags;
-    isOpen = sidebarUi.isOpen;
+    // isOpen = sidebarUi.isOpen;
   });
 </script>
 
