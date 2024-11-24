@@ -133,9 +133,11 @@
     font: inherit;
     cursor: pointer;
     outline: inherit;
+    display: inline-flex;
+    line-height: 0;
   }
   .placeholder {
-    display: inline-block;
+    display: flex;
     min-width: var(--size, 24px);
     min-height: var(--size, 24px);
   }
