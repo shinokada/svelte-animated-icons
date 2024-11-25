@@ -10,7 +10,7 @@
     strokeWidth: 1.5,
     event: 'hover',
     pauseDuration: 300,
-    transitionDuration: 800,
+    transitionDuration: 500,
     transitionDelay: 0
   };
 

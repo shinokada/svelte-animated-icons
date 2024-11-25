@@ -37,11 +37,12 @@
     title,
     desc,
     ariaLabel = 'receipt outline',
-    transitionParams = { duration: 800, delay: 0 },
+    transitionParams = { duration: 500, delay: 0 },
     focusOutlineWidth = '1px',
     focusOutlineColor = 'currentColor',
     focusOutlineOffset = '1px',
     focusOutlineStyle = 'solid',
+    class: className,
     ...restProps
   }: Props = $props();
 
@@ -92,7 +93,8 @@
     aria-label={ariaLabel}
     aria-describedby={hasDescription ? ariaDescribedby : undefined}
     viewBox="0 0 512 512"
-    class="svg-icon"
+    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"
+    class={className}
   >
     {#if title?.id && title.title}
       <title id={title.id}>{title.title}</title>
@@ -184,12 +186,5 @@
     outline-color: var(--focus-outline-color);
     outline-offset: var(--focus-outline-offset);
     outline-style: var(--focus-outline-style);
-  }
-
-  .svg-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
   }
 </style>

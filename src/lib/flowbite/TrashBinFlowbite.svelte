@@ -39,11 +39,12 @@
     title,
     desc,
     ariaLabel = 'trash bin',
-    transitionParams = { duration: 800, delay: 0 },
+    transitionParams = { duration: 500, delay: 0 },
     focusOutlineWidth = '2px',
     focusOutlineColor = 'currentColor',
     focusOutlineOffset = '2px',
     focusOutlineStyle = 'solid',
+    class: className,
     ...restProps
   }: Props = $props();
 
@@ -93,7 +94,8 @@
     aria-label={ariaLabel}
     aria-describedby={hasDescription ? ariaDescribedby : undefined}
     viewBox="0 0 24 24"
-    class="svg-icon"
+    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"
+    class={className}
   >
     {#if title?.id && title.title}
       <title id={title.id}>{title.title}</title>
@@ -170,12 +172,5 @@
     outline-color: var(--focus-outline-color);
     outline-offset: var(--focus-outline-offset);
     outline-style: var(--focus-outline-style);
-  }
-
-  .svg-icon {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
   }
 </style>
