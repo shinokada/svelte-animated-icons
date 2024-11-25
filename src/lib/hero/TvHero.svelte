@@ -34,7 +34,7 @@
     strokeWidth = 1.5,
     title,
     desc,
-    ariaLabel = 'archive box',
+    ariaLabel = 'tv',
     transitionParams = { duration: 800, delay: 0 },
     ...restProps
   }: Props = $props();
@@ -85,36 +85,33 @@
     {#if desc?.id && desc.desc}
       <desc id={desc.id}>{desc.desc}</desc>
     {/if}
-
-    <path
-      d="M6 20.25H18M10.5 17.25V20.25M13.5 17.25V20.25M3.375 17.25H20.625C21.2463 17.25 21.75 16.7463 21.75 16.125V4.875C21.75 4.25368 21.2463 3.75 20.625 3.75H3.375C2.75368 3.75 2.25 4.25368 2.25 4.875V16.125C2.25 16.7463 2.75368 17.25 3.375 17.25Z"
-      stroke={color}
-      stroke-width={strokeWidth}
-      transition:draw={transitionParams}
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
+    {#if visible}
+      <path
+        d="M6 20.25H18M10.5 17.25V20.25M13.5 17.25V20.25M3.375 17.25H20.625C21.2463 17.25 21.75 16.7463 21.75 16.125V4.875C21.75 4.25368 21.2463 3.75 20.625 3.75H3.375C2.75368 3.75 2.25 4.25368 2.25 4.875V16.125C2.25 16.7463 2.75368 17.25 3.375 17.25Z"
+        stroke={color}
+        stroke-width={strokeWidth}
+        transition:draw={transitionParams}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    {/if}
   </svg>
 {/snippet}
 
 {#if event === 'hover'}
   <button onmouseenter={handleEvent}>
-    <div class="placeholder">
-      {#if visible}
-        {@render iconsvg()}
-      {/if}
+    <div class="icon-wrapper">
+      {@render iconsvg()}
     </div>
   </button>
 {:else if event === 'click'}
   <button onclick={handleEvent}>
-    <div class="placeholder">
-      {#if visible}
-        {@render iconsvg()}
-      {/if}
+    <div class="icon-wrapper">
+      {@render iconsvg()}
     </div>
   </button>
 {:else}
-  <div class="placeholder">
+  <div class="icon-wrapper">
     {@render iconsvg()}
   </div>
 {/if}
@@ -130,9 +127,22 @@
     display: inline-flex;
     line-height: 0;
   }
-  .placeholder {
-    display: flex;
+
+  .icon-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-width: var(--size, 24px);
     min-height: var(--size, 24px);
+    width: var(--size, 24px);
+    height: var(--size, 24px);
+  }
+
+  .svg-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 </style>

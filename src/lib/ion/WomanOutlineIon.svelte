@@ -32,7 +32,7 @@
     color = 'currentColor',
     title,
     desc,
-    ariaLabel = 'archive box',
+    ariaLabel = 'woman outline',
     transitionParams = { duration: 800, delay: 0 },
     ...restProps
   }: Props = $props();
@@ -83,51 +83,48 @@
     {#if desc?.id && desc.desc}
       <desc id={desc.id}>{desc.desc}</desc>
     {/if}
-
-    <path
-      transition:draw={transitionParams}
-      d="M208,368V472a23.73,23.73,0,0,0,24,24h0a23.73,23.73,0,0,0,24-24"
-      style="fill:none;stroke:{color};stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
-    /><path
-      transition:draw={transitionParams}
-      d="M256,368V472a23.73,23.73,0,0,0,24,24h0a23.73,23.73,0,0,0,24-24V368"
-      style="fill:none;stroke:{color};stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
-    /><path
-      transition:draw={transitionParams}
-      d="M183,274a23.73,23.73,0,0,1-29.84,16.18h0a23.72,23.72,0,0,1-16.17-29.84l25-84.28A44.85,44.85,0,0,1,205,144H307a44.85,44.85,0,0,1,43,32.08l25,84.28a23.72,23.72,0,0,1-16.17,29.84h0A23.73,23.73,0,0,1,329.05,274"
-      style="fill:none;stroke:{color};stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
-    /><circle
-      transition:draw={transitionParams}
-      cx="256"
-      cy="56"
-      r="40"
-      style="fill:none;stroke:{color};stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
-    /><polyline
-      transition:draw={transitionParams}
-      points="208 192 160 352 352 352 304 192"
-      style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-    />
+    {#if visible}
+      <path
+        transition:draw={transitionParams}
+        d="M208,368V472a23.73,23.73,0,0,0,24,24h0a23.73,23.73,0,0,0,24-24"
+        style="fill:none;stroke:{color};stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+      /><path
+        transition:draw={transitionParams}
+        d="M256,368V472a23.73,23.73,0,0,0,24,24h0a23.73,23.73,0,0,0,24-24V368"
+        style="fill:none;stroke:{color};stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+      /><path
+        transition:draw={transitionParams}
+        d="M183,274a23.73,23.73,0,0,1-29.84,16.18h0a23.72,23.72,0,0,1-16.17-29.84l25-84.28A44.85,44.85,0,0,1,205,144H307a44.85,44.85,0,0,1,43,32.08l25,84.28a23.72,23.72,0,0,1-16.17,29.84h0A23.73,23.73,0,0,1,329.05,274"
+        style="fill:none;stroke:{color};stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+      /><circle
+        transition:draw={transitionParams}
+        cx="256"
+        cy="56"
+        r="40"
+        style="fill:none;stroke:{color};stroke-linecap:round;stroke-miterlimit:10;stroke-width:32px"
+      /><polyline
+        transition:draw={transitionParams}
+        points="208 192 160 352 352 352 304 192"
+        style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+      />
+    {/if}
   </svg>
 {/snippet}
 
 {#if event === 'hover'}
   <button onmouseenter={handleEvent}>
-    <div class="placeholder">
-      {#if visible}
-        {@render iconsvg()}
-      {/if}
+    <div class="icon-wrapper">
+      {@render iconsvg()}
     </div>
   </button>
 {:else if event === 'click'}
   <button onclick={handleEvent}>
-    <div class="placeholder">
-      {#if visible}
-        {@render iconsvg()}
-      {/if}
+    <div class="icon-wrapper">
+      {@render iconsvg()}
     </div>
   </button>
 {:else}
-  <div class="placeholder">
+  <div class="icon-wrapper">
     {@render iconsvg()}
   </div>
 {/if}
@@ -143,9 +140,22 @@
     display: inline-flex;
     line-height: 0;
   }
-  .placeholder {
-    display: flex;
+
+  .icon-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-width: var(--size, 24px);
     min-height: var(--size, 24px);
+    width: var(--size, 24px);
+    height: var(--size, 24px);
+  }
+
+  .svg-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 </style>

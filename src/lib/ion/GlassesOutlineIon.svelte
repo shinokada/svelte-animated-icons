@@ -32,7 +32,7 @@
     color = 'currentColor',
     title,
     desc,
-    ariaLabel = 'archive box',
+    ariaLabel = 'glasses outline',
     transitionParams = { duration: 800, delay: 0 },
     ...restProps
   }: Props = $props();
@@ -83,55 +83,52 @@
     {#if desc?.id && desc.desc}
       <desc id={desc.id}>{desc.desc}</desc>
     {/if}
-
-    <path
-      transition:draw={transitionParams}
-      d="M224,232a32,32,0,0,1,64,0"
-      style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-    /><line
-      transition:draw={transitionParams}
-      x1="448"
-      y1="200"
-      x2="464"
-      y2="200"
-      style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-    /><line
-      transition:draw={transitionParams}
-      x1="64"
-      y1="200"
-      x2="48"
-      y2="200"
-      style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-    /><path
-      transition:draw={transitionParams}
-      d="M64,200c0,96,16,128,80,128s80-32,80-128c0,0-16-16-80-16S64,200,64,200Z"
-      style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-    /><path
-      transition:draw={transitionParams}
-      d="M448,200c0,96-16,128-80,128s-80-32-80-128c0,0,16-16,80-16S448,200,448,200Z"
-      style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-    />
+    {#if visible}
+      <path
+        transition:draw={transitionParams}
+        d="M224,232a32,32,0,0,1,64,0"
+        style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+      /><line
+        transition:draw={transitionParams}
+        x1="448"
+        y1="200"
+        x2="464"
+        y2="200"
+        style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+      /><line
+        transition:draw={transitionParams}
+        x1="64"
+        y1="200"
+        x2="48"
+        y2="200"
+        style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+      /><path
+        transition:draw={transitionParams}
+        d="M64,200c0,96,16,128,80,128s80-32,80-128c0,0-16-16-80-16S64,200,64,200Z"
+        style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+      /><path
+        transition:draw={transitionParams}
+        d="M448,200c0,96-16,128-80,128s-80-32-80-128c0,0,16-16,80-16S448,200,448,200Z"
+        style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+      />
+    {/if}
   </svg>
 {/snippet}
 
 {#if event === 'hover'}
   <button onmouseenter={handleEvent}>
-    <div class="placeholder">
-      {#if visible}
-        {@render iconsvg()}
-      {/if}
+    <div class="icon-wrapper">
+      {@render iconsvg()}
     </div>
   </button>
 {:else if event === 'click'}
   <button onclick={handleEvent}>
-    <div class="placeholder">
-      {#if visible}
-        {@render iconsvg()}
-      {/if}
+    <div class="icon-wrapper">
+      {@render iconsvg()}
     </div>
   </button>
 {:else}
-  <div class="placeholder">
+  <div class="icon-wrapper">
     {@render iconsvg()}
   </div>
 {/if}
@@ -147,9 +144,22 @@
     display: inline-flex;
     line-height: 0;
   }
-  .placeholder {
-    display: flex;
+
+  .icon-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-width: var(--size, 24px);
     min-height: var(--size, 24px);
+    width: var(--size, 24px);
+    height: var(--size, 24px);
+  }
+
+  .svg-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 </style>

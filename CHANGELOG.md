@@ -1,5 +1,14 @@
 # svelte-animated-icons
 
+## 0.5.2
+
+### Patch Changes
+
+- fix: differences between the button and inner div when hovering
+  - Using display: inline-flex on the button ensures it only takes up the exact space of its content
+  - Setting line-height: 0 removes any extra vertical space
+  - Changing the placeholder to display: flex provides better size control and alignment
+
 ## 0.5.1
 
 ### Patch Changes

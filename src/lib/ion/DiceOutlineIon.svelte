@@ -32,7 +32,7 @@
     color = 'currentColor',
     title,
     desc,
-    ariaLabel = 'archive box',
+    ariaLabel = 'dice outline',
     transitionParams = { duration: 800, delay: 0 },
     ...restProps
   }: Props = $props();
@@ -83,74 +83,71 @@
     {#if desc?.id && desc.desc}
       <desc id={desc.id}>{desc.desc}</desc>
     {/if}
-
-    <path
-      transition:draw={transitionParams}
-      fill="none"
-      stroke={color}
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="32"
-      d="M448,341.37V170.61A32,32,0,0,0,432.11,143l-152-88.46a47.94,47.94,0,0,0-48.24,0L79.89,143A32,32,0,0,0,64,170.61V341.37A32,32,0,0,0,79.89,369l152,88.46a48,48,0,0,0,48.24,0l152-88.46A32,32,0,0,0,448,341.37Z"
-    /><polyline
-      transition:draw={transitionParams}
-      fill="none"
-      stroke={color}
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="32"
-      points="69 153.99 256 263.99 443 153.99"
-    /><line
-      transition:draw={transitionParams}
-      fill="none"
-      stroke={color}
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="32"
-      x1="256"
-      y1="463.99"
-      x2="256"
-      y2="263.99"
-    /><ellipse transition:draw={transitionParams} cx="256" cy="152" rx="24" ry="16" /><ellipse
-      transition:draw={transitionParams}
-      cx="208"
-      cy="296"
-      rx="16"
-      ry="24"
-    /><ellipse transition:draw={transitionParams} cx="112" cy="328" rx="16" ry="24" /><ellipse
-      transition:draw={transitionParams}
-      cx="304"
-      cy="296"
-      rx="16"
-      ry="24"
-    /><ellipse transition:draw={transitionParams} cx="400" cy="240" rx="16" ry="24" /><ellipse
-      transition:draw={transitionParams}
-      cx="304"
-      cy="384"
-      rx="16"
-      ry="24"
-    /><ellipse transition:draw={transitionParams} cx="400" cy="328" rx="16" ry="24" />
+    {#if visible}
+      <path
+        transition:draw={transitionParams}
+        fill="none"
+        stroke={color}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="32"
+        d="M448,341.37V170.61A32,32,0,0,0,432.11,143l-152-88.46a47.94,47.94,0,0,0-48.24,0L79.89,143A32,32,0,0,0,64,170.61V341.37A32,32,0,0,0,79.89,369l152,88.46a48,48,0,0,0,48.24,0l152-88.46A32,32,0,0,0,448,341.37Z"
+      /><polyline
+        transition:draw={transitionParams}
+        fill="none"
+        stroke={color}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="32"
+        points="69 153.99 256 263.99 443 153.99"
+      /><line
+        transition:draw={transitionParams}
+        fill="none"
+        stroke={color}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="32"
+        x1="256"
+        y1="463.99"
+        x2="256"
+        y2="263.99"
+      /><ellipse transition:draw={transitionParams} cx="256" cy="152" rx="24" ry="16" /><ellipse
+        transition:draw={transitionParams}
+        cx="208"
+        cy="296"
+        rx="16"
+        ry="24"
+      /><ellipse transition:draw={transitionParams} cx="112" cy="328" rx="16" ry="24" /><ellipse
+        transition:draw={transitionParams}
+        cx="304"
+        cy="296"
+        rx="16"
+        ry="24"
+      /><ellipse transition:draw={transitionParams} cx="400" cy="240" rx="16" ry="24" /><ellipse
+        transition:draw={transitionParams}
+        cx="304"
+        cy="384"
+        rx="16"
+        ry="24"
+      /><ellipse transition:draw={transitionParams} cx="400" cy="328" rx="16" ry="24" />
+    {/if}
   </svg>
 {/snippet}
 
 {#if event === 'hover'}
   <button onmouseenter={handleEvent}>
-    <div class="placeholder">
-      {#if visible}
-        {@render iconsvg()}
-      {/if}
+    <div class="icon-wrapper">
+      {@render iconsvg()}
     </div>
   </button>
 {:else if event === 'click'}
   <button onclick={handleEvent}>
-    <div class="placeholder">
-      {#if visible}
-        {@render iconsvg()}
-      {/if}
+    <div class="icon-wrapper">
+      {@render iconsvg()}
     </div>
   </button>
 {:else}
-  <div class="placeholder">
+  <div class="icon-wrapper">
     {@render iconsvg()}
   </div>
 {/if}
@@ -166,9 +163,22 @@
     display: inline-flex;
     line-height: 0;
   }
-  .placeholder {
-    display: flex;
+
+  .icon-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-width: var(--size, 24px);
     min-height: var(--size, 24px);
+    width: var(--size, 24px);
+    height: var(--size, 24px);
+  }
+
+  .svg-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 </style>

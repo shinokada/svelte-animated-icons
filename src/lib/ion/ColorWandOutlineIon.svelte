@@ -32,7 +32,7 @@
     color = 'currentColor',
     title,
     desc,
-    ariaLabel = 'archive box',
+    ariaLabel = 'color wand outline',
     transitionParams = { duration: 800, delay: 0 },
     ...restProps
   }: Props = $props();
@@ -83,94 +83,91 @@
     {#if desc?.id && desc.desc}
       <desc id={desc.id}>{desc.desc}</desc>
     {/if}
-
-    <rect
-      transition:draw={transitionParams}
-      fill="none"
-      stroke={color}
-      stroke-miterlimit="10"
-      stroke-width="32"
-      x="280.48"
-      y="122.9"
-      width="63.03"
-      height="378.2"
-      rx="31.52"
-      transform="translate(-129.23 312) rotate(-45)"
-    /><path
-      transition:draw={transitionParams}
-      d="M178.38,178.38h0a31.64,31.64,0,0,0,0,44.75L223.25,268,268,223.25l-44.87-44.87A31.64,31.64,0,0,0,178.38,178.38Z"
-    /><line
-      transition:draw={transitionParams}
-      stroke={color}
-      stroke-miterlimit="10"
-      stroke-width="32"
-      stroke-linecap="round"
-      x1="48"
-      y1="192"
-      x2="96"
-      y2="192"
-    /><line
-      transition:draw={transitionParams}
-      stroke={color}
-      stroke-miterlimit="10"
-      stroke-width="32"
-      stroke-linecap="round"
-      x1="90.18"
-      y1="90.18"
-      x2="124.12"
-      y2="124.12"
-    /><line
-      transition:draw={transitionParams}
-      stroke={color}
-      stroke-miterlimit="10"
-      stroke-width="32"
-      stroke-linecap="round"
-      x1="192"
-      y1="48"
-      x2="192"
-      y2="96"
-    /><line
-      transition:draw={transitionParams}
-      stroke={color}
-      stroke-miterlimit="10"
-      stroke-width="32"
-      stroke-linecap="round"
-      x1="293.82"
-      y1="90.18"
-      x2="259.88"
-      y2="124.12"
-    /><line
-      transition:draw={transitionParams}
-      stroke={color}
-      stroke-miterlimit="10"
-      stroke-width="32"
-      stroke-linecap="round"
-      x1="124.12"
-      y1="259.88"
-      x2="90.18"
-      y2="293.82"
-    />
+    {#if visible}
+      <rect
+        transition:draw={transitionParams}
+        fill="none"
+        stroke={color}
+        stroke-miterlimit="10"
+        stroke-width="32"
+        x="280.48"
+        y="122.9"
+        width="63.03"
+        height="378.2"
+        rx="31.52"
+        transform="translate(-129.23 312) rotate(-45)"
+      /><path
+        transition:draw={transitionParams}
+        d="M178.38,178.38h0a31.64,31.64,0,0,0,0,44.75L223.25,268,268,223.25l-44.87-44.87A31.64,31.64,0,0,0,178.38,178.38Z"
+      /><line
+        transition:draw={transitionParams}
+        stroke={color}
+        stroke-miterlimit="10"
+        stroke-width="32"
+        stroke-linecap="round"
+        x1="48"
+        y1="192"
+        x2="96"
+        y2="192"
+      /><line
+        transition:draw={transitionParams}
+        stroke={color}
+        stroke-miterlimit="10"
+        stroke-width="32"
+        stroke-linecap="round"
+        x1="90.18"
+        y1="90.18"
+        x2="124.12"
+        y2="124.12"
+      /><line
+        transition:draw={transitionParams}
+        stroke={color}
+        stroke-miterlimit="10"
+        stroke-width="32"
+        stroke-linecap="round"
+        x1="192"
+        y1="48"
+        x2="192"
+        y2="96"
+      /><line
+        transition:draw={transitionParams}
+        stroke={color}
+        stroke-miterlimit="10"
+        stroke-width="32"
+        stroke-linecap="round"
+        x1="293.82"
+        y1="90.18"
+        x2="259.88"
+        y2="124.12"
+      /><line
+        transition:draw={transitionParams}
+        stroke={color}
+        stroke-miterlimit="10"
+        stroke-width="32"
+        stroke-linecap="round"
+        x1="124.12"
+        y1="259.88"
+        x2="90.18"
+        y2="293.82"
+      />
+    {/if}
   </svg>
 {/snippet}
 
 {#if event === 'hover'}
   <button onmouseenter={handleEvent}>
-    <div class="placeholder">
-      {#if visible}
-        {@render iconsvg()}
-      {/if}
+    <div class="icon-wrapper">
+      {@render iconsvg()}
     </div>
   </button>
 {:else if event === 'click'}
   <button onclick={handleEvent}>
-    <div class="placeholder">
-      {#if visible}
-        {@render iconsvg()}
-      {/if}
+    <div class="icon-wrapper">
+      {@render iconsvg()}
     </div>
   </button>
 {:else}
-  <div class="placeholder">
+  <div class="icon-wrapper">
     {@render iconsvg()}
   </div>
 {/if}
@@ -186,9 +183,22 @@
     display: inline-flex;
     line-height: 0;
   }
-  .placeholder {
-    display: flex;
+
+  .icon-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-width: var(--size, 24px);
     min-height: var(--size, 24px);
+    width: var(--size, 24px);
+    height: var(--size, 24px);
+  }
+
+  .svg-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 </style>

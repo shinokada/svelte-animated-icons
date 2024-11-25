@@ -32,7 +32,7 @@
     color = 'currentColor',
     title,
     desc,
-    ariaLabel = 'archive box',
+    ariaLabel = 'binoculars outline',
     transitionParams = { duration: 800, delay: 0 },
     ...restProps
   }: Props = $props();
@@ -83,80 +83,77 @@
     {#if desc?.id && desc.desc}
       <desc id={desc.id}>{desc.desc}</desc>
     {/if}
-
-    <circle
-      transition:draw={transitionParams}
-      cx="392"
-      cy="344"
-      r="88"
-      stroke={color}
-      stroke-width="32"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
-    <circle
-      transition:draw={transitionParams}
-      cx="120"
-      cy="344"
-      r="88"
-      stroke={color}
-      stroke-width="32"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
-    <path
-      transition:draw={transitionParams}
-      d="M208 344V128C208 101.5 192 80 164 80C129 80 117.5 101.5 107 128C107 128 58.5 255.833 36 317.5"
-      stroke={color}
-      stroke-width="32"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
-    <path
-      transition:draw={transitionParams}
-      d="M208 184C208 184 224.5 176 256 176C287.5 176 304 184 304 184"
-      stroke={color}
-      stroke-width="32"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
-    <path
-      transition:draw={transitionParams}
-      d="M208 272C208 272 224.5 264 256 264C287.5 264 304 272 304 272"
-      stroke={color}
-      stroke-width="32"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
-    <path
-      transition:draw={transitionParams}
-      d="M304 344V128C304 101.5 320 80 348 80C383 80 394.5 101.5 405 128C405 128 453.5 255.833 476 317.5"
-      stroke={color}
-      stroke-width="32"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
+    {#if visible}
+      <circle
+        transition:draw={transitionParams}
+        cx="392"
+        cy="344"
+        r="88"
+        stroke={color}
+        stroke-width="32"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <circle
+        transition:draw={transitionParams}
+        cx="120"
+        cy="344"
+        r="88"
+        stroke={color}
+        stroke-width="32"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        transition:draw={transitionParams}
+        d="M208 344V128C208 101.5 192 80 164 80C129 80 117.5 101.5 107 128C107 128 58.5 255.833 36 317.5"
+        stroke={color}
+        stroke-width="32"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        transition:draw={transitionParams}
+        d="M208 184C208 184 224.5 176 256 176C287.5 176 304 184 304 184"
+        stroke={color}
+        stroke-width="32"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        transition:draw={transitionParams}
+        d="M208 272C208 272 224.5 264 256 264C287.5 264 304 272 304 272"
+        stroke={color}
+        stroke-width="32"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        transition:draw={transitionParams}
+        d="M304 344V128C304 101.5 320 80 348 80C383 80 394.5 101.5 405 128C405 128 453.5 255.833 476 317.5"
+        stroke={color}
+        stroke-width="32"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    {/if}
   </svg>
 {/snippet}
 
 {#if event === 'hover'}
   <button onmouseenter={handleEvent}>
-    <div class="placeholder">
-      {#if visible}
-        {@render iconsvg()}
-      {/if}
+    <div class="icon-wrapper">
+      {@render iconsvg()}
     </div>
   </button>
 {:else if event === 'click'}
   <button onclick={handleEvent}>
-    <div class="placeholder">
-      {#if visible}
-        {@render iconsvg()}
-      {/if}
+    <div class="icon-wrapper">
+      {@render iconsvg()}
     </div>
   </button>
 {:else}
-  <div class="placeholder">
+  <div class="icon-wrapper">
     {@render iconsvg()}
   </div>
 {/if}
@@ -172,9 +169,22 @@
     display: inline-flex;
     line-height: 0;
   }
-  .placeholder {
-    display: flex;
+
+  .icon-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-width: var(--size, 24px);
     min-height: var(--size, 24px);
+    width: var(--size, 24px);
+    height: var(--size, 24px);
+  }
+
+  .svg-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 </style>

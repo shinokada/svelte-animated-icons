@@ -32,7 +32,7 @@
     color = 'currentColor',
     title,
     desc,
-    ariaLabel = 'archive box',
+    ariaLabel = 'film outline',
     transitionParams = { duration: 800, delay: 0 },
     ...restProps
   }: Props = $props();
@@ -83,128 +83,125 @@
     {#if desc?.id && desc.desc}
       <desc id={desc.id}>{desc.desc}</desc>
     {/if}
-
-    <rect
-      transition:draw={transitionParams}
-      x="48"
-      y="96"
-      width="416"
-      height="320"
-      rx="28"
-      ry="28"
-      style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
-    /><rect
-      transition:draw={transitionParams}
-      x="384"
-      y="336"
-      width="80"
-      height="80"
-      rx="28"
-      ry="28"
-      style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
-    /><rect
-      transition:draw={transitionParams}
-      x="384"
-      y="256"
-      width="80"
-      height="80"
-      rx="28"
-      ry="28"
-      style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
-    /><rect
-      transition:draw={transitionParams}
-      x="384"
-      y="176"
-      width="80"
-      height="80"
-      rx="28"
-      ry="28"
-      style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
-    /><rect
-      transition:draw={transitionParams}
-      x="384"
-      y="96"
-      width="80"
-      height="80"
-      rx="28"
-      ry="28"
-      style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
-    /><rect
-      transition:draw={transitionParams}
-      x="48"
-      y="336"
-      width="80"
-      height="80"
-      rx="28"
-      ry="28"
-      style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
-    /><rect
-      transition:draw={transitionParams}
-      x="48"
-      y="256"
-      width="80"
-      height="80"
-      rx="28"
-      ry="28"
-      style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
-    /><rect
-      transition:draw={transitionParams}
-      x="48"
-      y="176"
-      width="80"
-      height="80"
-      rx="28"
-      ry="28"
-      style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
-    /><rect
-      transition:draw={transitionParams}
-      x="48"
-      y="96"
-      width="80"
-      height="80"
-      rx="28"
-      ry="28"
-      style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
-    /><rect
-      transition:draw={transitionParams}
-      x="128"
-      y="96"
-      width="256"
-      height="160"
-      rx="28"
-      ry="28"
-      style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
-    /><rect
-      transition:draw={transitionParams}
-      x="128"
-      y="256"
-      width="256"
-      height="160"
-      rx="28"
-      ry="28"
-      style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
-    />
+    {#if visible}
+      <rect
+        transition:draw={transitionParams}
+        x="48"
+        y="96"
+        width="416"
+        height="320"
+        rx="28"
+        ry="28"
+        style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
+      /><rect
+        transition:draw={transitionParams}
+        x="384"
+        y="336"
+        width="80"
+        height="80"
+        rx="28"
+        ry="28"
+        style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
+      /><rect
+        transition:draw={transitionParams}
+        x="384"
+        y="256"
+        width="80"
+        height="80"
+        rx="28"
+        ry="28"
+        style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
+      /><rect
+        transition:draw={transitionParams}
+        x="384"
+        y="176"
+        width="80"
+        height="80"
+        rx="28"
+        ry="28"
+        style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
+      /><rect
+        transition:draw={transitionParams}
+        x="384"
+        y="96"
+        width="80"
+        height="80"
+        rx="28"
+        ry="28"
+        style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
+      /><rect
+        transition:draw={transitionParams}
+        x="48"
+        y="336"
+        width="80"
+        height="80"
+        rx="28"
+        ry="28"
+        style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
+      /><rect
+        transition:draw={transitionParams}
+        x="48"
+        y="256"
+        width="80"
+        height="80"
+        rx="28"
+        ry="28"
+        style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
+      /><rect
+        transition:draw={transitionParams}
+        x="48"
+        y="176"
+        width="80"
+        height="80"
+        rx="28"
+        ry="28"
+        style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
+      /><rect
+        transition:draw={transitionParams}
+        x="48"
+        y="96"
+        width="80"
+        height="80"
+        rx="28"
+        ry="28"
+        style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
+      /><rect
+        transition:draw={transitionParams}
+        x="128"
+        y="96"
+        width="256"
+        height="160"
+        rx="28"
+        ry="28"
+        style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
+      /><rect
+        transition:draw={transitionParams}
+        x="128"
+        y="256"
+        width="256"
+        height="160"
+        rx="28"
+        ry="28"
+        style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
+      />
+    {/if}
   </svg>
 {/snippet}
 
 {#if event === 'hover'}
   <button onmouseenter={handleEvent}>
-    <div class="placeholder">
-      {#if visible}
-        {@render iconsvg()}
-      {/if}
+    <div class="icon-wrapper">
+      {@render iconsvg()}
     </div>
   </button>
 {:else if event === 'click'}
   <button onclick={handleEvent}>
-    <div class="placeholder">
-      {#if visible}
-        {@render iconsvg()}
-      {/if}
+    <div class="icon-wrapper">
+      {@render iconsvg()}
     </div>
   </button>
 {:else}
-  <div class="placeholder">
+  <div class="icon-wrapper">
     {@render iconsvg()}
   </div>
 {/if}
@@ -220,9 +217,22 @@
     display: inline-flex;
     line-height: 0;
   }
-  .placeholder {
-    display: flex;
+
+  .icon-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-width: var(--size, 24px);
     min-height: var(--size, 24px);
+    width: var(--size, 24px);
+    height: var(--size, 24px);
+  }
+
+  .svg-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 </style>

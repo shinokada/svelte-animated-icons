@@ -32,7 +32,7 @@
     color = 'currentColor',
     title,
     desc,
-    ariaLabel = 'archive box',
+    ariaLabel = 'subway outline',
     transitionParams = { duration: 800, delay: 0 },
     ...restProps
   }: Props = $props();
@@ -83,87 +83,84 @@
     {#if desc?.id && desc.desc}
       <desc id={desc.id}>{desc.desc}</desc>
     {/if}
-
-    <rect
-      transition:draw={transitionParams}
-      x="112"
-      y="32"
-      width="288"
-      height="352"
-      rx="48"
-      ry="48"
-      style="fill:none;stroke:{color};stroke-miterlimit:10;stroke-width:32px"
-    /><line
-      transition:draw={transitionParams}
-      x1="208"
-      y1="80"
-      x2="304"
-      y2="80"
-      style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-    /><rect
-      transition:draw={transitionParams}
-      x="112"
-      y="128"
-      width="288"
-      height="96"
-      rx="32"
-      ry="32"
-      style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-    /><circle
-      transition:draw={transitionParams}
-      cx="176"
-      cy="320"
-      r="16"
-      style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
-    /><circle
-      transition:draw={transitionParams}
-      cx="336"
-      cy="320"
-      r="16"
-      style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
-    /><line
-      transition:draw={transitionParams}
-      x1="144"
-      y1="464"
-      x2="368"
-      y2="464"
-      style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-    /><line
-      transition:draw={transitionParams}
-      x1="336"
-      y1="432"
-      x2="384"
-      y2="480"
-      style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-    /><line
-      transition:draw={transitionParams}
-      x1="176"
-      y1="432"
-      x2="128"
-      y2="480"
-      style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-    />
+    {#if visible}
+      <rect
+        transition:draw={transitionParams}
+        x="112"
+        y="32"
+        width="288"
+        height="352"
+        rx="48"
+        ry="48"
+        style="fill:none;stroke:{color};stroke-miterlimit:10;stroke-width:32px"
+      /><line
+        transition:draw={transitionParams}
+        x1="208"
+        y1="80"
+        x2="304"
+        y2="80"
+        style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+      /><rect
+        transition:draw={transitionParams}
+        x="112"
+        y="128"
+        width="288"
+        height="96"
+        rx="32"
+        ry="32"
+        style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+      /><circle
+        transition:draw={transitionParams}
+        cx="176"
+        cy="320"
+        r="16"
+        style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
+      /><circle
+        transition:draw={transitionParams}
+        cx="336"
+        cy="320"
+        r="16"
+        style="fill:none;stroke:{color};stroke-linejoin:round;stroke-width:32px"
+      /><line
+        transition:draw={transitionParams}
+        x1="144"
+        y1="464"
+        x2="368"
+        y2="464"
+        style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+      /><line
+        transition:draw={transitionParams}
+        x1="336"
+        y1="432"
+        x2="384"
+        y2="480"
+        style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+      /><line
+        transition:draw={transitionParams}
+        x1="176"
+        y1="432"
+        x2="128"
+        y2="480"
+        style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+      />
+    {/if}
   </svg>
 {/snippet}
 
 {#if event === 'hover'}
   <button onmouseenter={handleEvent}>
-    <div class="placeholder">
-      {#if visible}
-        {@render iconsvg()}
-      {/if}
+    <div class="icon-wrapper">
+      {@render iconsvg()}
     </div>
   </button>
 {:else if event === 'click'}
   <button onclick={handleEvent}>
-    <div class="placeholder">
-      {#if visible}
-        {@render iconsvg()}
-      {/if}
+    <div class="icon-wrapper">
+      {@render iconsvg()}
     </div>
   </button>
 {:else}
-  <div class="placeholder">
+  <div class="icon-wrapper">
     {@render iconsvg()}
   </div>
 {/if}
@@ -179,9 +176,22 @@
     display: inline-flex;
     line-height: 0;
   }
-  .placeholder {
-    display: flex;
+
+  .icon-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-width: var(--size, 24px);
     min-height: var(--size, 24px);
+    width: var(--size, 24px);
+    height: var(--size, 24px);
+  }
+
+  .svg-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 </style>

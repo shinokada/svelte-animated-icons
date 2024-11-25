@@ -32,7 +32,7 @@
     color = 'currentColor',
     title,
     desc,
-    ariaLabel = 'archive box',
+    ariaLabel = 'today outline',
     transitionParams = { duration: 800, delay: 0 },
     ...restProps
   }: Props = $props();
@@ -83,85 +83,82 @@
     {#if desc?.id && desc.desc}
       <desc id={desc.id}>{desc.desc}</desc>
     {/if}
-
-    <rect
-      transition:draw={transitionParams}
-      fill="none"
-      stroke={color}
-      stroke-linejoin="round"
-      stroke-width="32"
-      x="48"
-      y="80"
-      width="416"
-      height="384"
-      rx="48"
-    /><line
-      transition:draw={transitionParams}
-      fill="none"
-      stroke={color}
-      stroke-linejoin="round"
-      stroke-width="32"
-      stroke-linecap="round"
-      x1="128"
-      y1="48"
-      x2="128"
-      y2="80"
-    /><line
-      transition:draw={transitionParams}
-      fill="none"
-      stroke={color}
-      stroke-linejoin="round"
-      stroke-width="32"
-      stroke-linecap="round"
-      x1="384"
-      y1="48"
-      x2="384"
-      y2="80"
-    /><rect
-      transition:draw={transitionParams}
-      fill="none"
-      stroke={color}
-      stroke-linejoin="round"
-      stroke-width="32"
-      stroke-linecap="round"
-      x="112"
-      y="224"
-      width="96"
-      height="96"
-      rx="13"
-    /><line
-      transition:draw={transitionParams}
-      fill="none"
-      stroke={color}
-      stroke-linejoin="round"
-      stroke-width="32"
-      stroke-linecap="round"
-      x1="464"
-      y1="160"
-      x2="48"
-      y2="160"
-    />
+    {#if visible}
+      <rect
+        transition:draw={transitionParams}
+        fill="none"
+        stroke={color}
+        stroke-linejoin="round"
+        stroke-width="32"
+        x="48"
+        y="80"
+        width="416"
+        height="384"
+        rx="48"
+      /><line
+        transition:draw={transitionParams}
+        fill="none"
+        stroke={color}
+        stroke-linejoin="round"
+        stroke-width="32"
+        stroke-linecap="round"
+        x1="128"
+        y1="48"
+        x2="128"
+        y2="80"
+      /><line
+        transition:draw={transitionParams}
+        fill="none"
+        stroke={color}
+        stroke-linejoin="round"
+        stroke-width="32"
+        stroke-linecap="round"
+        x1="384"
+        y1="48"
+        x2="384"
+        y2="80"
+      /><rect
+        transition:draw={transitionParams}
+        fill="none"
+        stroke={color}
+        stroke-linejoin="round"
+        stroke-width="32"
+        stroke-linecap="round"
+        x="112"
+        y="224"
+        width="96"
+        height="96"
+        rx="13"
+      /><line
+        transition:draw={transitionParams}
+        fill="none"
+        stroke={color}
+        stroke-linejoin="round"
+        stroke-width="32"
+        stroke-linecap="round"
+        x1="464"
+        y1="160"
+        x2="48"
+        y2="160"
+      />
+    {/if}
   </svg>
 {/snippet}
 
 {#if event === 'hover'}
   <button onmouseenter={handleEvent}>
-    <div class="placeholder">
-      {#if visible}
-        {@render iconsvg()}
-      {/if}
+    <div class="icon-wrapper">
+      {@render iconsvg()}
     </div>
   </button>
 {:else if event === 'click'}
   <button onclick={handleEvent}>
-    <div class="placeholder">
-      {#if visible}
-        {@render iconsvg()}
-      {/if}
+    <div class="icon-wrapper">
+      {@render iconsvg()}
     </div>
   </button>
 {:else}
-  <div class="placeholder">
+  <div class="icon-wrapper">
     {@render iconsvg()}
   </div>
 {/if}
@@ -177,9 +174,22 @@
     display: inline-flex;
     line-height: 0;
   }
-  .placeholder {
-    display: flex;
+
+  .icon-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-width: var(--size, 24px);
     min-height: var(--size, 24px);
+    width: var(--size, 24px);
+    height: var(--size, 24px);
+  }
+
+  .svg-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 </style>

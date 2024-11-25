@@ -32,7 +32,7 @@
     color = 'currentColor',
     title,
     desc,
-    ariaLabel = 'archive box',
+    ariaLabel = 'diamond outline',
     transitionParams = { duration: 800, delay: 0 },
     ...restProps
   }: Props = $props();
@@ -83,86 +83,83 @@
     {#if desc?.id && desc.desc}
       <desc id={desc.id}>{desc.desc}</desc>
     {/if}
-
-    <path
-      transition:draw={transitionParams}
-      d="M35.42,188.21,243.17,457.67a16.17,16.17,0,0,0,25.66,0L476.58,188.21a16.52,16.52,0,0,0,.95-18.75L407.06,55.71A16.22,16.22,0,0,0,393.27,48H118.73a16.22,16.22,0,0,0-13.79,7.71L34.47,169.46A16.52,16.52,0,0,0,35.42,188.21Z"
-      fill="none"
-      stroke={color}
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="32"
-    /><line
-      transition:draw={transitionParams}
-      x1="48"
-      y1="176"
-      x2="464"
-      y2="176"
-      fill="none"
-      stroke={color}
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="32"
-    /><polyline
-      transition:draw={transitionParams}
-      points="400 64 352 176 256 48"
-      fill="none"
-      stroke={color}
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="32"
-    /><polyline
-      transition:draw={transitionParams}
-      points="112 64 160 176 256 48"
-      fill="none"
-      stroke={color}
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="32"
-    /><line
-      transition:draw={transitionParams}
-      x1="256"
-      y1="448"
-      x2="160"
-      y2="176"
-      fill="none"
-      stroke={color}
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="32"
-    /><line
-      transition:draw={transitionParams}
-      x1="256"
-      y1="448"
-      x2="352"
-      y2="176"
-      fill="none"
-      stroke={color}
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      stroke-width="32"
-    />
+    {#if visible}
+      <path
+        transition:draw={transitionParams}
+        d="M35.42,188.21,243.17,457.67a16.17,16.17,0,0,0,25.66,0L476.58,188.21a16.52,16.52,0,0,0,.95-18.75L407.06,55.71A16.22,16.22,0,0,0,393.27,48H118.73a16.22,16.22,0,0,0-13.79,7.71L34.47,169.46A16.52,16.52,0,0,0,35.42,188.21Z"
+        fill="none"
+        stroke={color}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="32"
+      /><line
+        transition:draw={transitionParams}
+        x1="48"
+        y1="176"
+        x2="464"
+        y2="176"
+        fill="none"
+        stroke={color}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="32"
+      /><polyline
+        transition:draw={transitionParams}
+        points="400 64 352 176 256 48"
+        fill="none"
+        stroke={color}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="32"
+      /><polyline
+        transition:draw={transitionParams}
+        points="112 64 160 176 256 48"
+        fill="none"
+        stroke={color}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="32"
+      /><line
+        transition:draw={transitionParams}
+        x1="256"
+        y1="448"
+        x2="160"
+        y2="176"
+        fill="none"
+        stroke={color}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="32"
+      /><line
+        transition:draw={transitionParams}
+        x1="256"
+        y1="448"
+        x2="352"
+        y2="176"
+        fill="none"
+        stroke={color}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="32"
+      />
+    {/if}
   </svg>
 {/snippet}
 
 {#if event === 'hover'}
   <button onmouseenter={handleEvent}>
-    <div class="placeholder">
-      {#if visible}
-        {@render iconsvg()}
-      {/if}
+    <div class="icon-wrapper">
+      {@render iconsvg()}
     </div>
   </button>
 {:else if event === 'click'}
   <button onclick={handleEvent}>
-    <div class="placeholder">
-      {#if visible}
-        {@render iconsvg()}
-      {/if}
+    <div class="icon-wrapper">
+      {@render iconsvg()}
     </div>
   </button>
 {:else}
-  <div class="placeholder">
+  <div class="icon-wrapper">
     {@render iconsvg()}
   </div>
 {/if}
@@ -178,9 +175,22 @@
     display: inline-flex;
     line-height: 0;
   }
-  .placeholder {
-    display: flex;
+
+  .icon-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-width: var(--size, 24px);
     min-height: var(--size, 24px);
+    width: var(--size, 24px);
+    height: var(--size, 24px);
+  }
+
+  .svg-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 </style>
