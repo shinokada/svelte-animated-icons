@@ -5,7 +5,7 @@
 
   // Default values
   const DEFAULT_VALUES = {
-    size: 24,
+    size: 30,
     color: '#E23428',
     strokeWidth: 1.5,
     event: 'hover',

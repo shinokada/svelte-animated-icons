@@ -1,5 +1,23 @@
 # svelte-animated-icons
 
+## 0.6.0
+
+### Minor Changes
+
+- Replaced the <button> with a <div> that has proper ARIA attributes:
+  - Added role="button" for interactive versions
+  - Added role="img" for non-interactive version
+  - Added tabindex="0" to make it focusable
+  - Added appropriate aria-label
+- Added keyboard support:
+  - Added keyboard event handler for the Enter key
+  - Added focus styles in CSS
+  - Maintained keyboard accessibility
+- Improved the structure:
+  - Removed nested button structure
+  - Moved all button-like styles to the icon-wrapper
+  - Added focus styles for better accessibility
+
 ## 0.5.2
 
 ### Patch Changes

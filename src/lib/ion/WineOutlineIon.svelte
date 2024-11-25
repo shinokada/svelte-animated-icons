@@ -22,6 +22,10 @@
     role?: string;
     color?: string;
     transitionParams?: DrawParams;
+    focusOutlineWidth?: string;
+    focusOutlineColor?: string;
+    focusOutlineOffset?: string;
+    focusOutlineStyle?: string;
   }
 
   let {
@@ -34,6 +38,10 @@
     desc,
     ariaLabel = 'wine outline',
     transitionParams = { duration: 800, delay: 0 },
+    focusOutlineWidth = '1px',
+    focusOutlineColor = 'currentColor',
+    focusOutlineOffset = '1px',
+    focusOutlineStyle = 'solid',
     ...restProps
   }: Props = $props();
 
@@ -63,6 +71,14 @@
   $effect(() => {
     document.documentElement.style.setProperty('--size', `${size}px`);
   });
+
+  const buttonId = crypto.randomUUID();
+  let focusStyles = $derived(`
+    --focus-outline-width: ${focusOutlineWidth};
+    --focus-outline-color: ${focusOutlineColor};
+    --focus-outline-offset: ${focusOutlineOffset};
+    --focus-outline-style: ${focusOutlineStyle};
+  `);
 </script>
 
 {#snippet iconsvg()}
@@ -76,6 +92,7 @@
     aria-label={ariaLabel}
     aria-describedby={hasDescription ? ariaDescribedby : undefined}
     viewBox="0 0 512 512"
+    class="svg-icon"
   >
     {#if title?.id && title.title}
       <title id={title.id}>{title.title}</title>
@@ -115,35 +132,38 @@
 {/snippet}
 
 {#if event === 'hover'}
-  <button onmouseenter={handleEvent}>
-    <div class="icon-wrapper">
-      {@render iconsvg()}
-    </div>
-  </button>
+  <div
+    class="icon-wrapper"
+    role="button"
+    tabindex="0"
+    id={buttonId}
+    aria-label={`Animate ${ariaLabel} icon`}
+    onmouseenter={handleEvent}
+    onkeydown={(e) => e.key === 'Enter' && handleEvent()}
+    style={focusStyles}
+  >
+    {@render iconsvg()}
+  </div>
 {:else if event === 'click'}
-  <button onclick={handleEvent}>
-    <div class="icon-wrapper">
-      {@render iconsvg()}
-    </div>
-  </button>
+  <div
+    class="icon-wrapper"
+    role="button"
+    tabindex="0"
+    id={buttonId}
+    aria-label={`Animate ${ariaLabel} icon`}
+    onclick={handleEvent}
+    onkeydown={(e) => e.key === 'Enter' && handleEvent()}
+    style={focusStyles}
+  >
+    {@render iconsvg()}
+  </div>
 {:else}
-  <div class="icon-wrapper">
+  <div class="icon-wrapper" role="img" aria-label={ariaLabel} style={focusStyles}>
     {@render iconsvg()}
   </div>
 {/if}
 
 <style>
-  button {
-    background: none;
-    border: none;
-    padding: 0;
-    font: inherit;
-    cursor: pointer;
-    outline: inherit;
-    display: inline-flex;
-    line-height: 0;
-  }
-
   .icon-wrapper {
     position: relative;
     display: inline-flex;
@@ -153,6 +173,20 @@
     min-height: var(--size, 24px);
     width: var(--size, 24px);
     height: var(--size, 24px);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    outline: inherit;
+    line-height: 0;
+  }
+
+  .icon-wrapper:focus {
+    outline-width: var(--focus-outline-width);
+    outline-color: var(--focus-outline-color);
+    outline-offset: var(--focus-outline-offset);
+    outline-style: var(--focus-outline-style);
   }
 
   .svg-icon {
