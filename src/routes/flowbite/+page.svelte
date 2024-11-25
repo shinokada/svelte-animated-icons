@@ -1,32 +1,32 @@
 <script lang="ts">
-  import * as icons from '$lib/flowbite';
+  import * as icons from '$lib/ion';
   import type { Component } from 'svelte';
-  import { Label, Input, Select, Span, Range } from 'svelte-5-ui-lib';
+  import { Label, Input, Select, Span, Range, Checkbox } from 'svelte-5-ui-lib';
 
   // Default values
   const DEFAULT_VALUES = {
-    size: 30,
-    color: '#E23428',
-    strokeWidth: 1.5,
+    size: 24,
+    color: '#6928E2',
     event: 'hover',
     pauseDuration: 300,
     transitionDuration: 500,
-    transitionDelay: 0
+    transitionDelay: 0,
+    enableFocusStyles: false
   };
 
   let size = $state(DEFAULT_VALUES.size);
   let color = $state(DEFAULT_VALUES.color);
-  let strokeWidth = $state(DEFAULT_VALUES.strokeWidth);
   let searchTerm = $state('');
   let event = $state(DEFAULT_VALUES.event);
   let pauseDuration = $state(DEFAULT_VALUES.pauseDuration);
   let transitionDuration = $state(DEFAULT_VALUES.transitionDuration);
   let transitionDelay = $state(DEFAULT_VALUES.transitionDelay);
+  let enableFocusStyles = $state(DEFAULT_VALUES.enableFocusStyles);
   let copiedIcon = $state('');
 
-  // const flowbiteIcons = Object.fromEntries(
-  //   Object.entries(icons).filter(([name]) => name.endsWith('Flowbite'))
-  // );
+  function handleFocusChange(e: Event & { currentTarget: EventTarget & HTMLInputElement }) {
+    enableFocusStyles = e.currentTarget.checked;
+  }
 
   let filteredIcons = $derived(
     Object.entries(icons).filter(([name]) =>
@@ -54,14 +54,14 @@
     if (color !== DEFAULT_VALUES.color) {
       props.push(`color="${color}"`);
     }
-    if (strokeWidth !== DEFAULT_VALUES.strokeWidth) {
-      props.push(`strokeWidth={${strokeWidth}}`);
-    }
     if (event !== DEFAULT_VALUES.event) {
       props.push(`event="${event}"`);
     }
     if (pauseDuration !== DEFAULT_VALUES.pauseDuration) {
       props.push(`pauseDuration={${pauseDuration}}`);
+    }
+    if (enableFocusStyles !== DEFAULT_VALUES.enableFocusStyles) {
+      props.push(`enableFocusStyles={${enableFocusStyles}}`);
     }
 
     const hasCustomTransition =
@@ -77,10 +77,11 @@
 
     return props.join('\n  ');
   }
-  /* eslint-disable no-useless-escape */
+
   async function copyIcon(name: string) {
     try {
       const props = getPropsString();
+      /* eslint-disable  no-useless-escape */
       const componentText = `<script>
   import { ${name} } from 'svelte-animated-icons';
 <\/script>
@@ -99,7 +100,7 @@
 </script>
 
 <div class="mx-auto max-w-6xl p-4">
-  <h1 class="my-4 text-2xl font-bold">Flowbite Icons</h1>
+  <h1 class="my-4 text-2xl font-bold">Ion Icons</h1>
   <div class="mb-4 space-y-4 rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
     <!-- Basic Controls -->
     <div class="flex flex-wrap gap-4">
@@ -114,15 +115,12 @@
       </div>
 
       <div class="flex items-center gap-2">
-        <Label color="secondary" class="w-40" for="stroke-input">Stroke Width:</Label>
-        <Input
-          id="stroke-input"
-          type="number"
-          bind:value={strokeWidth}
-          min="0.5"
-          max="4"
-          step="0.5"
-          class="w-20 rounded border p-2"
+        <Label color="secondary" for="focus-toggle">Focus Styles:</Label>
+        <Checkbox
+          id="focus-toggle"
+          checked={enableFocusStyles}
+          onchange={handleFocusChange}
+          class="h-5 w-5 rounded border-gray-300"
         />
       </div>
     </div>
@@ -199,10 +197,10 @@
         <Icon
           {size}
           {color}
-          {strokeWidth}
           {event}
           {pauseDuration}
           {transitionParams}
+          {enableFocusStyles}
           ariaLabel={name}
         />
         <Span highlight="blue">{name}</Span>

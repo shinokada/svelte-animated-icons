@@ -23,9 +23,10 @@
     color?: string;
     strokeWidth?: number;
     transitionParams?: DrawParams;
-    focusOutlineWidth?: string;
+    enableFocusStyles?: boolean;
+    focusOutlineWidth?: string | number;
     focusOutlineColor?: string;
-    focusOutlineOffset?: string;
+    focusOutlineOffset?: string | number;
     focusOutlineStyle?: string;
   }
 
@@ -40,9 +41,10 @@
     desc,
     ariaLabel = 'folder open',
     transitionParams = { duration: 500, delay: 0 },
-    focusOutlineWidth = '2px',
+    enableFocusStyles = false,
+    focusOutlineWidth = 0.05, // Default to ~8.3% of icon size
     focusOutlineColor = 'currentColor',
-    focusOutlineOffset = '2px',
+    focusOutlineOffset = 0.05, // Default to ~8.3% of icon size
     focusOutlineStyle = 'solid',
     class: className,
     ...restProps
@@ -70,17 +72,29 @@
     }, totalDuration);
   };
 
+  const calculateOutlineValue = (value: string | number): string => {
+    if (typeof value === 'number') {
+      return `calc(var(--size) * ${value})`;
+    }
+    // If it's a string with units, return as is
+    return value;
+  };
+
   $effect(() => {
     document.documentElement.style.setProperty('--size', `${size}px`);
   });
 
   const buttonId = crypto.randomUUID();
-  let focusStyles = $derived(`
-  --focus-outline-width: ${focusOutlineWidth};
-  --focus-outline-color: ${focusOutlineColor};
-  --focus-outline-offset: ${focusOutlineOffset};
-  --focus-outline-style: ${focusOutlineStyle};
-`);
+  let focusStyles = $derived(
+    enableFocusStyles
+      ? `
+    --focus-outline-width: ${calculateOutlineValue(focusOutlineWidth)};
+    --focus-outline-color: ${focusOutlineColor};
+    --focus-outline-offset: ${calculateOutlineValue(focusOutlineOffset)};
+    --focus-outline-style: ${focusOutlineStyle};
+  `
+      : ''
+  );
 </script>
 
 {#snippet iconsvg()}
@@ -168,9 +182,9 @@
   }
 
   .icon-wrapper:focus {
-    outline-width: var(--focus-outline-width);
-    outline-color: var(--focus-outline-color);
-    outline-offset: var(--focus-outline-offset);
-    outline-style: var(--focus-outline-style);
+    outline-width: var(--focus-outline-width, 0);
+    outline-color: var(--focus-outline-color, transparent);
+    outline-offset: var(--focus-outline-offset, 0);
+    outline-style: var(--focus-outline-style, none);
   }
 </style>

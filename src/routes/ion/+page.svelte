@@ -1,16 +1,17 @@
 <script lang="ts">
   import * as icons from '$lib/ion';
   import type { Component } from 'svelte';
-  import { Label, Input, Select, Span, Range } from 'svelte-5-ui-lib';
+  import { Label, Input, Select, Span, Range, Checkbox } from 'svelte-5-ui-lib';
 
   // Default values
   const DEFAULT_VALUES = {
-    size: 30,
+    size: 24,
     color: '#6928E2',
     event: 'hover',
     pauseDuration: 300,
     transitionDuration: 500,
-    transitionDelay: 0
+    transitionDelay: 0,
+    enableFocusStyles: false
   };
 
   let size = $state(DEFAULT_VALUES.size);
@@ -20,11 +21,12 @@
   let pauseDuration = $state(DEFAULT_VALUES.pauseDuration);
   let transitionDuration = $state(DEFAULT_VALUES.transitionDuration);
   let transitionDelay = $state(DEFAULT_VALUES.transitionDelay);
+  let enableFocusStyles = $state(DEFAULT_VALUES.enableFocusStyles);
   let copiedIcon = $state('');
 
-  // const flowbiteIcons = Object.fromEntries(
-  //   Object.entries(icons).filter(([name]) => name.endsWith('Ion'))
-  // );
+  function handleFocusChange(e: Event & { currentTarget: EventTarget & HTMLInputElement }) {
+    enableFocusStyles = e.currentTarget.checked;
+  }
 
   let filteredIcons = $derived(
     Object.entries(icons).filter(([name]) =>
@@ -57,6 +59,9 @@
     }
     if (pauseDuration !== DEFAULT_VALUES.pauseDuration) {
       props.push(`pauseDuration={${pauseDuration}}`);
+    }
+    if (enableFocusStyles !== DEFAULT_VALUES.enableFocusStyles) {
+      props.push(`enableFocusStyles={${enableFocusStyles}}`);
     }
 
     const hasCustomTransition =
@@ -106,6 +111,16 @@
       <div class="flex items-center gap-2">
         <Label color="secondary" for="color-input">Color:</Label>
         <Input id="color-input" type="color" bind:value={color} class=" h-10 w-20 p-0" />
+      </div>
+
+      <div class="flex items-center gap-2">
+        <Label color="secondary" for="focus-toggle">Focus Styles:</Label>
+        <Checkbox
+          id="focus-toggle"
+          checked={enableFocusStyles}
+          onchange={handleFocusChange}
+          class="h-5 w-5 rounded border-gray-300"
+        />
       </div>
     </div>
 
@@ -178,7 +193,15 @@
       <div
         class="icon-card group relative flex flex-col items-center gap-2 rounded border border-gray-200 p-4 dark:border-gray-700"
       >
-        <Icon {size} {color} {event} {pauseDuration} {transitionParams} ariaLabel={name} />
+        <Icon
+          {size}
+          {color}
+          {event}
+          {pauseDuration}
+          {transitionParams}
+          {enableFocusStyles}
+          ariaLabel={name}
+        />
         <Span highlight="blue">{name}</Span>
         <button
           class="copy-badge absolute right-2 top-2 rounded bg-gray-800 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100"

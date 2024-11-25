@@ -23,9 +23,10 @@
     color?: string;
     strokeWidth?: number;
     transitionParams?: DrawParams;
-    focusOutlineWidth?: string;
+    enableFocusStyles?: boolean;
+    focusOutlineWidth?: string | number;
     focusOutlineColor?: string;
-    focusOutlineOffset?: string;
+    focusOutlineOffset?: string | number;
     focusOutlineStyle?: string;
   }
 
@@ -40,9 +41,10 @@
     desc,
     ariaLabel = 'arrow right circle',
     transitionParams = { duration: 500, delay: 0 },
-    focusOutlineWidth = '1px',
+    enableFocusStyles = false,
+    focusOutlineWidth = 0.05, // Default to ~8.3% of icon size
     focusOutlineColor = 'currentColor',
-    focusOutlineOffset = '1px',
+    focusOutlineOffset = 0.05, // Default to ~8.3% of icon size
     focusOutlineStyle = 'solid',
     class: className,
     ...restProps
@@ -70,18 +72,31 @@
     }, totalDuration);
   };
 
+  // Convert outline width and offset to calculated values based on size
+  const calculateOutlineValue = (value: string | number): string => {
+    if (typeof value === 'number') {
+      return `calc(var(--size) * ${value})`;
+    }
+    // If it's a string with units, return as is
+    return value;
+  };
+
   // Set CSS variable for the placeholder size
   $effect(() => {
     document.documentElement.style.setProperty('--size', `${size}px`);
   });
 
   const buttonId = crypto.randomUUID();
-  let focusStyles = $derived(`
-    --focus-outline-width: ${focusOutlineWidth};
+  let focusStyles = $derived(
+    enableFocusStyles
+      ? `
+    --focus-outline-width: ${calculateOutlineValue(focusOutlineWidth)};
     --focus-outline-color: ${focusOutlineColor};
-    --focus-outline-offset: ${focusOutlineOffset};
+    --focus-outline-offset: ${calculateOutlineValue(focusOutlineOffset)};
     --focus-outline-style: ${focusOutlineStyle};
-  `);
+  `
+      : ''
+  );
 </script>
 
 {#snippet iconsvg()}
@@ -169,9 +184,9 @@
   }
 
   .icon-wrapper:focus {
-    outline-width: var(--focus-outline-width);
-    outline-color: var(--focus-outline-color);
-    outline-offset: var(--focus-outline-offset);
-    outline-style: var(--focus-outline-style);
+    outline-width: var(--focus-outline-width, 0);
+    outline-color: var(--focus-outline-color, transparent);
+    outline-offset: var(--focus-outline-offset, 0);
+    outline-style: var(--focus-outline-style, none);
   }
 </style>

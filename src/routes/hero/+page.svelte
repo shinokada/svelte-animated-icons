@@ -1,17 +1,18 @@
 <script lang="ts">
   import * as icons from '$lib/hero';
   import type { Component } from 'svelte';
-  import { Label, Input, Select, Span, Range } from 'svelte-5-ui-lib';
+  import { Label, Input, Select, Span, Range, Checkbox } from 'svelte-5-ui-lib';
 
   // Default values
   const DEFAULT_VALUES = {
-    size: 30,
+    size: 24,
     color: '#12BF3D',
     strokeWidth: 1.5,
     event: 'hover',
     pauseDuration: 300,
     transitionDuration: 500,
-    transitionDelay: 0
+    transitionDelay: 0,
+    enableFocusStyles: false
   };
 
   let size = $state(DEFAULT_VALUES.size);
@@ -22,11 +23,12 @@
   let pauseDuration = $state(DEFAULT_VALUES.pauseDuration);
   let transitionDuration = $state(DEFAULT_VALUES.transitionDuration);
   let transitionDelay = $state(DEFAULT_VALUES.transitionDelay);
+  let enableFocusStyles = $state(DEFAULT_VALUES.enableFocusStyles);
   let copiedIcon = $state('');
 
-  // const heroIcons = Object.fromEntries(
-  //   Object.entries(icons).filter(([name]) => name.endsWith('Hero'))
-  // );
+  function handleFocusChange(e: Event & { currentTarget: EventTarget & HTMLInputElement }) {
+    enableFocusStyles = e.currentTarget.checked;
+  }
 
   let filteredIcons = $derived(
     Object.entries(icons).filter(([name]) =>
@@ -62,6 +64,9 @@
     }
     if (pauseDuration !== DEFAULT_VALUES.pauseDuration) {
       props.push(`pauseDuration={${pauseDuration}}`);
+    }
+    if (enableFocusStyles !== DEFAULT_VALUES.enableFocusStyles) {
+      props.push(`enableFocusStyles={${enableFocusStyles}}`);
     }
 
     const hasCustomTransition =
@@ -123,6 +128,16 @@
           max="3"
           step="0.5"
           class="w-20 rounded border p-2"
+        />
+      </div>
+
+      <div class="flex items-center gap-2">
+        <Label color="secondary" for="focus-toggle">Focus Styles:</Label>
+        <Checkbox
+          id="focus-toggle"
+          checked={enableFocusStyles}
+          onchange={handleFocusChange}
+          class="h-5 w-5 rounded border-gray-300"
         />
       </div>
     </div>
@@ -203,6 +218,7 @@
           {event}
           {pauseDuration}
           {transitionParams}
+          {enableFocusStyles}
           ariaLabel={name}
         />
         <Span highlight="blue">{name}</Span>
