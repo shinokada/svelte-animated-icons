@@ -1,5 +1,12 @@
 # svelte-animated-icons
 
+## 0.6.1
+
+### Patch Changes
+
+- fix: .svg-icon to style
+- fix: add a prop, class:className
+
 ## 0.6.0
 
 ### Minor Changes
