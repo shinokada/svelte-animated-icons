@@ -1,5 +1,12 @@
 # svelte-animated-icons
 
+## 0.6.2
+
+### Patch Changes
+
+- fix: add enableFocusStyles
+- fix: make the focus outline scale with icon size
+
 ## 0.6.1
 
 ### Patch Changes
