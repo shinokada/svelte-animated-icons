@@ -12,40 +12,28 @@
     desc?: string;
   };
 
-  interface Props extends SVGAttributes<SVGElement> {
+  interface Props extends SVGAttributes<SVGSVGElement> {
     pauseDuration?: number;
     event?: 'hover' | 'click' | 'none';
     title?: TitleType;
     desc?: DescType;
     ariaLabel?: string;
     size?: number;
-    role?: string;
     color?: string;
     strokeWidth?: number;
     transitionParams?: DrawParams;
-    enableFocusStyles?: boolean;
-    focusOutlineWidth?: string | number;
-    focusOutlineColor?: string;
-    focusOutlineOffset?: string | number;
-    focusOutlineStyle?: string;
   }
 
   let {
     pauseDuration = 300,
     event = 'hover',
     size = 24,
-    role = 'img',
     color = 'currentColor',
     strokeWidth = 1.5,
     title,
     desc,
     ariaLabel = 'percent badge',
     transitionParams = { duration: 500, delay: 0 },
-    enableFocusStyles = false,
-    focusOutlineWidth = 0.05, // Default to ~8.3% of icon size
-    focusOutlineColor = 'currentColor',
-    focusOutlineOffset = 0.05, // Default to ~8.3% of icon size
-    focusOutlineStyle = 'solid',
     class: className,
     ...restProps
   }: Props = $props();
@@ -58,135 +46,72 @@
     return params.duration;
   };
 
+  $effect(() => {
+    visible = true;
+    isAnimating = false;
+  });
+
   let visible = $state(true);
   let totalDuration = $derived(getDuration(transitionParams) + pauseDuration);
 
   let ariaDescribedby = `${title?.id || ''} ${desc?.id || ''}`;
   const hasDescription = $derived(!!(title?.id || desc?.id));
 
+  let isAnimating = $state(false);
+
   const handleEvent = () => {
-    if (!visible) return;
+    // Only animate if event is not 'none'
+    if (event === 'none' || isAnimating) return;
+
+    isAnimating = true;
     visible = false;
+
     setTimeout(() => {
       visible = true;
+      isAnimating = false;
     }, totalDuration);
   };
 
-  // Convert outline width and offset to calculated values based on size
-  const calculateOutlineValue = (value: string | number): string => {
-    if (typeof value === 'number') {
-      return `calc(var(--size) * ${value})`;
-    }
-    // If it's a string with units, return as is
-    return value;
-  };
-
-  // Set CSS variable for the placeholder size
-  $effect(() => {
-    document.documentElement.style.setProperty('--size', `${size}px`);
-  });
-
-  const buttonId = crypto.randomUUID();
-  let focusStyles = $derived(
-    enableFocusStyles
-      ? `
-    --focus-outline-width: ${calculateOutlineValue(focusOutlineWidth)};
-    --focus-outline-color: ${focusOutlineColor};
-    --focus-outline-offset: ${calculateOutlineValue(focusOutlineOffset)};
-    --focus-outline-style: ${focusOutlineStyle};
-  `
-      : ''
+  const eventHandlers = $derived(
+    event === 'none'
+      ? {} // No event handlers when event is 'none'
+      : event === 'hover'
+        ? { onmouseenter: handleEvent, onclick: undefined }
+        : {
+            onclick: handleEvent,
+            onmouseenter: undefined,
+            onmouseover: undefined
+          }
   );
 </script>
 
-{#snippet iconsvg()}
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    {...restProps}
-    {role}
-    width={size}
-    height={size}
-    fill="none"
-    aria-label={ariaLabel}
-    aria-describedby={hasDescription ? ariaDescribedby : undefined}
-    viewBox="0 0 24 24"
-    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"
-    class={className}
-  >
-    {#if title?.id && title.title}
-      <title id={title.id}>{title.title}</title>
-    {/if}
-    {#if desc?.id && desc.desc}
-      <desc id={desc.id}>{desc.desc}</desc>
-    {/if}
-    {#if visible}
-      <path
-        d="M8.99044 14.9934L14.9903 8.99282M20.9899 11.994C20.9899 13.2624 20.3603 14.3838 19.3966 15.0625C19.598 16.2238 19.2503 17.4618 18.3537 18.3586C17.457 19.2554 16.2192 19.603 15.058 19.4016C14.3793 20.3653 13.2582 20.9949 11.9901 20.9949C10.7219 20.9949 9.60083 20.3654 8.92216 19.4017C7.7608 19.6034 6.52272 19.2557 5.62589 18.3588C4.72906 17.4618 4.38145 16.2236 4.58306 15.0622C3.61963 14.3834 2.99023 13.2622 2.99023 11.994C2.99023 10.7258 3.61968 9.60457 4.58318 8.92582C4.38168 7.76442 4.7293 6.52634 5.62605 5.62949C6.52282 4.73262 7.76077 4.38496 8.92206 4.5865C9.60071 3.62277 10.7219 2.99316 11.9901 2.99316C13.2582 2.99316 14.3793 3.62272 15.058 4.58638C16.2193 4.38474 17.4574 4.73239 18.3542 5.62932C19.251 6.52624 19.5987 7.76443 19.3971 8.92591C20.3605 9.60467 20.9899 10.7258 20.9899 11.994ZM9.74042 9.74289H9.74792V9.75039H9.74042V9.74289ZM10.1154 9.74289C10.1154 9.95002 9.94752 10.1179 9.74042 10.1179C9.53332 10.1179 9.36543 9.95002 9.36543 9.74289C9.36543 9.53576 9.53332 9.36785 9.74042 9.36785C9.94752 9.36785 10.1154 9.53576 10.1154 9.74289ZM14.2403 14.2433H14.2478V14.2508H14.2403V14.2433ZM14.6153 14.2433C14.6153 14.4504 14.4474 14.6184 14.2403 14.6184C14.0332 14.6184 13.8653 14.4504 13.8653 14.2433C13.8653 14.0362 14.0332 13.8683 14.2403 13.8683C14.4474 13.8683 14.6153 14.0362 14.6153 14.2433Z"
-        stroke={color}
-        stroke-width={strokeWidth}
-        transition:draw={transitionParams}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    {/if}
-  </svg>
-{/snippet}
-
-{#if event === 'hover'}
-  <div
-    class="icon-wrapper"
-    role="button"
-    tabindex="0"
-    id={buttonId}
-    aria-label={`Animate ${ariaLabel} icon`}
-    onmouseenter={handleEvent}
-    onkeydown={(e) => e.key === 'Enter' && handleEvent()}
-    style={focusStyles}
-  >
-    {@render iconsvg()}
-  </div>
-{:else if event === 'click'}
-  <div
-    class="icon-wrapper"
-    role="button"
-    tabindex="0"
-    id={buttonId}
-    aria-label={`Animate ${ariaLabel} icon`}
-    onclick={handleEvent}
-    onkeydown={(e) => e.key === 'Enter' && handleEvent()}
-    style={focusStyles}
-  >
-    {@render iconsvg()}
-  </div>
-{:else}
-  <div class="icon-wrapper" role="img" aria-label={ariaLabel} style={focusStyles}>
-    {@render iconsvg()}
-  </div>
-{/if}
-
-<style>
-  .icon-wrapper {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: var(--size, 24px);
-    min-height: var(--size, 24px);
-    width: var(--size, 24px);
-    height: var(--size, 24px);
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 0;
-    font: inherit;
-    outline: inherit;
-    line-height: 0;
-  }
-
-  .icon-wrapper:focus {
-    outline-width: var(--focus-outline-width, 0);
-    outline-color: var(--focus-outline-color, transparent);
-    outline-offset: var(--focus-outline-offset, 0);
-    outline-style: var(--focus-outline-style, none);
-  }
-</style>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  {...restProps}
+  {...eventHandlers}
+  width={size}
+  height={size}
+  fill="none"
+  role={event === 'none' ? 'img' : 'button'}
+  aria-label={ariaLabel}
+  aria-describedby={hasDescription ? ariaDescribedby : undefined}
+  viewBox="0 0 24 24"
+  class={className}
+>
+  {#if title?.id && title.title}
+    <title id={title.id}>{title.title}</title>
+  {/if}
+  {#if desc?.id && desc.desc}
+    <desc id={desc.id}>{desc.desc}</desc>
+  {/if}
+  {#if visible}
+    <path
+      d="M8.99044 14.9934L14.9903 8.99282M20.9899 11.994C20.9899 13.2624 20.3603 14.3838 19.3966 15.0625C19.598 16.2238 19.2503 17.4618 18.3537 18.3586C17.457 19.2554 16.2192 19.603 15.058 19.4016C14.3793 20.3653 13.2582 20.9949 11.9901 20.9949C10.7219 20.9949 9.60083 20.3654 8.92216 19.4017C7.7608 19.6034 6.52272 19.2557 5.62589 18.3588C4.72906 17.4618 4.38145 16.2236 4.58306 15.0622C3.61963 14.3834 2.99023 13.2622 2.99023 11.994C2.99023 10.7258 3.61968 9.60457 4.58318 8.92582C4.38168 7.76442 4.7293 6.52634 5.62605 5.62949C6.52282 4.73262 7.76077 4.38496 8.92206 4.5865C9.60071 3.62277 10.7219 2.99316 11.9901 2.99316C13.2582 2.99316 14.3793 3.62272 15.058 4.58638C16.2193 4.38474 17.4574 4.73239 18.3542 5.62932C19.251 6.52624 19.5987 7.76443 19.3971 8.92591C20.3605 9.60467 20.9899 10.7258 20.9899 11.994ZM9.74042 9.74289H9.74792V9.75039H9.74042V9.74289ZM10.1154 9.74289C10.1154 9.95002 9.94752 10.1179 9.74042 10.1179C9.53332 10.1179 9.36543 9.95002 9.36543 9.74289C9.36543 9.53576 9.53332 9.36785 9.74042 9.36785C9.94752 9.36785 10.1154 9.53576 10.1154 9.74289ZM14.2403 14.2433H14.2478V14.2508H14.2403V14.2433ZM14.6153 14.2433C14.6153 14.4504 14.4474 14.6184 14.2403 14.6184C14.0332 14.6184 13.8653 14.4504 13.8653 14.2433C13.8653 14.0362 14.0332 13.8683 14.2403 13.8683C14.4474 13.8683 14.6153 14.0362 14.6153 14.2433Z"
+      stroke={color}
+      stroke-width={strokeWidth}
+      transition:draw={transitionParams}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  {/if}
+</svg>

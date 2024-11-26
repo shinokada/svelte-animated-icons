@@ -12,40 +12,28 @@
     desc?: string;
   };
 
-  interface Props extends SVGAttributes<SVGElement> {
+  interface Props extends SVGAttributes<SVGSVGElement> {
     pauseDuration?: number;
     event?: 'hover' | 'click' | 'none';
     title?: TitleType;
     desc?: DescType;
     ariaLabel?: string;
     size?: number;
-    role?: string;
     color?: string;
     strokeWidth?: number;
     transitionParams?: DrawParams;
-    enableFocusStyles?: boolean;
-    focusOutlineWidth?: string | number;
-    focusOutlineColor?: string;
-    focusOutlineOffset?: string | number;
-    focusOutlineStyle?: string;
   }
 
   let {
     pauseDuration = 300,
     event = 'hover',
     size = 24,
-    role = 'img',
     color = 'currentColor',
     strokeWidth = 1.5,
     title,
     desc,
     ariaLabel = 'inbox stack',
     transitionParams = { duration: 500, delay: 0 },
-    enableFocusStyles = false,
-    focusOutlineWidth = 0.05, // Default to ~8.3% of icon size
-    focusOutlineColor = 'currentColor',
-    focusOutlineOffset = 0.05, // Default to ~8.3% of icon size
-    focusOutlineStyle = 'solid',
     class: className,
     ...restProps
   }: Props = $props();
@@ -58,135 +46,72 @@
     return params.duration;
   };
 
+  $effect(() => {
+    visible = true;
+    isAnimating = false;
+  });
+
   let visible = $state(true);
   let totalDuration = $derived(getDuration(transitionParams) + pauseDuration);
 
   let ariaDescribedby = `${title?.id || ''} ${desc?.id || ''}`;
   const hasDescription = $derived(!!(title?.id || desc?.id));
 
+  let isAnimating = $state(false);
+
   const handleEvent = () => {
-    if (!visible) return;
+    // Only animate if event is not 'none'
+    if (event === 'none' || isAnimating) return;
+
+    isAnimating = true;
     visible = false;
+
     setTimeout(() => {
       visible = true;
+      isAnimating = false;
     }, totalDuration);
   };
 
-  // Convert outline width and offset to calculated values based on size
-  const calculateOutlineValue = (value: string | number): string => {
-    if (typeof value === 'number') {
-      return `calc(var(--size) * ${value})`;
-    }
-    // If it's a string with units, return as is
-    return value;
-  };
-
-  // Set CSS variable for the placeholder size
-  $effect(() => {
-    document.documentElement.style.setProperty('--size', `${size}px`);
-  });
-
-  const buttonId = crypto.randomUUID();
-  let focusStyles = $derived(
-    enableFocusStyles
-      ? `
-    --focus-outline-width: ${calculateOutlineValue(focusOutlineWidth)};
-    --focus-outline-color: ${focusOutlineColor};
-    --focus-outline-offset: ${calculateOutlineValue(focusOutlineOffset)};
-    --focus-outline-style: ${focusOutlineStyle};
-  `
-      : ''
+  const eventHandlers = $derived(
+    event === 'none'
+      ? {} // No event handlers when event is 'none'
+      : event === 'hover'
+        ? { onmouseenter: handleEvent, onclick: undefined }
+        : {
+            onclick: handleEvent,
+            onmouseenter: undefined,
+            onmouseover: undefined
+          }
   );
 </script>
 
-{#snippet iconsvg()}
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    {...restProps}
-    {role}
-    width={size}
-    height={size}
-    fill="none"
-    aria-label={ariaLabel}
-    aria-describedby={hasDescription ? ariaDescribedby : undefined}
-    viewBox="0 0 24 24"
-    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"
-    class={className}
-  >
-    {#if title?.id && title.title}
-      <title id={title.id}>{title.title}</title>
-    {/if}
-    {#if desc?.id && desc.desc}
-      <desc id={desc.id}>{desc.desc}</desc>
-    {/if}
-    {#if visible}
-      <path
-        d="M7.875 14.25L9.08906 16.1925C9.50022 16.8504 10.2213 17.25 10.9971 17.25H13.0029C13.7787 17.25 14.4998 16.8504 14.9109 16.1925L16.125 14.25M2.40961 9H7.04584C7.79813 9 8.50065 9.37598 8.91795 10.0019L9.08205 10.2481C9.49935 10.874 10.2019 11.25 10.9542 11.25H13.0458C13.7981 11.25 14.5007 10.874 14.9179 10.2481L15.0821 10.0019C15.4993 9.37598 16.2019 9 16.9542 9H21.5904M2.40961 9C2.30498 9.2628 2.25 9.54503 2.25 9.83233V12C2.25 13.2426 3.25736 14.25 4.5 14.25H19.5C20.7426 14.25 21.75 13.2426 21.75 12V9.83233C21.75 9.54503 21.695 9.2628 21.5904 9M2.40961 9C2.50059 8.77151 2.62911 8.55771 2.79167 8.36805L6.07653 4.53572C6.50399 4.03702 7.12802 3.75 7.78485 3.75H16.2151C16.872 3.75 17.496 4.03702 17.9235 4.53572L21.2083 8.36805C21.3709 8.55771 21.4994 8.77151 21.5904 9M4.5 20.25H19.5C20.7426 20.25 21.75 19.2426 21.75 18V15.375C21.75 14.7537 21.2463 14.25 20.625 14.25H3.375C2.75368 14.25 2.25 14.7537 2.25 15.375V18C2.25 19.2426 3.25736 20.25 4.5 20.25Z"
-        stroke={color}
-        stroke-width={strokeWidth}
-        transition:draw={transitionParams}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    {/if}
-  </svg>
-{/snippet}
-
-{#if event === 'hover'}
-  <div
-    class="icon-wrapper"
-    role="button"
-    tabindex="0"
-    id={buttonId}
-    aria-label={`Animate ${ariaLabel} icon`}
-    onmouseenter={handleEvent}
-    onkeydown={(e) => e.key === 'Enter' && handleEvent()}
-    style={focusStyles}
-  >
-    {@render iconsvg()}
-  </div>
-{:else if event === 'click'}
-  <div
-    class="icon-wrapper"
-    role="button"
-    tabindex="0"
-    id={buttonId}
-    aria-label={`Animate ${ariaLabel} icon`}
-    onclick={handleEvent}
-    onkeydown={(e) => e.key === 'Enter' && handleEvent()}
-    style={focusStyles}
-  >
-    {@render iconsvg()}
-  </div>
-{:else}
-  <div class="icon-wrapper" role="img" aria-label={ariaLabel} style={focusStyles}>
-    {@render iconsvg()}
-  </div>
-{/if}
-
-<style>
-  .icon-wrapper {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: var(--size, 24px);
-    min-height: var(--size, 24px);
-    width: var(--size, 24px);
-    height: var(--size, 24px);
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 0;
-    font: inherit;
-    outline: inherit;
-    line-height: 0;
-  }
-
-  .icon-wrapper:focus {
-    outline-width: var(--focus-outline-width, 0);
-    outline-color: var(--focus-outline-color, transparent);
-    outline-offset: var(--focus-outline-offset, 0);
-    outline-style: var(--focus-outline-style, none);
-  }
-</style>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  {...restProps}
+  {...eventHandlers}
+  width={size}
+  height={size}
+  fill="none"
+  role={event === 'none' ? 'img' : 'button'}
+  aria-label={ariaLabel}
+  aria-describedby={hasDescription ? ariaDescribedby : undefined}
+  viewBox="0 0 24 24"
+  class={className}
+>
+  {#if title?.id && title.title}
+    <title id={title.id}>{title.title}</title>
+  {/if}
+  {#if desc?.id && desc.desc}
+    <desc id={desc.id}>{desc.desc}</desc>
+  {/if}
+  {#if visible}
+    <path
+      d="M7.875 14.25L9.08906 16.1925C9.50022 16.8504 10.2213 17.25 10.9971 17.25H13.0029C13.7787 17.25 14.4998 16.8504 14.9109 16.1925L16.125 14.25M2.40961 9H7.04584C7.79813 9 8.50065 9.37598 8.91795 10.0019L9.08205 10.2481C9.49935 10.874 10.2019 11.25 10.9542 11.25H13.0458C13.7981 11.25 14.5007 10.874 14.9179 10.2481L15.0821 10.0019C15.4993 9.37598 16.2019 9 16.9542 9H21.5904M2.40961 9C2.30498 9.2628 2.25 9.54503 2.25 9.83233V12C2.25 13.2426 3.25736 14.25 4.5 14.25H19.5C20.7426 14.25 21.75 13.2426 21.75 12V9.83233C21.75 9.54503 21.695 9.2628 21.5904 9M2.40961 9C2.50059 8.77151 2.62911 8.55771 2.79167 8.36805L6.07653 4.53572C6.50399 4.03702 7.12802 3.75 7.78485 3.75H16.2151C16.872 3.75 17.496 4.03702 17.9235 4.53572L21.2083 8.36805C21.3709 8.55771 21.4994 8.77151 21.5904 9M4.5 20.25H19.5C20.7426 20.25 21.75 19.2426 21.75 18V15.375C21.75 14.7537 21.2463 14.25 20.625 14.25H3.375C2.75368 14.25 2.25 14.7537 2.25 15.375V18C2.25 19.2426 3.25736 20.25 4.5 20.25Z"
+      stroke={color}
+      stroke-width={strokeWidth}
+      transition:draw={transitionParams}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  {/if}
+</svg>

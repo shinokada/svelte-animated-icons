@@ -12,38 +12,26 @@
     desc?: string;
   };
 
-  interface Props extends SVGAttributes<SVGElement> {
+  interface Props extends SVGAttributes<SVGSVGElement> {
     pauseDuration?: number;
     event?: 'hover' | 'click' | 'none';
     title?: TitleType;
     desc?: DescType;
     ariaLabel?: string;
     size?: number;
-    role?: string;
     color?: string;
     transitionParams?: DrawParams;
-    enableFocusStyles?: boolean;
-    focusOutlineWidth?: string | number;
-    focusOutlineColor?: string;
-    focusOutlineOffset?: string | number;
-    focusOutlineStyle?: string;
   }
 
   let {
     pauseDuration = 300,
     event = 'hover',
     size = 24,
-    role = 'img',
     color = 'currentColor',
     title,
     desc,
     ariaLabel = 'cog outline',
     transitionParams = { duration: 500, delay: 0 },
-    enableFocusStyles = false,
-    focusOutlineWidth = 0.05, // Default to ~8.3% of icon size
-    focusOutlineColor = 'currentColor',
-    focusOutlineOffset = 0.05, // Default to ~8.3% of icon size
-    focusOutlineStyle = 'solid',
     class: className,
     ...restProps
   }: Props = $props();
@@ -56,130 +44,68 @@
     return params.duration;
   };
 
+  $effect(() => {
+    visible = true;
+    isAnimating = false;
+  });
+
   let visible = $state(true);
   let totalDuration = $derived(getDuration(transitionParams) + pauseDuration);
 
   let ariaDescribedby = `${title?.id || ''} ${desc?.id || ''}`;
   const hasDescription = $derived(!!(title?.id || desc?.id));
 
+  let isAnimating = $state(false);
+
   const handleEvent = () => {
-    if (!visible) return;
+    // Only animate if event is not 'none'
+    if (event === 'none' || isAnimating) return;
+
+    isAnimating = true;
     visible = false;
+
     setTimeout(() => {
       visible = true;
+      isAnimating = false;
     }, totalDuration);
   };
 
-  const calculateOutlineValue = (value: string | number): string => {
-    if (typeof value === 'number') {
-      return `calc(var(--size) * ${value})`;
-    }
-    // If it's a string with units, return as is
-    return value;
-  };
-
-  // Set CSS variable for the placeholder size
-  $effect(() => {
-    document.documentElement.style.setProperty('--size', `${size}px`);
-  });
-
-  const buttonId = crypto.randomUUID();
-  let focusStyles = $derived(
-    enableFocusStyles
-      ? `
-    --focus-outline-width: ${calculateOutlineValue(focusOutlineWidth)};
-    --focus-outline-color: ${focusOutlineColor};
-    --focus-outline-offset: ${calculateOutlineValue(focusOutlineOffset)};
-    --focus-outline-style: ${focusOutlineStyle};
-  `
-      : ''
+  const eventHandlers = $derived(
+    event === 'none'
+      ? {} // No event handlers when event is 'none'
+      : event === 'hover'
+        ? { onmouseenter: handleEvent, onclick: undefined }
+        : {
+            onclick: handleEvent,
+            onmouseenter: undefined,
+            onmouseover: undefined
+          }
   );
 </script>
 
-{#snippet iconsvg()}
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    {...restProps}
-    {role}
-    width={size}
-    height={size}
-    fill={color}
-    aria-label={ariaLabel}
-    aria-describedby={hasDescription ? ariaDescribedby : undefined}
-    viewBox="0 0 512 512"
-    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"
-    class={className}
-  >
-    {#if title?.id && title.title}
-      <title id={title.id}>{title.title}</title>
-    {/if}
-    {#if desc?.id && desc.desc}
-      <desc id={desc.id}>{desc.desc}</desc>
-    {/if}
-    {#if visible}
-      <path
-        transition:draw={transitionParams}
-        d="M456.7,242.27l-26.08-4.2a8,8,0,0,1-6.6-6.82c-.5-3.2-1-6.41-1.7-9.51a8.08,8.08,0,0,1,3.9-8.62l23.09-12.82a8.05,8.05,0,0,0,3.9-9.92l-4-11a7.94,7.94,0,0,0-9.4-5l-25.89,5a8,8,0,0,1-8.59-4.11q-2.25-4.2-4.8-8.41a8.16,8.16,0,0,1,.7-9.52l17.29-19.94a8,8,0,0,0,.3-10.62l-7.49-9a7.88,7.88,0,0,0-10.5-1.51l-22.69,13.63a8,8,0,0,1-9.39-.9c-2.4-2.11-4.9-4.21-7.4-6.22a8,8,0,0,1-2.5-9.11l9.4-24.75A8,8,0,0,0,365,78.77l-10.2-5.91a8,8,0,0,0-10.39,2.21L327.77,95.91a7.15,7.15,0,0,1-8.5,2.5s-5.6-2.3-9.8-3.71A8,8,0,0,1,304,87l.4-26.45a8.07,8.07,0,0,0-6.6-8.42l-11.59-2a8.07,8.07,0,0,0-9.1,5.61l-8.6,25.05a8,8,0,0,1-7.79,5.41h-9.8a8.07,8.07,0,0,1-7.79-5.41l-8.6-25.05a8.07,8.07,0,0,0-9.1-5.61l-11.59,2a8.07,8.07,0,0,0-6.6,8.42l.4,26.45a8,8,0,0,1-5.49,7.71c-2.3.9-7.3,2.81-9.7,3.71-2.8,1-6.1.2-8.8-2.91L167.14,75.17A8,8,0,0,0,156.75,73l-10.2,5.91A7.94,7.94,0,0,0,143.25,89l9.4,24.75a8.06,8.06,0,0,1-2.5,9.11c-2.5,2-5,4.11-7.4,6.22a8,8,0,0,1-9.39.9L111,116.14a8,8,0,0,0-10.5,1.51l-7.49,9a8,8,0,0,0,.3,10.62l17.29,19.94a8,8,0,0,1,.7,9.52q-2.55,4-4.8,8.41a8.11,8.11,0,0,1-8.59,4.11l-25.89-5a8,8,0,0,0-9.4,5l-4,11a8.05,8.05,0,0,0,3.9,9.92L85.58,213a7.94,7.94,0,0,1,3.9,8.62c-.6,3.2-1.2,6.31-1.7,9.51a8.08,8.08,0,0,1-6.6,6.82l-26.08,4.2a8.09,8.09,0,0,0-7.1,7.92v11.72a7.86,7.86,0,0,0,7.1,7.92l26.08,4.2a8,8,0,0,1,6.6,6.82c.5,3.2,1,6.41,1.7,9.51a8.08,8.08,0,0,1-3.9,8.62L62.49,311.7a8.05,8.05,0,0,0-3.9,9.92l4,11a7.94,7.94,0,0,0,9.4,5l25.89-5a8,8,0,0,1,8.59,4.11q2.25,4.2,4.8,8.41a8.16,8.16,0,0,1-.7,9.52L93.28,374.62a8,8,0,0,0-.3,10.62l7.49,9a7.88,7.88,0,0,0,10.5,1.51l22.69-13.63a8,8,0,0,1,9.39.9c2.4,2.11,4.9,4.21,7.4,6.22a8,8,0,0,1,2.5,9.11l-9.4,24.75a8,8,0,0,0,3.3,10.12l10.2,5.91a8,8,0,0,0,10.39-2.21l16.79-20.64c2.1-2.6,5.5-3.7,8.2-2.6,3.4,1.4,5.7,2.2,9.9,3.61a8,8,0,0,1,5.49,7.71l-.4,26.45a8.07,8.07,0,0,0,6.6,8.42l11.59,2a8.07,8.07,0,0,0,9.1-5.61l8.6-25a8,8,0,0,1,7.79-5.41h9.8a8.07,8.07,0,0,1,7.79,5.41l8.6,25a8.07,8.07,0,0,0,9.1,5.61l11.59-2a8.07,8.07,0,0,0,6.6-8.42l-.4-26.45a8,8,0,0,1,5.49-7.71c4.2-1.41,7-2.51,9.6-3.51s5.8-1,8.3,2.1l17,20.94A8,8,0,0,0,355,439l10.2-5.91a7.93,7.93,0,0,0,3.3-10.12l-9.4-24.75a8.08,8.08,0,0,1,2.5-9.12c2.5-2,5-4.1,7.4-6.21a8,8,0,0,1,9.39-.9L401,395.66a8,8,0,0,0,10.5-1.51l7.49-9a8,8,0,0,0-.3-10.62l-17.29-19.94a8,8,0,0,1-.7-9.52q2.55-4.05,4.8-8.41a8.11,8.11,0,0,1,8.59-4.11l25.89,5a8,8,0,0,0,9.4-5l4-11a8.05,8.05,0,0,0-3.9-9.92l-23.09-12.82a7.94,7.94,0,0,1-3.9-8.62c.6-3.2,1.2-6.31,1.7-9.51a8.08,8.08,0,0,1,6.6-6.82l26.08-4.2a8.09,8.09,0,0,0,7.1-7.92V250A8.25,8.25,0,0,0,456.7,242.27ZM256,112A143.82,143.82,0,0,1,395.38,220.12,16,16,0,0,1,379.85,240l-105.24,0a16,16,0,0,1-13.91-8.09l-52.1-91.71a16,16,0,0,1,9.85-23.39A146.94,146.94,0,0,1,256,112ZM112,256a144,144,0,0,1,43.65-103.41,16,16,0,0,1,25.17,3.47L233.06,248a16,16,0,0,1,0,15.87l-52.67,91.7a16,16,0,0,1-25.18,3.36A143.94,143.94,0,0,1,112,256ZM256,400a146.9,146.9,0,0,1-38.19-4.95,16,16,0,0,1-9.76-23.44l52.58-91.55a16,16,0,0,1,13.88-8H379.9a16,16,0,0,1,15.52,19.88A143.84,143.84,0,0,1,256,400Z"
-      />
-    {/if}
-  </svg>
-{/snippet}
-
-{#if event === 'hover'}
-  <div
-    class="icon-wrapper"
-    role="button"
-    tabindex="0"
-    id={buttonId}
-    aria-label={`Animate ${ariaLabel} icon`}
-    onmouseenter={handleEvent}
-    onkeydown={(e) => e.key === 'Enter' && handleEvent()}
-    style={focusStyles}
-  >
-    {@render iconsvg()}
-  </div>
-{:else if event === 'click'}
-  <div
-    class="icon-wrapper"
-    role="button"
-    tabindex="0"
-    id={buttonId}
-    aria-label={`Animate ${ariaLabel} icon`}
-    onclick={handleEvent}
-    onkeydown={(e) => e.key === 'Enter' && handleEvent()}
-    style={focusStyles}
-  >
-    {@render iconsvg()}
-  </div>
-{:else}
-  <div class="icon-wrapper" role="img" aria-label={ariaLabel} style={focusStyles}>
-    {@render iconsvg()}
-  </div>
-{/if}
-
-<style>
-  .icon-wrapper {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: var(--size, 24px);
-    min-height: var(--size, 24px);
-    width: var(--size, 24px);
-    height: var(--size, 24px);
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 0;
-    font: inherit;
-    outline: inherit;
-    line-height: 0;
-  }
-
-  .icon-wrapper:focus {
-    outline-width: var(--focus-outline-width, 0);
-    outline-color: var(--focus-outline-color, transparent);
-    outline-offset: var(--focus-outline-offset, 0);
-    outline-style: var(--focus-outline-style, none);
-  }
-</style>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  {...restProps}
+  {...eventHandlers}
+  width={size}
+  height={size}
+  fill={color}
+  role={event === 'none' ? 'img' : 'button'}
+  aria-label={ariaLabel}
+  aria-describedby={hasDescription ? ariaDescribedby : undefined}
+  viewBox="0 0 512 512"
+  class={className}
+>
+  {#if title?.id && title.title}
+    <title id={title.id}>{title.title}</title>
+  {/if}
+  {#if desc?.id && desc.desc}
+    <desc id={desc.id}>{desc.desc}</desc>
+  {/if}
+  {#if visible}
+    <path
+      transition:draw={transitionParams}
+      d="M456.7,242.27l-26.08-4.2a8,8,0,0,1-6.6-6.82c-.5-3.2-1-6.41-1.7-9.51a8.08,8.08,0,0,1,3.9-8.62l23.09-12.82a8.05,8.05,0,0,0,3.9-9.92l-4-11a7.94,7.94,0,0,0-9.4-5l-25.89,5a8,8,0,0,1-8.59-4.11q-2.25-4.2-4.8-8.41a8.16,8.16,0,0,1,.7-9.52l17.29-19.94a8,8,0,0,0,.3-10.62l-7.49-9a7.88,7.88,0,0,0-10.5-1.51l-22.69,13.63a8,8,0,0,1-9.39-.9c-2.4-2.11-4.9-4.21-7.4-6.22a8,8,0,0,1-2.5-9.11l9.4-24.75A8,8,0,0,0,365,78.77l-10.2-5.91a8,8,0,0,0-10.39,2.21L327.77,95.91a7.15,7.15,0,0,1-8.5,2.5s-5.6-2.3-9.8-3.71A8,8,0,0,1,304,87l.4-26.45a8.07,8.07,0,0,0-6.6-8.42l-11.59-2a8.07,8.07,0,0,0-9.1,5.61l-8.6,25.05a8,8,0,0,1-7.79,5.41h-9.8a8.07,8.07,0,0,1-7.79-5.41l-8.6-25.05a8.07,8.07,0,0,0-9.1-5.61l-11.59,2a8.07,8.07,0,0,0-6.6,8.42l.4,26.45a8,8,0,0,1-5.49,7.71c-2.3.9-7.3,2.81-9.7,3.71-2.8,1-6.1.2-8.8-2.91L167.14,75.17A8,8,0,0,0,156.75,73l-10.2,5.91A7.94,7.94,0,0,0,143.25,89l9.4,24.75a8.06,8.06,0,0,1-2.5,9.11c-2.5,2-5,4.11-7.4,6.22a8,8,0,0,1-9.39.9L111,116.14a8,8,0,0,0-10.5,1.51l-7.49,9a8,8,0,0,0,.3,10.62l17.29,19.94a8,8,0,0,1,.7,9.52q-2.55,4-4.8,8.41a8.11,8.11,0,0,1-8.59,4.11l-25.89-5a8,8,0,0,0-9.4,5l-4,11a8.05,8.05,0,0,0,3.9,9.92L85.58,213a7.94,7.94,0,0,1,3.9,8.62c-.6,3.2-1.2,6.31-1.7,9.51a8.08,8.08,0,0,1-6.6,6.82l-26.08,4.2a8.09,8.09,0,0,0-7.1,7.92v11.72a7.86,7.86,0,0,0,7.1,7.92l26.08,4.2a8,8,0,0,1,6.6,6.82c.5,3.2,1,6.41,1.7,9.51a8.08,8.08,0,0,1-3.9,8.62L62.49,311.7a8.05,8.05,0,0,0-3.9,9.92l4,11a7.94,7.94,0,0,0,9.4,5l25.89-5a8,8,0,0,1,8.59,4.11q2.25,4.2,4.8,8.41a8.16,8.16,0,0,1-.7,9.52L93.28,374.62a8,8,0,0,0-.3,10.62l7.49,9a7.88,7.88,0,0,0,10.5,1.51l22.69-13.63a8,8,0,0,1,9.39.9c2.4,2.11,4.9,4.21,7.4,6.22a8,8,0,0,1,2.5,9.11l-9.4,24.75a8,8,0,0,0,3.3,10.12l10.2,5.91a8,8,0,0,0,10.39-2.21l16.79-20.64c2.1-2.6,5.5-3.7,8.2-2.6,3.4,1.4,5.7,2.2,9.9,3.61a8,8,0,0,1,5.49,7.71l-.4,26.45a8.07,8.07,0,0,0,6.6,8.42l11.59,2a8.07,8.07,0,0,0,9.1-5.61l8.6-25a8,8,0,0,1,7.79-5.41h9.8a8.07,8.07,0,0,1,7.79,5.41l8.6,25a8.07,8.07,0,0,0,9.1,5.61l11.59-2a8.07,8.07,0,0,0,6.6-8.42l-.4-26.45a8,8,0,0,1,5.49-7.71c4.2-1.41,7-2.51,9.6-3.51s5.8-1,8.3,2.1l17,20.94A8,8,0,0,0,355,439l10.2-5.91a7.93,7.93,0,0,0,3.3-10.12l-9.4-24.75a8.08,8.08,0,0,1,2.5-9.12c2.5-2,5-4.1,7.4-6.21a8,8,0,0,1,9.39-.9L401,395.66a8,8,0,0,0,10.5-1.51l7.49-9a8,8,0,0,0-.3-10.62l-17.29-19.94a8,8,0,0,1-.7-9.52q2.55-4.05,4.8-8.41a8.11,8.11,0,0,1,8.59-4.11l25.89,5a8,8,0,0,0,9.4-5l4-11a8.05,8.05,0,0,0-3.9-9.92l-23.09-12.82a7.94,7.94,0,0,1-3.9-8.62c.6-3.2,1.2-6.31,1.7-9.51a8.08,8.08,0,0,1,6.6-6.82l26.08-4.2a8.09,8.09,0,0,0,7.1-7.92V250A8.25,8.25,0,0,0,456.7,242.27ZM256,112A143.82,143.82,0,0,1,395.38,220.12,16,16,0,0,1,379.85,240l-105.24,0a16,16,0,0,1-13.91-8.09l-52.1-91.71a16,16,0,0,1,9.85-23.39A146.94,146.94,0,0,1,256,112ZM112,256a144,144,0,0,1,43.65-103.41,16,16,0,0,1,25.17,3.47L233.06,248a16,16,0,0,1,0,15.87l-52.67,91.7a16,16,0,0,1-25.18,3.36A143.94,143.94,0,0,1,112,256ZM256,400a146.9,146.9,0,0,1-38.19-4.95,16,16,0,0,1-9.76-23.44l52.58-91.55a16,16,0,0,1,13.88-8H379.9a16,16,0,0,1,15.52,19.88A143.84,143.84,0,0,1,256,400Z"
+    />
+  {/if}
+</svg>

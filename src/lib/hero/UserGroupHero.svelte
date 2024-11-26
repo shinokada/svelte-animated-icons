@@ -12,40 +12,28 @@
     desc?: string;
   };
 
-  interface Props extends SVGAttributes<SVGElement> {
+  interface Props extends SVGAttributes<SVGSVGElement> {
     pauseDuration?: number;
     event?: 'hover' | 'click' | 'none';
     title?: TitleType;
     desc?: DescType;
     ariaLabel?: string;
     size?: number;
-    role?: string;
     color?: string;
     strokeWidth?: number;
     transitionParams?: DrawParams;
-    enableFocusStyles?: boolean;
-    focusOutlineWidth?: string | number;
-    focusOutlineColor?: string;
-    focusOutlineOffset?: string | number;
-    focusOutlineStyle?: string;
   }
 
   let {
     pauseDuration = 300,
     event = 'hover',
     size = 24,
-    role = 'img',
     color = 'currentColor',
     strokeWidth = 1.5,
     title,
     desc,
     ariaLabel = 'user group',
     transitionParams = { duration: 500, delay: 0 },
-    enableFocusStyles = false,
-    focusOutlineWidth = 0.05, // Default to ~8.3% of icon size
-    focusOutlineColor = 'currentColor',
-    focusOutlineOffset = 0.05, // Default to ~8.3% of icon size
-    focusOutlineStyle = 'solid',
     class: className,
     ...restProps
   }: Props = $props();
@@ -58,135 +46,72 @@
     return params.duration;
   };
 
+  $effect(() => {
+    visible = true;
+    isAnimating = false;
+  });
+
   let visible = $state(true);
   let totalDuration = $derived(getDuration(transitionParams) + pauseDuration);
 
   let ariaDescribedby = `${title?.id || ''} ${desc?.id || ''}`;
   const hasDescription = $derived(!!(title?.id || desc?.id));
 
+  let isAnimating = $state(false);
+
   const handleEvent = () => {
-    if (!visible) return;
+    // Only animate if event is not 'none'
+    if (event === 'none' || isAnimating) return;
+
+    isAnimating = true;
     visible = false;
+
     setTimeout(() => {
       visible = true;
+      isAnimating = false;
     }, totalDuration);
   };
 
-  // Convert outline width and offset to calculated values based on size
-  const calculateOutlineValue = (value: string | number): string => {
-    if (typeof value === 'number') {
-      return `calc(var(--size) * ${value})`;
-    }
-    // If it's a string with units, return as is
-    return value;
-  };
-
-  // Set CSS variable for the placeholder size
-  $effect(() => {
-    document.documentElement.style.setProperty('--size', `${size}px`);
-  });
-
-  const buttonId = crypto.randomUUID();
-  let focusStyles = $derived(
-    enableFocusStyles
-      ? `
-    --focus-outline-width: ${calculateOutlineValue(focusOutlineWidth)};
-    --focus-outline-color: ${focusOutlineColor};
-    --focus-outline-offset: ${calculateOutlineValue(focusOutlineOffset)};
-    --focus-outline-style: ${focusOutlineStyle};
-  `
-      : ''
+  const eventHandlers = $derived(
+    event === 'none'
+      ? {} // No event handlers when event is 'none'
+      : event === 'hover'
+        ? { onmouseenter: handleEvent, onclick: undefined }
+        : {
+            onclick: handleEvent,
+            onmouseenter: undefined,
+            onmouseover: undefined
+          }
   );
 </script>
 
-{#snippet iconsvg()}
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    {...restProps}
-    {role}
-    width={size}
-    height={size}
-    fill="none"
-    aria-label={ariaLabel}
-    aria-describedby={hasDescription ? ariaDescribedby : undefined}
-    viewBox="0 0 24 24"
-    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"
-    class={className}
-  >
-    {#if title?.id && title.title}
-      <title id={title.id}>{title.title}</title>
-    {/if}
-    {#if desc?.id && desc.desc}
-      <desc id={desc.id}>{desc.desc}</desc>
-    {/if}
-    {#if visible}
-      <path
-        d="M17.9999 18.7191C18.2474 18.7396 18.4978 18.75 18.7506 18.75C19.7989 18.75 20.8054 18.5708 21.741 18.2413C21.7473 18.1617 21.7506 18.0812 21.7506 18C21.7506 16.3431 20.4074 15 18.7506 15C18.123 15 17.5403 15.1927 17.0587 15.5222M17.9999 18.7191C18 18.7294 18 18.7397 18 18.75C18 18.975 17.9876 19.1971 17.9635 19.4156C16.2067 20.4237 14.1707 21 12 21C9.82933 21 7.79327 20.4237 6.03651 19.4156C6.01238 19.1971 6 18.975 6 18.75C6 18.7397 6.00003 18.7295 6.00008 18.7192M17.9999 18.7191C17.994 17.5426 17.6494 16.4461 17.0587 15.5222M17.0587 15.5222C15.9928 13.8552 14.1255 12.75 12 12.75C9.87479 12.75 8.00765 13.8549 6.94169 15.5216M6.94169 15.5216C6.46023 15.1925 5.87796 15 5.25073 15C3.59388 15 2.25073 16.3431 2.25073 18C2.25073 18.0812 2.25396 18.1617 2.26029 18.2413C3.19593 18.5708 4.2024 18.75 5.25073 18.75C5.50307 18.75 5.75299 18.7396 6.00008 18.7192M6.94169 15.5216C6.35071 16.4457 6.00598 17.5424 6.00008 18.7192M15 6.75C15 8.40685 13.6569 9.75 12 9.75C10.3431 9.75 9 8.40685 9 6.75C9 5.09315 10.3431 3.75 12 3.75C13.6569 3.75 15 5.09315 15 6.75ZM21 9.75C21 10.9926 19.9926 12 18.75 12C17.5074 12 16.5 10.9926 16.5 9.75C16.5 8.50736 17.5074 7.5 18.75 7.5C19.9926 7.5 21 8.50736 21 9.75ZM7.5 9.75C7.5 10.9926 6.49264 12 5.25 12C4.00736 12 3 10.9926 3 9.75C3 8.50736 4.00736 7.5 5.25 7.5C6.49264 7.5 7.5 8.50736 7.5 9.75Z"
-        stroke={color}
-        stroke-width={strokeWidth}
-        transition:draw={transitionParams}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    {/if}
-  </svg>
-{/snippet}
-
-{#if event === 'hover'}
-  <div
-    class="icon-wrapper"
-    role="button"
-    tabindex="0"
-    id={buttonId}
-    aria-label={`Animate ${ariaLabel} icon`}
-    onmouseenter={handleEvent}
-    onkeydown={(e) => e.key === 'Enter' && handleEvent()}
-    style={focusStyles}
-  >
-    {@render iconsvg()}
-  </div>
-{:else if event === 'click'}
-  <div
-    class="icon-wrapper"
-    role="button"
-    tabindex="0"
-    id={buttonId}
-    aria-label={`Animate ${ariaLabel} icon`}
-    onclick={handleEvent}
-    onkeydown={(e) => e.key === 'Enter' && handleEvent()}
-    style={focusStyles}
-  >
-    {@render iconsvg()}
-  </div>
-{:else}
-  <div class="icon-wrapper" role="img" aria-label={ariaLabel} style={focusStyles}>
-    {@render iconsvg()}
-  </div>
-{/if}
-
-<style>
-  .icon-wrapper {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: var(--size, 24px);
-    min-height: var(--size, 24px);
-    width: var(--size, 24px);
-    height: var(--size, 24px);
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 0;
-    font: inherit;
-    outline: inherit;
-    line-height: 0;
-  }
-
-  .icon-wrapper:focus {
-    outline-width: var(--focus-outline-width, 0);
-    outline-color: var(--focus-outline-color, transparent);
-    outline-offset: var(--focus-outline-offset, 0);
-    outline-style: var(--focus-outline-style, none);
-  }
-</style>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  {...restProps}
+  {...eventHandlers}
+  width={size}
+  height={size}
+  fill="none"
+  role={event === 'none' ? 'img' : 'button'}
+  aria-label={ariaLabel}
+  aria-describedby={hasDescription ? ariaDescribedby : undefined}
+  viewBox="0 0 24 24"
+  class={className}
+>
+  {#if title?.id && title.title}
+    <title id={title.id}>{title.title}</title>
+  {/if}
+  {#if desc?.id && desc.desc}
+    <desc id={desc.id}>{desc.desc}</desc>
+  {/if}
+  {#if visible}
+    <path
+      d="M17.9999 18.7191C18.2474 18.7396 18.4978 18.75 18.7506 18.75C19.7989 18.75 20.8054 18.5708 21.741 18.2413C21.7473 18.1617 21.7506 18.0812 21.7506 18C21.7506 16.3431 20.4074 15 18.7506 15C18.123 15 17.5403 15.1927 17.0587 15.5222M17.9999 18.7191C18 18.7294 18 18.7397 18 18.75C18 18.975 17.9876 19.1971 17.9635 19.4156C16.2067 20.4237 14.1707 21 12 21C9.82933 21 7.79327 20.4237 6.03651 19.4156C6.01238 19.1971 6 18.975 6 18.75C6 18.7397 6.00003 18.7295 6.00008 18.7192M17.9999 18.7191C17.994 17.5426 17.6494 16.4461 17.0587 15.5222M17.0587 15.5222C15.9928 13.8552 14.1255 12.75 12 12.75C9.87479 12.75 8.00765 13.8549 6.94169 15.5216M6.94169 15.5216C6.46023 15.1925 5.87796 15 5.25073 15C3.59388 15 2.25073 16.3431 2.25073 18C2.25073 18.0812 2.25396 18.1617 2.26029 18.2413C3.19593 18.5708 4.2024 18.75 5.25073 18.75C5.50307 18.75 5.75299 18.7396 6.00008 18.7192M6.94169 15.5216C6.35071 16.4457 6.00598 17.5424 6.00008 18.7192M15 6.75C15 8.40685 13.6569 9.75 12 9.75C10.3431 9.75 9 8.40685 9 6.75C9 5.09315 10.3431 3.75 12 3.75C13.6569 3.75 15 5.09315 15 6.75ZM21 9.75C21 10.9926 19.9926 12 18.75 12C17.5074 12 16.5 10.9926 16.5 9.75C16.5 8.50736 17.5074 7.5 18.75 7.5C19.9926 7.5 21 8.50736 21 9.75ZM7.5 9.75C7.5 10.9926 6.49264 12 5.25 12C4.00736 12 3 10.9926 3 9.75C3 8.50736 4.00736 7.5 5.25 7.5C6.49264 7.5 7.5 8.50736 7.5 9.75Z"
+      stroke={color}
+      stroke-width={strokeWidth}
+      transition:draw={transitionParams}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  {/if}
+</svg>

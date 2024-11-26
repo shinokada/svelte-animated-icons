@@ -1,17 +1,16 @@
 <script lang="ts">
-  import * as icons from '$lib/ion';
+  import * as icons from '$lib/flowbite';
   import type { Component } from 'svelte';
-  import { Label, Input, Select, Span, Range, Checkbox } from 'svelte-5-ui-lib';
+  import { Label, Input, Select, Span, Range } from 'svelte-5-ui-lib';
 
   // Default values
   const DEFAULT_VALUES = {
     size: 24,
-    color: '#6928E2',
+    color: '#E22828',
     event: 'hover',
     pauseDuration: 300,
     transitionDuration: 500,
-    transitionDelay: 0,
-    enableFocusStyles: false
+    transitionDelay: 0
   };
 
   let size = $state(DEFAULT_VALUES.size);
@@ -21,12 +20,10 @@
   let pauseDuration = $state(DEFAULT_VALUES.pauseDuration);
   let transitionDuration = $state(DEFAULT_VALUES.transitionDuration);
   let transitionDelay = $state(DEFAULT_VALUES.transitionDelay);
-  let enableFocusStyles = $state(DEFAULT_VALUES.enableFocusStyles);
   let copiedIcon = $state('');
-
-  function handleFocusChange(e: Event & { currentTarget: EventTarget & HTMLInputElement }) {
-    enableFocusStyles = e.currentTarget.checked;
-  }
+  $effect(() => {
+    $inspect('event: ', event);
+  });
 
   let filteredIcons = $derived(
     Object.entries(icons).filter(([name]) =>
@@ -42,7 +39,7 @@
   const eventOptions = [
     { value: 'hover', label: 'Hover' },
     { value: 'click', label: 'Click' },
-    { value: 'undefined', label: 'None' }
+    { value: 'none', label: 'None' }
   ];
 
   function getPropsString() {
@@ -59,9 +56,6 @@
     }
     if (pauseDuration !== DEFAULT_VALUES.pauseDuration) {
       props.push(`pauseDuration={${pauseDuration}}`);
-    }
-    if (enableFocusStyles !== DEFAULT_VALUES.enableFocusStyles) {
-      props.push(`enableFocusStyles={${enableFocusStyles}}`);
     }
 
     const hasCustomTransition =
@@ -100,7 +94,8 @@
 </script>
 
 <div class="mx-auto max-w-6xl p-4">
-  <h1 class="my-4 text-2xl font-bold">Ion Icons</h1>
+  <h1 class="my-4 text-2xl font-bold">Svelte Animated Icons: Flowbite Icons</h1>
+
   <div class="mb-4 space-y-4 rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
     <!-- Basic Controls -->
     <div class="flex flex-wrap gap-4">
@@ -112,16 +107,6 @@
       <div class="flex items-center gap-2">
         <Label color="secondary" for="color-input">Color:</Label>
         <Input id="color-input" type="color" bind:value={color} class="h-10 w-20 p-0" />
-      </div>
-
-      <div class="flex items-center gap-2">
-        <Label color="secondary" for="focus-toggle">Focus Styles:</Label>
-        <Checkbox
-          id="focus-toggle"
-          checked={enableFocusStyles}
-          onchange={handleFocusChange}
-          class="h-5 w-5 rounded border-gray-300"
-        />
       </div>
     </div>
 
@@ -200,8 +185,10 @@
           {event}
           {pauseDuration}
           {transitionParams}
-          {enableFocusStyles}
           ariaLabel={name}
+          onAnimate={() => {
+            console.log(`Animating ${name} with event: ${event}`);
+          }}
         />
         <Span highlight="blue">{name}</Span>
         <button

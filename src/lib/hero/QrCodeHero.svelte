@@ -12,40 +12,28 @@
     desc?: string;
   };
 
-  interface Props extends SVGAttributes<SVGElement> {
+  interface Props extends SVGAttributes<SVGSVGElement> {
     pauseDuration?: number;
     event?: 'hover' | 'click' | 'none';
     title?: TitleType;
     desc?: DescType;
     ariaLabel?: string;
     size?: number;
-    role?: string;
     color?: string;
     strokeWidth?: number;
     transitionParams?: DrawParams;
-    enableFocusStyles?: boolean;
-    focusOutlineWidth?: string | number;
-    focusOutlineColor?: string;
-    focusOutlineOffset?: string | number;
-    focusOutlineStyle?: string;
   }
 
   let {
     pauseDuration = 300,
     event = 'hover',
     size = 24,
-    role = 'img',
     color = 'currentColor',
     strokeWidth = 1.5,
     title,
     desc,
     ariaLabel = 'qr code',
     transitionParams = { duration: 500, delay: 0 },
-    enableFocusStyles = false,
-    focusOutlineWidth = 0.05, // Default to ~8.3% of icon size
-    focusOutlineColor = 'currentColor',
-    focusOutlineOffset = 0.05, // Default to ~8.3% of icon size
-    focusOutlineStyle = 'solid',
     class: className,
     ...restProps
   }: Props = $props();
@@ -58,215 +46,152 @@
     return params.duration;
   };
 
+  $effect(() => {
+    visible = true;
+    isAnimating = false;
+  });
+
   let visible = $state(true);
   let totalDuration = $derived(getDuration(transitionParams) + pauseDuration);
 
   let ariaDescribedby = `${title?.id || ''} ${desc?.id || ''}`;
   const hasDescription = $derived(!!(title?.id || desc?.id));
 
+  let isAnimating = $state(false);
+
   const handleEvent = () => {
-    if (!visible) return;
+    // Only animate if event is not 'none'
+    if (event === 'none' || isAnimating) return;
+
+    isAnimating = true;
     visible = false;
+
     setTimeout(() => {
       visible = true;
+      isAnimating = false;
     }, totalDuration);
   };
 
-  // Convert outline width and offset to calculated values based on size
-  const calculateOutlineValue = (value: string | number): string => {
-    if (typeof value === 'number') {
-      return `calc(var(--size) * ${value})`;
-    }
-    // If it's a string with units, return as is
-    return value;
-  };
-
-  // Set CSS variable for the placeholder size
-  $effect(() => {
-    document.documentElement.style.setProperty('--size', `${size}px`);
-  });
-
-  const buttonId = crypto.randomUUID();
-  let focusStyles = $derived(
-    enableFocusStyles
-      ? `
-    --focus-outline-width: ${calculateOutlineValue(focusOutlineWidth)};
-    --focus-outline-color: ${focusOutlineColor};
-    --focus-outline-offset: ${calculateOutlineValue(focusOutlineOffset)};
-    --focus-outline-style: ${focusOutlineStyle};
-  `
-      : ''
+  const eventHandlers = $derived(
+    event === 'none'
+      ? {} // No event handlers when event is 'none'
+      : event === 'hover'
+        ? { onmouseenter: handleEvent, onclick: undefined }
+        : {
+            onclick: handleEvent,
+            onmouseenter: undefined,
+            onmouseover: undefined
+          }
   );
 </script>
 
-{#snippet iconsvg()}
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    {...restProps}
-    {role}
-    width={size}
-    height={size}
-    fill="none"
-    aria-label={ariaLabel}
-    aria-describedby={hasDescription ? ariaDescribedby : undefined}
-    viewBox="0 0 24 24"
-    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"
-    class={className}
-  >
-    {#if title?.id && title.title}
-      <title id={title.id}>{title.title}</title>
-    {/if}
-    {#if desc?.id && desc.desc}
-      <desc id={desc.id}>{desc.desc}</desc>
-    {/if}
-    {#if visible}
-      <path
-        d="M3.75 4.875C3.75 4.25368 4.25368 3.75 4.875 3.75H9.375C9.99632 3.75 10.5 4.25368 10.5 4.875V9.375C10.5 9.99632 9.99632 10.5 9.375 10.5H4.875C4.25368 10.5 3.75 9.99632 3.75 9.375V4.875Z"
-        stroke={color}
-        stroke-width={strokeWidth}
-        transition:draw={transitionParams}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-      <path
-        d="M3.75 14.625C3.75 14.0037 4.25368 13.5 4.875 13.5H9.375C9.99632 13.5 10.5 14.0037 10.5 14.625V19.125C10.5 19.7463 9.99632 20.25 9.375 20.25H4.875C4.25368 20.25 3.75 19.7463 3.75 19.125V14.625Z"
-        stroke={color}
-        stroke-width={strokeWidth}
-        transition:draw={transitionParams}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-      <path
-        d="M13.5 4.875C13.5 4.25368 14.0037 3.75 14.625 3.75H19.125C19.7463 3.75 20.25 4.25368 20.25 4.875V9.375C20.25 9.99632 19.7463 10.5 19.125 10.5H14.625C14.0037 10.5 13.5 9.99632 13.5 9.375V4.875Z"
-        stroke={color}
-        stroke-width={strokeWidth}
-        transition:draw={transitionParams}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-      <path
-        d="M6.75 6.75H7.5V7.5H6.75V6.75Z"
-        stroke={color}
-        stroke-width={strokeWidth}
-        transition:draw={transitionParams}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-      <path
-        d="M6.75 16.5H7.5V17.25H6.75V16.5Z"
-        stroke={color}
-        stroke-width={strokeWidth}
-        transition:draw={transitionParams}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-      <path
-        d="M16.5 6.75H17.25V7.5H16.5V6.75Z"
-        stroke={color}
-        stroke-width={strokeWidth}
-        transition:draw={transitionParams}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-      <path
-        d="M13.5 13.5H14.25V14.25H13.5V13.5Z"
-        stroke={color}
-        stroke-width={strokeWidth}
-        transition:draw={transitionParams}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-      <path
-        d="M13.5 19.5H14.25V20.25H13.5V19.5Z"
-        stroke={color}
-        stroke-width={strokeWidth}
-        transition:draw={transitionParams}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-      <path
-        d="M19.5 13.5H20.25V14.25H19.5V13.5Z"
-        stroke={color}
-        stroke-width={strokeWidth}
-        transition:draw={transitionParams}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-      <path
-        d="M19.5 19.5H20.25V20.25H19.5V19.5Z"
-        stroke={color}
-        stroke-width={strokeWidth}
-        transition:draw={transitionParams}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-      <path
-        d="M16.5 16.5H17.25V17.25H16.5V16.5Z"
-        stroke={color}
-        stroke-width={strokeWidth}
-        transition:draw={transitionParams}
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    {/if}
-  </svg>
-{/snippet}
-
-{#if event === 'hover'}
-  <div
-    class="icon-wrapper"
-    role="button"
-    tabindex="0"
-    id={buttonId}
-    aria-label={`Animate ${ariaLabel} icon`}
-    onmouseenter={handleEvent}
-    onkeydown={(e) => e.key === 'Enter' && handleEvent()}
-    style={focusStyles}
-  >
-    {@render iconsvg()}
-  </div>
-{:else if event === 'click'}
-  <div
-    class="icon-wrapper"
-    role="button"
-    tabindex="0"
-    id={buttonId}
-    aria-label={`Animate ${ariaLabel} icon`}
-    onclick={handleEvent}
-    onkeydown={(e) => e.key === 'Enter' && handleEvent()}
-    style={focusStyles}
-  >
-    {@render iconsvg()}
-  </div>
-{:else}
-  <div class="icon-wrapper" role="img" aria-label={ariaLabel} style={focusStyles}>
-    {@render iconsvg()}
-  </div>
-{/if}
-
-<style>
-  .icon-wrapper {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: var(--size, 24px);
-    min-height: var(--size, 24px);
-    width: var(--size, 24px);
-    height: var(--size, 24px);
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 0;
-    font: inherit;
-    outline: inherit;
-    line-height: 0;
-  }
-
-  .icon-wrapper:focus {
-    outline-width: var(--focus-outline-width, 0);
-    outline-color: var(--focus-outline-color, transparent);
-    outline-offset: var(--focus-outline-offset, 0);
-    outline-style: var(--focus-outline-style, none);
-  }
-</style>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  {...restProps}
+  {...eventHandlers}
+  width={size}
+  height={size}
+  fill="none"
+  role={event === 'none' ? 'img' : 'button'}
+  aria-label={ariaLabel}
+  aria-describedby={hasDescription ? ariaDescribedby : undefined}
+  viewBox="0 0 24 24"
+  class={className}
+>
+  {#if title?.id && title.title}
+    <title id={title.id}>{title.title}</title>
+  {/if}
+  {#if desc?.id && desc.desc}
+    <desc id={desc.id}>{desc.desc}</desc>
+  {/if}
+  {#if visible}
+    <path
+      d="M3.75 4.875C3.75 4.25368 4.25368 3.75 4.875 3.75H9.375C9.99632 3.75 10.5 4.25368 10.5 4.875V9.375C10.5 9.99632 9.99632 10.5 9.375 10.5H4.875C4.25368 10.5 3.75 9.99632 3.75 9.375V4.875Z"
+      stroke={color}
+      stroke-width={strokeWidth}
+      transition:draw={transitionParams}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M3.75 14.625C3.75 14.0037 4.25368 13.5 4.875 13.5H9.375C9.99632 13.5 10.5 14.0037 10.5 14.625V19.125C10.5 19.7463 9.99632 20.25 9.375 20.25H4.875C4.25368 20.25 3.75 19.7463 3.75 19.125V14.625Z"
+      stroke={color}
+      stroke-width={strokeWidth}
+      transition:draw={transitionParams}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M13.5 4.875C13.5 4.25368 14.0037 3.75 14.625 3.75H19.125C19.7463 3.75 20.25 4.25368 20.25 4.875V9.375C20.25 9.99632 19.7463 10.5 19.125 10.5H14.625C14.0037 10.5 13.5 9.99632 13.5 9.375V4.875Z"
+      stroke={color}
+      stroke-width={strokeWidth}
+      transition:draw={transitionParams}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M6.75 6.75H7.5V7.5H6.75V6.75Z"
+      stroke={color}
+      stroke-width={strokeWidth}
+      transition:draw={transitionParams}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M6.75 16.5H7.5V17.25H6.75V16.5Z"
+      stroke={color}
+      stroke-width={strokeWidth}
+      transition:draw={transitionParams}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M16.5 6.75H17.25V7.5H16.5V6.75Z"
+      stroke={color}
+      stroke-width={strokeWidth}
+      transition:draw={transitionParams}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M13.5 13.5H14.25V14.25H13.5V13.5Z"
+      stroke={color}
+      stroke-width={strokeWidth}
+      transition:draw={transitionParams}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M13.5 19.5H14.25V20.25H13.5V19.5Z"
+      stroke={color}
+      stroke-width={strokeWidth}
+      transition:draw={transitionParams}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M19.5 13.5H20.25V14.25H19.5V13.5Z"
+      stroke={color}
+      stroke-width={strokeWidth}
+      transition:draw={transitionParams}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M19.5 19.5H20.25V20.25H19.5V19.5Z"
+      stroke={color}
+      stroke-width={strokeWidth}
+      transition:draw={transitionParams}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <path
+      d="M16.5 16.5H17.25V17.25H16.5V16.5Z"
+      stroke={color}
+      stroke-width={strokeWidth}
+      transition:draw={transitionParams}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  {/if}
+</svg>
