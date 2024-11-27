@@ -1,5 +1,5 @@
 <script>
-  import { ArrowDownHero } from 'svelte-animated-icons';
+  import { AddColumnAfterFlowbite } from 'svelte-animated-icons';
 </script>
 
-<ArrowDownHero />
+<AddColumnAfterFlowbite />

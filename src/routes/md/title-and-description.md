@@ -1,10 +1,10 @@
-<ArrowDown
-title={{
-    id: "ArrowDown-title",
-    title: "ArrowDown Icon"
+<AddColumnAfterFlowbite
+  title={{
+    id: 'add-column-title',
+    title: 'Add Column Icon'
   }}
-desc={{
-    id: "ArrowDown-desc",
-    desc: "A ArrowDown icon that animates on hover"
+  desc={{
+    id: 'add-column-desc',
+    desc: 'An icon to add a column with animated transition'
   }}
 />

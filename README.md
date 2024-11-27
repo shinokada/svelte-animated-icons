@@ -1,15 +1,15 @@
 # Svelte Animated Icons
 
-A collection of animated SVG icons for Svelte with customizable draw transitions, events, and accessibility features. Each icon supports hover/click animations, customizable colors, sizes, and stroke widths.
+A collection of animated SVG icons for Svelte with enhanced customization, flexible event handling, and improved state management. Each icon supports sophisticated animation transitions, accessibility features, and granular control.
 
 ## Features
 
-- 🎨 Customizable colors, sizes, and stroke widths
-- ✨ Animated draw transitions on hover or click
-- ♿ Built-in accessibility features
-- 🎯 TypeScript support
-- 🔄 Configurable animation timing
-- 🎮 Multiple event trigger options
+- 🎨 Advanced customization (colors, sizes, stroke widths)
+- ✨ Draw transition animations
+- 🎯 Full TypeScript support
+- 🔄 Flexible event handling
+- ♿ Enhanced accessibility features
+- 🎮 Multiple animation trigger options
 
 ## Installation
 
@@ -21,24 +21,24 @@ pnpm i -D svelte-animated-icons
 
 ```svelte
 <script>
-  import { ArrowDown } from 'svelte-animated-icons';
+  import { AddColumnAfterFlowbite } from 'svelte-animated-icons';
 </script>
 
-<ArrowDown />
+<AddColumnAfterFlowbite />
 ```
 
 ### With Custom Properties
 
 ```svelte
 <script>
-  import { ArrowDown } from 'svelte-animated-icons';
+  import { AddColumnAfterFlowbite } from 'svelte-animated-icons';
 </script>
 
-<ArrowDown
+<AddColumnAfterFlowbite
   size={32}
   color="#ff0000"
   strokeWidth={2}
-  event="onclick"
+  event="click"
   pauseDuration={300}
   transitionParams={{
     duration: 800,
@@ -49,36 +49,36 @@ pnpm i -D svelte-animated-icons
 
 ## Props
 
-| Prop             | Type                        | Default                     | Description                            |
-| ---------------- | --------------------------- | --------------------------- | -------------------------------------- |
-| size             | number                      | 24                          | Icon size in pixels                    |
-| color            | string                      | 'currentColor'              | Icon color (any valid CSS color)       |
-| strokeWidth      | number                      | 1.5                         | Width of the icon strokes              |
-| event            | 'onmouseenter' \| 'onclick' | 'onmouseenter'              | Event that triggers the animation      |
-| pauseDuration    | number                      | 300                         | Pause duration between animations (ms) |
-| transitionParams | object                      | { duration: 800, delay: 0 } | Svelte transition parameters           |
-| title            | object                      | -                           | SVG title for accessibility            |
-| desc             | object                      | -                           | SVG description for accessibility      |
-| ariaLabel        | string                      | -                           | Aria label for the icon                |
+| Prop             | Type                            | Default                     | Description                            |
+| ---------------- | ------------------------------- | --------------------------- | -------------------------------------- |
+| size             | number                          | 24                          | Icon size in pixels                    |
+| color            | string                          | 'currentColor'              | Icon color (any valid CSS color)       |
+| strokeWidth      | number                          | 2                           | Width of the icon strokes              |
+| event            | 'hover' \| 'click' \| 'none'    | 'hover'                     | Event that triggers the animation      |
+| pauseDuration    | number                          | 300                         | Pause duration between animations (ms) |
+| transitionParams | object                          | { duration: 500, delay: 0 } | Svelte transition parameters           |
+| title            | { id?: string, title?: string } | -                           | SVG title for accessibility            |
+| desc             | { id?: string, desc?: string }  | -                           | SVG description for accessibility      |
+| ariaLabel        | string                          | Icon-specific default       | Aria label for the icon                |
 
-### Title and Description Props
+## Accessibility Props Example
 
 ```svelte
-<ArrowDown
+<AddColumnAfterFlowbite
   title={{
-    id: 'ArrowDown-title',
-    title: 'ArrowDown Icon'
+    id: 'add-column-title',
+    title: 'Add Column Icon'
   }}
   desc={{
-    id: 'ArrowDown-desc',
-    desc: 'A ArrowDown icon that animates on hover'
+    id: 'add-column-desc',
+    desc: 'An icon to add a column with animated transition'
   }}
 />
 ```
 
 ## Accessibility
 
-All icons include proper ARIA attributes and support custom titles and descriptions. They are keyboard accessible when used with click events.
+Icons include comprehensive ARIA attributes, support custom titles/descriptions, and are fully keyboard accessible.
 
 ## Browser Support
 

@@ -4,3 +4,4 @@ pnpm-lock.yaml
 yarn.lock
 .vercel
 /src/routes/utils/highlight/*
+*.md
