@@ -12,7 +12,7 @@
     DropdownUl,
     DropdownLi,
     Drawer
-  } from 'svelte-5-ui-lib';
+  } from 'flowbite-svelte';
   import { page } from '$app/stores';
   import { GithubSolid, random_tailwind_color, DotsHorizontalOutline, XSolid } from 'runes-webkit';
   import DynamicCodeBlockStyle from './DynamicCodeBlockStyle.svelte';

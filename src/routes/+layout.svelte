@@ -22,7 +22,7 @@
     Dropdown,
     DropdownUl,
     DropdownLi
-  } from 'svelte-5-ui-lib';
+  } from 'flowbite-svelte';
   import { RunesMetaTags, deepMerge } from 'runes-meta-tags';
   import { Runatics } from 'runatics';
   import DynamicCodeBlockStyle from './utils/DynamicCodeBlockStyle.svelte';

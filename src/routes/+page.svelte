@@ -1,6 +1,6 @@
 <script lang="ts">
   import { HighlightCompo, H1, H2, DocPage } from 'runes-webkit';
-  import { P, Table, List, Li } from 'svelte-5-ui-lib';
+  import { P, Table, List, Li } from 'flowbite-svelte';
 
   const tableItems = [
     { prop: 'size', type: 'number', default: '24', description: 'Icon size in pixels' },
