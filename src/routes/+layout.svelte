@@ -52,8 +52,9 @@
 
   const lis: LiType[] = [
     { name: 'Flowbite', href: '/flowbite' },
-    { name: 'Heroicons', href: '/hero' },
-    { name: 'Ionicons', href: '/ion' },
+    { name: 'Hero', href: '/hero' },
+    { name: 'Ion', href: '/ion' },
+    { name: 'Custom', href: '/custom' },
     { name: 'Svelte Animate', href: 'https://svelte-animate.codewithshin.com/' }
   ];
   const brand = {
