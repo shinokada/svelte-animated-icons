@@ -1,10 +1,11 @@
 test-results
 node_modules
-/src/routes/testdir
 
 # Output
 .output
 .vercel
+.netlify
+.wrangler
 /.svelte-kit
 /build
 /dist
@@ -22,5 +23,3 @@ Thumbs.db
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
-
-/.vercel

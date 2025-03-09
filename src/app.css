@@ -1,7 +1,27 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap');
+@import 'tailwindcss';
+
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@source "../node_modules/flowbite-svelte/dist";
+@source "../node_modules/runes-webkit/dist";
+
+@theme {
+	--z-index-100: 100;
+
+	--color-primary-50: #fff1f2;
+	--color-primary-100: #ffe4e6;
+	--color-primary-200: #fecdd3;
+	--color-primary-300: #fda4af;
+	--color-primary-400: #fb7185;
+	--color-primary-500: #f43f5e;
+	--color-primary-600: #e11d48;
+	--color-primary-700: #be123c;
+	--color-primary-800: #9f1239;
+	--color-primary-900: #881337;
+  
+}
 
 :global(html) {
   @apply font-sans;
@@ -67,8 +87,7 @@
 }
 
 @layer components {
-  /* overwrite runeswebkit.css using !important */
   .dark_bg_theme {
-    @apply dark:bg-stone-900 !important;
+    @apply dark:bg-stone-900;
   }
 }
