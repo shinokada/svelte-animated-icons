@@ -96,7 +96,7 @@
 <div class="mx-auto max-w-6xl p-4">
   <h1 class="my-4 text-2xl font-bold">Svelte Animated Icons: Ion Icons</h1>
 
-  <div class="mb-4 space-y-4 rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
+  <div class="mb-4 space-y-4 rounded-lg bg-gray-50 p-4 dark:bg-gray-800 dark:text-white">
     <!-- Basic Controls -->
     <div class="flex flex-wrap gap-4">
       <div class="flex items-center gap-2">
