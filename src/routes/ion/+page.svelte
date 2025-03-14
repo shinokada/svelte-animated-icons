@@ -1,7 +1,7 @@
 <script lang="ts">
   import * as icons from '$lib/ion';
   import type { Component } from 'svelte';
-  import { Label, Input, Select, Span, Range } from 'flowbite-svelte';
+  import { Label, Input, Select, Span, Range } from 'svelte-5-ui-lib';
 
   // Default values
   const DEFAULT_VALUES = {
