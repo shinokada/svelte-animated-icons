@@ -1,223 +1,56 @@
 <script lang="ts">
-  import { twMerge } from 'tailwind-merge';
-  import type { Component } from 'svelte';
-  import {
-    Navbar,
-    NavLi,
-    NavBrand,
-    NavUl,
-    uiHelpers,
-    Darkmode,
-    Dropdown,
-    DropdownUl,
-    DropdownLi,
-    Drawer
-  } from 'svelte-5-ui-lib';
-  import { page } from '$app/stores';
-  import { GithubSolid, random_tailwind_color, DotsHorizontalOutline, XSolid } from 'runes-webkit';
+  import { Navbar, NavLi, NavBrand, NavHamburger, NavUl, uiHelpers, DarkMode, Dropdown, DropdownItem } from 'flowbite-svelte';
   import DynamicCodeBlockStyle from './DynamicCodeBlockStyle.svelte';
-  import { sineIn } from 'svelte/easing';
+  import { Bluesky, DotsHorizontalOutline, GithubSolid, XSolid } from 'runes-webkit';
+  import { page } from '$app/state';
 
-  function isIncluded(url: string, allowedUrls: string[]): boolean {
-    return allowedUrls.some((allowedUrl) => url.startsWith(allowedUrl));
-  }
+  const githubUrl = `https://github.com/shinokada/${__NAME__}`;
+  const twitterUrl = 'https://twitter.com/shinokada';
+  const blueskyUrl = 'https://bsky.app/profile/codewithshin.com';
 
-  type LiType = {
-    name: string;
-    href: string;
-    Icon?: Component;
-  };
-  interface Props {
-    lis?: LiType[];
-    siteName?: string;
-    twitterUrl?: string;
-    githubUrl?: string;
-    headerClass?: string;
-    urlsToIncludeSwitcher?: string[];
-  }
-  let {
-    lis,
-    siteName,
-    twitterUrl,
-    githubUrl,
-    headerClass,
-    urlsToIncludeSwitcher = ['/guide']
-  }: Props = $props();
-
-  let transitionParams = {
-    x: -320,
-    duration: 200,
-    easing: sineIn
-  };
-  let dropdownTransitionParams = {
-    y: 0,
-    duration: 200,
-    easing: sineIn
-  };
-  let dropdown = uiHelpers();
-  let dropdownStatus = $state(false);
-  let closeDropdown = dropdown.close;
-
-  const navDrawer = uiHelpers();
-  let navDrawerStatus = $state(false);
-  const closeNavDrawer = navDrawer.close;
-
-  let currentUrl = $state($page.url.pathname);
+  let activeUrl = $state(page.url.pathname);
   let nav = uiHelpers();
-
-  let include = $derived(isIncluded(currentUrl, urlsToIncludeSwitcher));
-
   let navStatus = $state(false);
-  let toggleNav = nav.toggle;
-  let closeNav = nav.close;
-  let divClass = 'ml-auto w-full';
-  let ulclass = 'dark:lg:bg-transparent lg:space-x-4';
-  let navClass =
-    'w-full divide-gray-200 border-gray-200 bg-gray-50 dark_bg_theme text-gray-500 dark:divide-gray-700 dark:border-gray-700 dark:transparent dark:text-gray-400 sm:px-4';
-  let headerCls = twMerge(
-    'sticky top-0 z-40 mx-auto w-full flex-none border-b border-gray-200 bg-gray-100 dark:border-gray-600 dark:bg-sky-950',
-    headerClass
-  );
 
   $effect(() => {
-    navDrawerStatus = navDrawer.isOpen;
+    activeUrl = page.url.pathname;
     navStatus = nav.isOpen;
-    dropdownStatus = dropdown.isOpen;
-    currentUrl = $page.url.pathname;
   });
+
+  let activeClass = 'p-2 text-base hover:text-gray-600';
+  let nonActiveClass = 'p-2 text-base hover:text-gray-600';
 </script>
 
-{#snippet navLi(lis: LiType[])}
-  {#each lis as { name, href, Icon }}
-    {#if Icon}
-      <Icon class="mb-3 h-8 w-8 {random_tailwind_color()}" />
-    {/if}
-    <NavLi {href}>{name}</NavLi>
-  {/each}
-{/snippet}
-
-<header class={headerCls}>
-  <Navbar {navClass} {toggleNav} {closeNav} {navStatus} breakPoint="lg" fluid div2Class={divClass}>
-    {#snippet brand()}
-      <button
-        onclick={navDrawer.toggle}
-        type="button"
-        class="z-50 mr-4 mt-1 lg:hidden"
-        aria-controls="navbar-default"
-      >
-        <span class="sr-only">Open drawer menu</span>
-        <svg
-          class="h-5 w-5"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 17 14"
-        >
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M1 1h15M1 7h15M1 13h15"
-          />
-        </svg>
-      </button>
-      {#if siteName}
-        <NavBrand
-          {siteName}
-          spanClass="self-center whitespace-nowrap text-2xl font-semibold text-primary-900 dark:text-primary-500"
-        />
+<Navbar breakpoint="lg" fluid class="fixed top-0 left-0 z-50 border-b border-gray-100 bg-white py-4  sm:px-12 dark:border-gray-700 dark:bg-stone-900" navContainerClass="lg:justify-between">
+  <NavBrand href="/">
+    <span class="text-primary-900 dark:text-primary-500 self-center text-2xl font-semibold whitespace-nowrap xl:text-3xl">Svelte Animated Icons</span>
+  </NavBrand>
+  <div class="flex justify-end lg:order-2">
+    <NavHamburger class="order-3" />
+    <DynamicCodeBlockStyle class="hidden lg:block" />
+    <DotsHorizontalOutline class="mt-2 mr-4 ml-6 dark:text-white" size="lg" />
+    <Dropdown simple class="p-1">
+      {#if blueskyUrl}
+        <DropdownItem href={blueskyUrl} target="_blank" class="m-0 p-0.5">
+          <Bluesky size="30" />
+        </DropdownItem>
       {/if}
-      <div class="ml-auto flex items-center lg:order-1">
-        {#if include}
-          <DynamicCodeBlockStyle />
-        {/if}
-        <DotsHorizontalOutline
-          onclick={dropdown.toggle}
-          class="ml-6 mr-4 dark:text-white"
-          size="lg"
-        />
-        <div class="relative">
-          <Dropdown
-            {dropdownStatus}
-            {closeDropdown}
-            params={dropdownTransitionParams}
-            class="absolute -left-[50px] top-2 w-12 pl-1.5"
-          >
-            <DropdownUl>
-              {#if twitterUrl}
-                <DropdownLi href={twitterUrl} target="_blank" aClass="p-2 m-0"
-                  ><XSolid /></DropdownLi
-                >
-              {/if}
-              {#if githubUrl}
-                <DropdownLi href={githubUrl} target="_blank" aClass="p-2 m-0">
-                  <GithubSolid />
-                </DropdownLi>
-              {/if}
-              <DropdownLi>
-                <Darkmode class="m-0 p-2" />
-              </DropdownLi>
-            </DropdownUl>
-          </Dropdown>
-        </div>
-      </div>
-    {/snippet}
-    {#if lis}
-      <NavUl class={ulclass}>
-        {@render navLi(lis)}
-      </NavUl>
-    {/if}
-  </Navbar>
-</header>
-
-<Drawer
-  drawerStatus={navDrawerStatus}
-  closeDrawer={closeNavDrawer}
-  params={transitionParams}
-  class="dark_bg_theme w-64 bg-gray-50"
->
-  <div class="flex items-center pb-4">
-    <h5
-      id="drawer-label"
-      class="inline-flex items-center text-lg font-semibold text-gray-500 dark:text-gray-400"
-    >
-      Svelte Animated Icons
-    </h5>
-    <button
-      type="button"
-      onclick={closeNavDrawer}
-      class="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
-      data-modal-hide="default-modal"
-    >
-      <svg
-        class="h-3 w-3"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 14 14"
-      >
-        <path
-          stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
-        />
-      </svg>
-      <span class="sr-only">Close drawer</span>
-    </button>
+      {#if twitterUrl}
+        <DropdownItem href={twitterUrl} target="_blank" class="m-0 p-2"><XSolid /></DropdownItem>
+      {/if}
+      {#if githubUrl}
+        <DropdownItem href={githubUrl} target="_blank" class="m-0 p-2">
+          <GithubSolid />
+        </DropdownItem>
+      {/if}
+    </Dropdown>
+    <DarkMode class="m-0 p-2" />
   </div>
-</Drawer>
-
-<!--
-@component
-[Go to docs](https://runes-webkit.codewithshin.com/)
-## Props
-@props: lis: LiType[];
-@props:siteName: string;
-@props:twitterUrl?: string;
-@props:githubUrl?: string;
-@props:headerClass?: string;
-@props:urlsToIncludeSwitcher?: string[];
--->
+  <NavUl {activeUrl} breakpoint="lg" class="order-2 lg:order-1" classes={{ active: activeClass, nonActive: nonActiveClass, ul: 'p-0' }}>
+    <NavLi href="/flowbite">Flowbite</NavLi>
+    <NavLi href="/hero">Hero</NavLi>
+    <NavLi href="/ion">Ion</NavLi>
+    <NavLi href="/custom">Custom</NavLi>
+    <NavLi href="https://svelte-animate.codewithshin.com/" target="_blank">Svelte Animate</NavLi>
+  </NavUl>
+</Navbar>

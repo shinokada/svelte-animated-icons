@@ -1,6 +1,6 @@
 <script lang="ts">
   import { HighlightCompo, H1, H2, DocPage } from 'runes-webkit';
-  import { P, Table, List, Li } from 'svelte-5-ui-lib';
+  import { P, Table, List, Li } from 'flowbite-svelte';
 
   const tableItems = [
     { prop: 'size', type: 'number', default: '24', description: 'Icon size in pixels' },
@@ -81,25 +81,25 @@
 
   <H2>Installation</H2>
 
-  <HighlightCompo codeLang="ts" code={modules['./md/installation.md'] as string} />
+  <HighlightCompo codeLang="ts" code={modules['./md/installation.md'] as string} clipboardClass="top-2"/>
 
   <H2>Usage</H2>
 
-  <HighlightCompo codeLang="ts" code={modules['./md/usage.md'] as string} />
+  <HighlightCompo codeLang="ts" code={modules['./md/usage.md'] as string} clipboardClass="top-2"/>
 
   <h3>With Custom Properties</h3>
 
-  <HighlightCompo codeLang="ts" code={modules['./md/custom-properties.md'] as string} />
+  <HighlightCompo codeLang="ts" code={modules['./md/custom-properties.md'] as string} clipboardClass="top-2"/>
 
   <H2>Props</H2>
-  <Table {tableItems} />
+  <Table items={tableItems} />
 
   <H2>Types</H2>
-  <HighlightCompo codeLang="ts" code={modules['./md/types.md'] as string} />
+  <HighlightCompo codeLang="ts" code={modules['./md/types.md'] as string} clipboardClass="top-2"/>
 
   <H2>Accessibility Props Example</H2>
 
-  <HighlightCompo codeLang="ts" code={modules['./md/title-and-description.md'] as string} />
+  <HighlightCompo codeLang="ts" code={modules['./md/title-and-description.md'] as string} clipboardClass="top-2"/>
 
   <H2>Accessibility</H2>
 
