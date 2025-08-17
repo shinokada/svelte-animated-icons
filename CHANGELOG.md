@@ -1,5 +1,11 @@
 # svelte-animated-icons
 
+## 0.7.1
+
+### Patch Changes
+
+- fix: change svelte-5-ui-lib with flowbite-svelte
+
 ## 0.7.0
 
 ### Minor Changes
@@ -9,7 +15,6 @@
 - Refactored component to simplify event handling and improve accessibility
 - Removed separate iconsvg snippet and consolidated SVG rendering
 - Simplified prop interface by removing unnecessary props:
-
   - Removed role prop (now dynamically set based on event)
   - Removed enableFocusStyles and related focus styling props
   - Removed focusOutlineWidth, focusOutlineColor, focusOutlineOffset, and focusOutlineStyle
