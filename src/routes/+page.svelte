@@ -84,33 +84,33 @@
 	<HighlightCompo
 		codeLang="ts"
 		code={modules['./md/installation.md'] as string}
-		clipboardClass="top-2"
+		
 	/>
 
 	<H2>Usage</H2>
 
-	<HighlightCompo codeLang="ts" code={modules['./md/usage.md'] as string} clipboardClass="top-2" />
+	<HighlightCompo codeLang="ts" code={modules['./md/usage.md'] as string}  />
 
 	<h3>With Custom Properties</h3>
 
 	<HighlightCompo
 		codeLang="ts"
 		code={modules['./md/custom-properties.md'] as string}
-		clipboardClass="top-2"
+		
 	/>
 
 	<H2>Props</H2>
 	<Table items={tableItems} />
 
 	<H2>Types</H2>
-	<HighlightCompo codeLang="ts" code={modules['./md/types.md'] as string} clipboardClass="top-2" />
+	<HighlightCompo codeLang="ts" code={modules['./md/types.md'] as string}  />
 
 	<H2>Accessibility Props Example</H2>
 
 	<HighlightCompo
 		codeLang="ts"
 		code={modules['./md/title-and-description.md'] as string}
-		clipboardClass="top-2"
+		
 	/>
 
 	<H2>Accessibility</H2>
