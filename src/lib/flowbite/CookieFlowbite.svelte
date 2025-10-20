@@ -1,0 +1,121 @@
+<script lang="ts">
+  import { draw } from 'svelte/transition';
+  import type { DrawParams } from 'svelte/transition';
+  import type { SVGAttributes } from 'svelte/elements';
+
+  type TitleType = {
+    id?: string;
+    title?: string;
+  };
+  type DescType = {
+    id?: string;
+    desc?: string;
+  };
+
+  interface Props extends SVGAttributes<SVGSVGElement> {
+    pauseDuration?: number;
+    event?: 'hover' | 'click' | 'none';
+    title?: TitleType;
+    desc?: DescType;
+    ariaLabel?: string;
+    size?: number;
+    color?: string;
+    strokeWidth?: number;
+    transitionParams?: DrawParams;
+    focusable?: 'true' | 'false' | 'auto';
+  }
+
+  let {
+    pauseDuration = 300,
+    event = 'hover',
+    size = 24,
+    color = 'currentColor',
+    strokeWidth = 2,
+    title,
+    desc,
+    focusable = 'false',
+    ariaLabel,
+    transitionParams = { duration: 500, delay: 0 },
+    class: className,
+    ...restProps
+  }: Props = $props();
+
+  const getDuration = (params?: DrawParams): number => {
+    if (!params?.duration) return 0;
+    if (typeof params.duration === 'function') {
+      return params.duration(0);
+    }
+    return params.duration;
+  };
+
+  $effect(() => {
+    visible = true;
+    isAnimating = false;
+  });
+
+  let visible = $state(true);
+  let totalDuration = $derived(getDuration(transitionParams) + pauseDuration);
+
+  let ariaDescribedby = $derived(`${title?.id || ''} ${desc?.id || ''}`.trim());
+  const hasDescription = $derived(!!(title?.id || desc?.id));
+
+  let isAnimating = $state(false);
+
+  const handleEvent = () => {
+    // Only animate if event is not 'none'
+    if (event === 'none' || isAnimating) return;
+
+    isAnimating = true;
+    visible = false;
+
+    setTimeout(() => {
+      visible = true;
+      isAnimating = false;
+    }, totalDuration);
+  };
+
+  const eventHandlers = $derived(
+    event === 'none'
+      ? {} // No event handlers when event is 'none'
+      : event === 'hover'
+        ? { onmouseenter: handleEvent, onclick: undefined }
+        : {
+            onclick: handleEvent,
+            onmouseenter: undefined,
+            onmouseover: undefined
+          }
+  );
+</script>
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  {...restProps}
+  {...eventHandlers}
+  width={size}
+  height={size}
+  fill="none"
+  role={event === 'none' ? 'img' : 'button'}
+  {focusable}
+  aria-label={title?.id ? undefined : ariaLabel}
+  aria-labelledby={title?.id || undefined}
+  aria-describedby={hasDescription ? ariaDescribedby : undefined}
+  viewBox="0 0 24 24"
+  class={className}
+>
+  {#if title?.id && title.title}
+    <title id={title.id}>{title.title}</title>
+  {/if}
+  {#if desc?.id && desc.desc}
+    <desc id={desc.id}>{desc.desc}</desc>
+  {/if}
+  {#if visible}
+    <path
+      transition:draw={transitionParams}
+      stroke={color}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width={strokeWidth}
+      d="M8.65692 9.41494h.01M7.27103 13h.01m7.67737 1.9156h.01M10.9999 17h.01m3.178-10.90671c-.8316.38094-1.8475.22903-2.5322-.45571-.3652-.36522-.5789-.82462-.6409-1.30001-.0574-.44-.0189-.98879.1833-1.39423-1.99351.20001-3.93304 1.06362-5.46025 2.59083-3.51472 3.51472-3.51472 9.21323 0 12.72793 3.51471 3.5147 9.21315 3.5147 12.72795 0 1.5601-1.5602 2.4278-3.5507 2.6028-5.5894-.2108.008-.6725.0223-.8328.0157-.635.0644-1.2926-.1466-1.779-.633-.3566-.3566-.5651-.8051-.6257-1.2692-.0561-.4293.0145-.87193.2117-1.26755-.1159.20735-.2619.40237-.4381.57865-1.0283 1.0282-2.6953 1.0282-3.7235 0-1.0282-1.02824-1.0282-2.69531 0-3.72352.0977-.09777.2013-.18625.3095-.26543"
+    />
+  {/if}
+</svg>

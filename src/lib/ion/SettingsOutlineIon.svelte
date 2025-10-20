@@ -1,112 +1,116 @@
 <script lang="ts">
-	import { draw } from 'svelte/transition';
-	import type { DrawParams } from 'svelte/transition';
-	import type { SVGAttributes } from 'svelte/elements';
+  import { draw } from 'svelte/transition';
+  import type { DrawParams } from 'svelte/transition';
+  import type { SVGAttributes } from 'svelte/elements';
 
-	type TitleType = {
-		id?: string;
-		title?: string;
-	};
-	type DescType = {
-		id?: string;
-		desc?: string;
-	};
+  type TitleType = {
+    id?: string;
+    title?: string;
+  };
+  type DescType = {
+    id?: string;
+    desc?: string;
+  };
 
-	interface Props extends SVGAttributes<SVGSVGElement> {
-		pauseDuration?: number;
-		event?: 'hover' | 'click' | 'none';
-		title?: TitleType;
-		desc?: DescType;
-		ariaLabel?: string;
-		size?: number;
-		color?: string;
-		transitionParams?: DrawParams;
-	}
+  interface Props extends SVGAttributes<SVGSVGElement> {
+    pauseDuration?: number;
+    event?: 'hover' | 'click' | 'none';
+    title?: TitleType;
+    desc?: DescType;
+    ariaLabel?: string;
+    size?: number;
+    color?: string;
+    transitionParams?: DrawParams;
+    focusable?: 'true' | 'false' | 'auto';
+  }
 
-	let {
-		pauseDuration = 300,
-		event = 'hover',
-		size = 24,
-		color = 'currentColor',
-		title,
-		desc,
-		ariaLabel = 'settings outline',
-		transitionParams = { duration: 500, delay: 0 },
-		class: className,
-		...restProps
-	}: Props = $props();
+  let {
+    pauseDuration = 300,
+    event = 'hover',
+    size = 24,
+    color = 'currentColor',
+    title,
+    desc,
+    focusable = 'false',
+    ariaLabel,
+    transitionParams = { duration: 500, delay: 0 },
+    class: className,
+    ...restProps
+  }: Props = $props();
 
-	const getDuration = (params?: DrawParams): number => {
-		if (!params?.duration) return 0;
-		if (typeof params.duration === 'function') {
-			return params.duration(0);
-		}
-		return params.duration;
-	};
+  const getDuration = (params?: DrawParams): number => {
+    if (!params?.duration) return 0;
+    if (typeof params.duration === 'function') {
+      return params.duration(0);
+    }
+    return params.duration;
+  };
 
-	$effect(() => {
-		visible = true;
-		isAnimating = false;
-	});
+  $effect(() => {
+    visible = true;
+    isAnimating = false;
+  });
 
-	let visible = $state(true);
-	let totalDuration = $derived(getDuration(transitionParams) + pauseDuration);
+  let visible = $state(true);
+  let totalDuration = $derived(getDuration(transitionParams) + pauseDuration);
 
-	let ariaDescribedby = `${title?.id || ''} ${desc?.id || ''}`;
-	const hasDescription = $derived(!!(title?.id || desc?.id));
+  let ariaDescribedby = $derived(`${title?.id || ''} ${desc?.id || ''}`.trim());
+  const hasDescription = $derived(!!(title?.id || desc?.id));
 
-	let isAnimating = $state(false);
+  let isAnimating = $state(false);
 
-	const handleEvent = () => {
-		// Only animate if event is not 'none'
-		if (event === 'none' || isAnimating) return;
+  const handleEvent = () => {
+    // Only animate if event is not 'none'
+    if (event === 'none' || isAnimating) return;
 
-		isAnimating = true;
-		visible = false;
+    isAnimating = true;
+    visible = false;
 
-		setTimeout(() => {
-			visible = true;
-			isAnimating = false;
-		}, totalDuration);
-	};
+    setTimeout(() => {
+      visible = true;
+      isAnimating = false;
+    }, totalDuration);
+  };
 
-	const eventHandlers = $derived(
-		event === 'none'
-			? {} // No event handlers when event is 'none'
-			: event === 'hover'
-				? { onmouseenter: handleEvent, onclick: undefined }
-				: {
-						onclick: handleEvent,
-						onmouseenter: undefined,
-						onmouseover: undefined
-					}
-	);
+  const eventHandlers = $derived(
+    event === 'none'
+      ? {} // No event handlers when event is 'none'
+      : event === 'hover'
+        ? { onmouseenter: handleEvent, onclick: undefined }
+        : {
+            onclick: handleEvent,
+            onmouseenter: undefined,
+            onmouseover: undefined
+          }
+  );
 </script>
 
 <svg
-	xmlns="http://www.w3.org/2000/svg"
-	{...restProps}
-	{...eventHandlers}
-	width={size}
-	height={size}
-	fill={color}
-	role={event === 'none' ? 'img' : 'button'}
-	aria-label={ariaLabel}
-	aria-describedby={hasDescription ? ariaDescribedby : undefined}
-	viewBox="0 0 512 512"
-	class={className}
+  xmlns="http://www.w3.org/2000/svg"
+  {...restProps}
+  {...eventHandlers}
+  width={size}
+  height={size}
+  fill={color}
+  role={event === 'none' ? 'img' : 'button'}
+  {focusable}
+  aria-label={title?.id ? undefined : ariaLabel}
+  aria-labelledby={title?.id || undefined}
+  aria-describedby={hasDescription ? ariaDescribedby : undefined}
+  viewBox="0 0 512 512"
+  class={className}
 >
-	{#if title?.id && title.title}
-		<title id={title.id}>{title.title}</title>
-	{/if}
-	{#if desc?.id && desc.desc}
-		<desc id={desc.id}>{desc.desc}</desc>
-	{/if}
-	{#if visible}
-		<path
-			transition:draw={transitionParams}
-			d="M262.29,192.31a64,64,0,1,0,57.4,57.4A64.13,64.13,0,0,0,262.29,192.31ZM416.39,256a154.34,154.34,0,0,1-1.53,20.79l45.21,35.46A10.81,10.81,0,0,1,462.52,326l-42.77,74a10.81,10.81,0,0,1-13.14,4.59l-44.9-18.08a16.11,16.11,0,0,0-15.17,1.75A164.48,164.48,0,0,1,325,400.8a15.94,15.94,0,0,0-8.82,12.14l-6.73,47.89A11.08,11.08,0,0,1,298.77,470H213.23a11.11,11.11,0,0,1-10.69-8.87l-6.72-47.82a16.07,16.07,0,0,0-9-12.22,155.3,155.3,0,0,1-21.46-12.57,16,16,0,0,0-15.11-1.71l-44.89,18.07a10.81,10.81,0,0,1-13.14-4.58l-42.77-74a10.8,10.8,0,0,1,2.45-13.75l38.21-30a16.05,16.05,0,0,0,6-14.08c-.36-4.17-.58-8.33-.58-12.5s.21-8.27.58-12.35a16,16,0,0,0-6.07-13.94l-38.19-30A10.81,10.81,0,0,1,49.48,186l42.77-74a10.81,10.81,0,0,1,13.14-4.59l44.9,18.08a16.11,16.11,0,0,0,15.17-1.75A164.48,164.48,0,0,1,187,111.2a15.94,15.94,0,0,0,8.82-12.14l6.73-47.89A11.08,11.08,0,0,1,213.23,42h85.54a11.11,11.11,0,0,1,10.69,8.87l6.72,47.82a16.07,16.07,0,0,0,9,12.22,155.3,155.3,0,0,1,21.46,12.57,16,16,0,0,0,15.11,1.71l44.89-18.07a10.81,10.81,0,0,1,13.14,4.58l42.77,74a10.8,10.8,0,0,1-2.45,13.75l-38.21,30a16.05,16.05,0,0,0-6.05,14.08C416.17,247.67,416.39,251.83,416.39,256Z"
-			style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
-		/>
-	{/if}
+  {#if title?.id && title.title}
+    <title id={title.id}>{title.title}</title>
+  {/if}
+  {#if desc?.id && desc.desc}
+    <desc id={desc.id}>{desc.desc}</desc>
+  {/if}
+  {#if visible}
+    <path
+      transition:draw={transitionParams}
+      d="M262.29,192.31a64,64,0,1,0,57.4,57.4A64.13,64.13,0,0,0,262.29,192.31ZM416.39,256a154.34,154.34,0,0,1-1.53,20.79l45.21,35.46A10.81,10.81,0,0,1,462.52,326l-42.77,74a10.81,10.81,0,0,1-13.14,4.59l-44.9-18.08a16.11,16.11,0,0,0-15.17,1.75A164.48,164.48,0,0,1,325,400.8a15.94,15.94,0,0,0-8.82,12.14l-6.73,47.89A11.08,11.08,0,0,1,298.77,470H213.23a11.11,11.11,0,0,1-10.69-8.87l-6.72-47.82a16.07,16.07,0,0,0-9-12.22,155.3,155.3,0,0,1-21.46-12.57,16,16,0,0,0-15.11-1.71l-44.89,18.07a10.81,10.81,0,0,1-13.14-4.58l-42.77-74a10.8,10.8,0,0,1,2.45-13.75l38.21-30a16.05,16.05,0,0,0,6-14.08c-.36-4.17-.58-8.33-.58-12.5s.21-8.27.58-12.35a16,16,0,0,0-6.07-13.94l-38.19-30A10.81,10.81,0,0,1,49.48,186l42.77-74a10.81,10.81,0,0,1,13.14-4.59l44.9,18.08a16.11,16.11,0,0,0,15.17-1.75A164.48,164.48,0,0,1,187,111.2a15.94,15.94,0,0,0,8.82-12.14l6.73-47.89A11.08,11.08,0,0,1,213.23,42h85.54a11.11,11.11,0,0,1,10.69,8.87l6.72,47.82a16.07,16.07,0,0,0,9,12.22,155.3,155.3,0,0,1,21.46,12.57,16,16,0,0,0,15.11,1.71l44.89-18.07a10.81,10.81,0,0,1,13.14,4.58l42.77,74a10.8,10.8,0,0,1-2.45,13.75l-38.21,30a16.05,16.05,0,0,0-6.05,14.08C416.17,247.67,416.39,251.83,416.39,256Z"
+      style="fill:none;stroke:{color};stroke-linecap:round;stroke-linejoin:round;stroke-width:32px"
+    />
+  {/if}
 </svg>

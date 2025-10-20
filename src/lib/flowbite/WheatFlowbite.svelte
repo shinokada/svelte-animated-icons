@@ -1,0 +1,121 @@
+<script lang="ts">
+  import { draw } from 'svelte/transition';
+  import type { DrawParams } from 'svelte/transition';
+  import type { SVGAttributes } from 'svelte/elements';
+
+  type TitleType = {
+    id?: string;
+    title?: string;
+  };
+  type DescType = {
+    id?: string;
+    desc?: string;
+  };
+
+  interface Props extends SVGAttributes<SVGSVGElement> {
+    pauseDuration?: number;
+    event?: 'hover' | 'click' | 'none';
+    title?: TitleType;
+    desc?: DescType;
+    ariaLabel?: string;
+    size?: number;
+    color?: string;
+    strokeWidth?: number;
+    transitionParams?: DrawParams;
+    focusable?: 'true' | 'false' | 'auto';
+  }
+
+  let {
+    pauseDuration = 300,
+    event = 'hover',
+    size = 24,
+    color = 'currentColor',
+    strokeWidth = 2,
+    title,
+    desc,
+    focusable = 'false',
+    ariaLabel,
+    transitionParams = { duration: 500, delay: 0 },
+    class: className,
+    ...restProps
+  }: Props = $props();
+
+  const getDuration = (params?: DrawParams): number => {
+    if (!params?.duration) return 0;
+    if (typeof params.duration === 'function') {
+      return params.duration(0);
+    }
+    return params.duration;
+  };
+
+  $effect(() => {
+    visible = true;
+    isAnimating = false;
+  });
+
+  let visible = $state(true);
+  let totalDuration = $derived(getDuration(transitionParams) + pauseDuration);
+
+  let ariaDescribedby = $derived(`${title?.id || ''} ${desc?.id || ''}`.trim());
+  const hasDescription = $derived(!!(title?.id || desc?.id));
+
+  let isAnimating = $state(false);
+
+  const handleEvent = () => {
+    // Only animate if event is not 'none'
+    if (event === 'none' || isAnimating) return;
+
+    isAnimating = true;
+    visible = false;
+
+    setTimeout(() => {
+      visible = true;
+      isAnimating = false;
+    }, totalDuration);
+  };
+
+  const eventHandlers = $derived(
+    event === 'none'
+      ? {} // No event handlers when event is 'none'
+      : event === 'hover'
+        ? { onmouseenter: handleEvent, onclick: undefined }
+        : {
+            onclick: handleEvent,
+            onmouseenter: undefined,
+            onmouseover: undefined
+          }
+  );
+</script>
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  {...restProps}
+  {...eventHandlers}
+  width={size}
+  height={size}
+  fill="none"
+  role={event === 'none' ? 'img' : 'button'}
+  {focusable}
+  aria-label={title?.id ? undefined : ariaLabel}
+  aria-labelledby={title?.id || undefined}
+  aria-describedby={hasDescription ? ariaDescribedby : undefined}
+  viewBox="0 0 24 24"
+  class={className}
+>
+  {#if title?.id && title.title}
+    <title id={title.id}>{title.title}</title>
+  {/if}
+  {#if desc?.id && desc.desc}
+    <desc id={desc.id}>{desc.desc}</desc>
+  {/if}
+  {#if visible}
+    <path
+      transition:draw={transitionParams}
+      stroke={color}
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width={strokeWidth}
+      d="M8.54025 15.4598c-.15524.0503-.82936-1.9171-.89837-2.3619-.08825-.5688.03111-1.7696.15081-1.7963.1197-.0267.68672 1.2412.75573 1.686.06901.4447.14706 2.4219-.00817 2.4722Zm0 0c-.00841-.163 2.06645-.3049 2.51395-.2565.5722.062 1.7012.4881 1.696.6106-.0052.1225-1.3766.3421-1.8241.2936-.4475-.0484-2.37745-.4848-2.38585-.6477Zm3.71475-3.7147L4 20m8.255-8.2549 6.6038-6.6039m-6.6038 6.6039c-.1553.0503-.8294-1.91714-.8984-2.36191-.0883-.56876.0311-1.76956.1508-1.79626.1197-.0267.6867 1.24116.7557 1.68593.069.44477.1471 2.42194-.0081 2.47224Zm0 0c-.0084-.163 2.0664-.3049 2.5139-.2565.5722.062 1.7012.4881 1.696.6106-.0052.1225-1.3766.3421-1.8241.2936-.4475-.0484-2.3774-.4848-2.3858-.6477ZM20 8.95298l-1.2713 1.27132m-3.6816-6.22427-1.2713 1.27129M5.26953 18.7305c-.15523.0503-.82935-1.9171-.89836-2.3619-.08825-.5687.0311-1.7696.1508-1.7963.1197-.0267.68673 1.2412.75574 1.686.06901.4447.14705 2.4219-.00818 2.4722Zm0 0c-.0084-.163 2.06645-.3049 2.51393-.2565.57221.062 1.70121.4881 1.69602.6106-.00519.1226-1.37661.3421-1.82408.2937-.44748-.0485-2.37746-.4848-2.38587-.6478Z"
+    />
+  {/if}
+</svg>

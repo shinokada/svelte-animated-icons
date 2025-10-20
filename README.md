@@ -21,7 +21,7 @@ pnpm i -D svelte-animated-icons
 
 ```svelte
 <script>
-	import { AddColumnAfterFlowbite } from 'svelte-animated-icons';
+  import { AddColumnAfterFlowbite } from 'svelte-animated-icons';
 </script>
 
 <AddColumnAfterFlowbite />
@@ -31,19 +31,19 @@ pnpm i -D svelte-animated-icons
 
 ```svelte
 <script>
-	import { AddColumnAfterFlowbite } from 'svelte-animated-icons';
+  import { AddColumnAfterFlowbite } from 'svelte-animated-icons';
 </script>
 
 <AddColumnAfterFlowbite
-	size={32}
-	color="#ff0000"
-	strokeWidth={2}
-	event="click"
-	pauseDuration={300}
-	transitionParams={{
-		duration: 800,
-		delay: 0
-	}}
+  size={32}
+  color="#ff0000"
+  strokeWidth={2}
+  event="click"
+  pauseDuration={300}
+  transitionParams={{
+    duration: 800,
+    delay: 0
+  }}
 />
 ```
 
@@ -65,14 +65,14 @@ pnpm i -D svelte-animated-icons
 
 ```svelte
 <AddColumnAfterFlowbite
-	title={{
-		id: 'add-column-title',
-		title: 'Add Column Icon'
-	}}
-	desc={{
-		id: 'add-column-desc',
-		desc: 'An icon to add a column with animated transition'
-	}}
+  title={{
+    id: 'add-column-title',
+    title: 'Add Column Icon'
+  }}
+  desc={{
+    id: 'add-column-desc',
+    desc: 'An icon to add a column with animated transition'
+  }}
 />
 ```
 
