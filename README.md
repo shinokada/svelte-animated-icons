@@ -59,7 +59,9 @@ pnpm i -D svelte-animated-icons
 | transitionParams | object                          | { duration: 500, delay: 0 } | Svelte transition parameters           |
 | title            | { id?: string, title?: string } | -                           | SVG title for accessibility            |
 | desc             | { id?: string, desc?: string }  | -                           | SVG description for accessibility      |
-| ariaLabel        | string                          | Icon-specific default       | Aria label for the icon                |
+| ariaLabel        | string                          | -                           | Aria label for the icon                |
+| focusable        | true/false/auto                 | false                       | Whether the icon is keyboard-focusable |
+
 
 ## Accessibility Props Example
 
