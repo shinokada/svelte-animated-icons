@@ -5,7 +5,6 @@
     NavBrand,
     NavHamburger,
     NavUl,
-    uiHelpers,
     DarkMode,
     Dropdown,
     DropdownItem
@@ -18,14 +17,11 @@
   const twitterUrl = 'https://twitter.com/shinokada';
   const blueskyUrl = 'https://bsky.app/profile/codewithshin.com';
 
-  let activeUrl = $state(page.url.pathname);
-  let nav = uiHelpers();
-  let navStatus = $state(false);
+  let activeUrl = $derived(page.url.pathname);
 
-  $effect(() => {
-    activeUrl = page.url.pathname;
-    navStatus = nav.isOpen;
-  });
+  // $effect(() => {
+  //   activeUrl = page.url.pathname;
+  // });
 
   let activeClass = 'p-2 text-base hover:text-gray-600';
   let nonActiveClass = 'p-2 text-base hover:text-gray-600';

@@ -171,5 +171,9 @@
 
   <H2>License</H2>
 
-  <P>MIT License - see the <a href="LICENSE">LICENSE</a> file for details.</P>
+  <P
+    >MIT License - see the <a
+      href="https://github.com/shinokada/svelte-animated-icons/blob/main/LICENSE">LICENSE</a
+    > file for details.</P
+  >
 </DocPage>
