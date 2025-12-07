@@ -41,7 +41,9 @@
     ...restProps
   }: Props = $props();
 
-  let ariaDescribedby = $derived(`${title?.id || ''} ${desc?.id || ''}`);
+  const ariaDescribedby = $derived(
+    [title?.id, desc?.id].filter(Boolean).join(' ')
+  );
   const hasDescription = $derived(!!(title?.id || desc?.id));
 </script>
 
