@@ -6,9 +6,9 @@
   import Nav from './utils/Nav.svelte';
   import Footer from './utils/Footer.svelte';
   let { children, data } = $props();
-  const analyticsId = data.ANALYTICS_ID_RUNES;
+  const analyticsId = $derived(data.ANALYTICS_ID_RUNES);
   // meta tags
-  let metaTags = $state(
+  let metaTags = $derived(
     page.data.pageMetaTags
       ? deepMerge(page.data.layoutMetaTags, page.data.pageMetaTags)
       : data.layoutMetaTags

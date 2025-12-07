@@ -62,7 +62,6 @@ pnpm i -D svelte-animated-icons
 | ariaLabel        | string                          | -                           | Aria label for the icon                |
 | focusable        | true/false/auto                 | false                       | Whether the icon is keyboard-focusable |
 
-
 ## Accessibility Props Example
 
 ```svelte

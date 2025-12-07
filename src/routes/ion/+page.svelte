@@ -21,9 +21,6 @@
   let transitionDuration = $state(DEFAULT_VALUES.transitionDuration);
   let transitionDelay = $state(DEFAULT_VALUES.transitionDelay);
   let copiedIcon = $state('');
-  $effect(() => {
-    $inspect('event: ', event);
-  });
 
   let filteredIcons = $derived(
     Object.entries(icons).filter(([name]) =>
@@ -115,7 +112,7 @@
       <div class="flex items-center gap-2">
         <Label color="secondary" for="event-select">Event:</Label>
         <Select id="event-select" bind:value={event} class="rounded p-2">
-          {#each eventOptions as option}
+          {#each eventOptions as option (option.label)}
             <option value={option.value}>{option.label}</option>
           {/each}
         </Select>
@@ -175,7 +172,7 @@
   </div>
 
   <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-    {#each filteredIcons as [name, Icon]}
+    {#each filteredIcons as [name, Icon] (name)}
       <div
         class="icon-card group relative flex flex-col items-center gap-2 rounded border border-gray-200 p-4 dark:border-gray-700"
       >
