@@ -17,7 +17,7 @@
   const twitterUrl = 'https://twitter.com/shinokada';
   const blueskyUrl = 'https://bsky.app/profile/codewithshin.com';
 
-  let activeUrl = $derived(page.url.pathname);
+  const activeUrl = $derived(page.url.pathname);
   let activeClass = 'p-2 text-base hover:text-gray-600';
   let nonActiveClass = 'p-2 text-base hover:text-gray-600';
   function isIncluded(url: string, allowedUrls: string[]): boolean {

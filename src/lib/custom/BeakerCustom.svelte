@@ -31,9 +31,7 @@
     ...restProps
   }: Props = $props();
 
-  const ariaDescribedby = $derived(
-    [title?.id, desc?.id].filter(Boolean).join(' ')
-  );
+  const ariaDescribedby = $derived([title?.id, desc?.id].filter(Boolean).join(' '));
   const hasDescription = $derived(!!(title?.id || desc?.id));
 
   let isAnimating = $state(false);
