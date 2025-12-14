@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { HighlightCompo, H1, H2, H3, DocPage, Code, CodeWrapper } from 'runes-webkit';
+  import { H1, H2, H3, DocPage, Code, CodeWrapper } from 'runes-webkit';
+  import { HighlightCompo } from 'svelte-rune-highlight';
   import { P, Table, List, Li } from 'flowbite-svelte';
   import { AddColumnAfterFlowbite } from '$lib';
 
@@ -91,21 +92,21 @@
 
   <H2>Installation</H2>
 
-  <HighlightCompo codeLang="ts" code={modules['./md/installation.md'] as string} />
+  <HighlightCompo lang="ts" code={modules['./md/installation.md'] as string} />
 
   <H2>Usage</H2>
 
-  <HighlightCompo codeLang="ts" code={modules['./md/usage.md'] as string} />
+  <HighlightCompo lang="ts" code={modules['./md/usage.md'] as string} />
 
   <h3>With Custom Properties</h3>
 
-  <HighlightCompo codeLang="ts" code={modules['./md/custom-properties.md'] as string} />
+  <HighlightCompo lang="ts" code={modules['./md/custom-properties.md'] as string} />
 
   <H2>Props</H2>
   <Table items={tableItems} color="purple" />
 
   <H2>Types</H2>
-  <HighlightCompo codeLang="ts" code={modules['./md/types.md'] as string} />
+  <HighlightCompo lang="ts" code={modules['./md/types.md'] as string} />
 
   <H2>Accessibility</H2>
 
@@ -117,7 +118,7 @@
     them.
   </p>
 
-  <HighlightCompo codeLang="ts" code={modules['./md/a11y-decorative.md'] as string} />
+  <HighlightCompo lang="ts" code={modules['./md/a11y-decorative.md'] as string} />
 
   <H3>Standalone Icons</H3>
 
@@ -126,7 +127,7 @@
     accessible label using the <Code>ariaLabel</Code> prop:
   </p>
 
-  <HighlightCompo codeLang="ts" code={modules['./md/a11y.md'] as string} />
+  <HighlightCompo lang="ts" code={modules['./md/a11y.md'] as string} />
 
   <H3>Rich Descriptions</H3>
 
@@ -135,7 +136,7 @@
     The <Code>title</Code> provides a short label, while <Code>desc</Code> offers a longer description:
   </p>
 
-  <HighlightCompo codeLang="ts" code={modules['./md/a11y-2.md'] as string} />
+  <HighlightCompo lang="ts" code={modules['./md/a11y-2.md'] as string} />
 
   <CodeWrapper>
     <AddColumnAfterFlowbite
@@ -157,7 +158,7 @@
     change this behavior, use the <Code>focusable</Code> prop:
   </p>
 
-  <HighlightCompo codeLang="ts" code={modules['./md/a11y-focusable.md'] as string} />
+  <HighlightCompo lang="ts" code={modules['./md/a11y-focusable.md'] as string} />
 
   <H2>Browser Support</H2>
 
