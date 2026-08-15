@@ -1,7 +1,7 @@
 {
-  "$schema": "https://unpkg.com/@changesets/config@3.0.3/schema.json",
+  "$schema": "https://unpkg.com/@changesets/config@4.0.0/schema.json",
   "changelog": [
-    "@svitejs/changesets-changelog-github-compact",
+    "@changesets/cli/changelog",
     { "repo": "shinokada/svelte-animated-icons" }
   ],
   "commit": false,
